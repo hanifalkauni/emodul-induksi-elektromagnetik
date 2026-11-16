@@ -1,0 +1,106 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    scroll-behavior: smooth;
+  }
+
+  h1, h2, h3, h4, .font-display {
+    font-family: 'Space Grotesk', system-ui, sans-serif;
+  }
+
+  code, pre, .font-mono {
+    font-family: 'JetBrains Mono', monospace;
+  }
+}
+
+/* Lab blueprint background grid */
+.bg-lab-grid {
+  background-color: #0B1120;
+  background-image:
+    linear-gradient(to right, rgba(51, 65, 85, 0.16) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(51, 65, 85, 0.16) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+/* Custom scientific range slider */
+input[type='range'].lab-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 8px;
+  border-radius: 9999px;
+  background: #1E293B;
+  border: 1px solid #334155;
+  outline: none;
+}
+
+input[type='range'].lab-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #06B6D4;
+  border: 2px solid #F8FAFC;
+  box-shadow: 0 0 12px rgba(6, 182, 212, 0.65);
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+input[type='range'].lab-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+  box-shadow: 0 0 18px rgba(6, 182, 212, 0.9);
+}
+
+input[type='range'].lab-slider.slider-amber::-webkit-slider-thumb {
+  background: #F59E0B;
+  box-shadow: 0 0 12px rgba(245, 158, 11, 0.65);
+}
+
+input[type='range'].lab-slider.slider-emerald::-webkit-slider-thumb {
+  background: #10B981;
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.65);
+}
+
+/* Custom subtle scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #0B1120;
+}
+::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}
+
+@keyframes pulse-flux {
+  0%, 100% {
+    opacity: 0.45;
+  }
+  50% {
+    opacity: 0.95;
+  }
+}
+
+.animate-flux {
+  animation: pulse-flux 2.4s ease-in-out infinite;
+}
+
+@media print {
+  body {
+    background: #ffffff !important;
+    color: #0f172a !important;
+  }
+  .no-print {
+    display: none !important;
+  }
+}
+
