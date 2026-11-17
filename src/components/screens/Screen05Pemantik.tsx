@@ -23,6 +23,7 @@ export const Screen05Pemantik: React.FC = () => {
   // magnetPos: 0 (di luar kiri) s.d. 160 (masuk penuh ke dalam kumparan)
   const [magnetPos, setMagnetPos] = useState(80);
   const [ledIntensity, setLedIntensity] = useState(0);
+  const [motionDir, setMotionDir] = useState<'in' | 'out'>('in');
   const [savedNotice, setSavedNotice] = useState(false);
 
   const prevPosRef = useRef(80);
@@ -31,6 +32,11 @@ export const Screen05Pemantik: React.FC = () => {
   // Hitung intensitas nyala LED: HANYA menyala jika magnet berada DI DALAM kumparan DAN sedang bergerak
   const updateLedFromMotion = (nextPos: number) => {
     const delta = Math.abs(nextPos - prevPosRef.current);
+    if (nextPos > prevPosRef.current) {
+      setMotionDir('in');
+    } else if (nextPos < prevPosRef.current) {
+      setMotionDir('out');
+    }
     prevPosRef.current = nextPos;
 
     if (nextPos < COIL_ENTRY_POS) {
@@ -52,6 +58,7 @@ export const Screen05Pemantik: React.FC = () => {
       if (isPlaying) {
         phaseRef.current = (phaseRef.current + 0.065) % (Math.PI * 2);
         const nextPos = 80 + Math.sin(phaseRef.current) * 80; // 0 .. 160
+        setMotionDir(Math.cos(phaseRef.current) >= 0 ? 'in' : 'out');
         setMagnetPos(nextPos);
         updateLedFromMotion(nextPos);
       } else {
@@ -66,6 +73,11 @@ export const Screen05Pemantik: React.FC = () => {
 
   const handleManualSlide = (nextPos: number) => {
     setIsPlaying(false);
+    if (nextPos > magnetPos) {
+      setMotionDir('in');
+    } else if (nextPos < magnetPos) {
+      setMotionDir('out');
+    }
     setMagnetPos(nextPos);
     updateLedFromMotion(nextPos);
   };
@@ -191,6 +203,38 @@ export const Screen05Pemantik: React.FC = () => {
                 />
               ))}
 
+              {/* 4. Green Current Arrows on Front Windings (Tanda Panah Segitiga Hijau Arus Induksi di Bagian Depan) */}
+              {COIL_X_LIST.map((cx, i) => {
+                const fx = cx + COIL_RX; // Puncak kawat depan (posisi dilingkari merah oleh user)
+                const fy = COIL_CY; // y = 93
+                const isArrowUp = motionDir === 'in';
+                return (
+                  <g key={`arrow-${i}`}>
+                    {/* Glowing background halo */}
+                    <circle cx={fx} cy={fy} r="9" fill="#10B981" fillOpacity={isLit ? 0.35 : 0.15} />
+                    {/* Bold Green Triangle Arrow */}
+                    <polygon
+                      points={
+                        isArrowUp
+                          ? `${fx},${fy - 9} ${fx - 6.5},${fy + 6} ${fx + 6.5},${fy + 6}`
+                          : `${fx},${fy + 9} ${fx - 6.5},${fy - 6} ${fx + 6.5},${fy - 6}`
+                      }
+                      fill="#10B981"
+                      stroke="#064E3B"
+                      strokeWidth="1.8"
+                    />
+                  </g>
+                );
+              })}
+
+              {/* Label Indikator Panah Arus Induksi */}
+              <g transform="translate(255, 48)">
+                <rect x="-75" y="-13" width="150" height="22" rx="11" fill="#064E3B" fillOpacity="0.9" stroke="#10B981" strokeWidth="1.2" />
+                <text x="0" y="2" textAnchor="middle" fill="#A7F3D0" fontSize="9.5" fontWeight="bold" fontFamily="JetBrains Mono">
+                  ▲ ARUS INDUKSI (I) {motionDir === 'in' ? '↑ NAIK' : '↓ TURUN'}
+                </text>
+              </g>
+
               <text x="255" y="144" textAnchor="middle" fill="#CBD5E1" fontSize="10.5">
                 Kumparan Berongga
               </text>
@@ -203,6 +247,10 @@ export const Screen05Pemantik: React.FC = () => {
               {/* Circuit Wires to LED */}
               <path d="M 220 127 L 220 166 L 372 166 L 372 112" fill="none" stroke={isLit ? '#10B981' : '#64748B'} strokeWidth="2.5" />
               <path d="M 290 127 L 290 152 L 392 152 L 392 112" fill="none" stroke={isLit ? '#10B981' : '#64748B'} strokeWidth="2.5" />
+
+              {/* Animated Current Arrows on Circuit Wires */}
+              <polygon points="300,166 291,161 291,171" fill={isLit ? '#10B981' : '#64748B'} stroke={isLit ? '#064E3B' : 'transparent'} strokeWidth="1" />
+              <polygon points="340,152 349,147 349,157" fill={isLit ? '#10B981' : '#64748B'} stroke={isLit ? '#064E3B' : 'transparent'} strokeWidth="1" />
 
               {/* LED */}
               <circle cx="382" cy="85" r="38" fill="url(#pemantikLedGlow)" />

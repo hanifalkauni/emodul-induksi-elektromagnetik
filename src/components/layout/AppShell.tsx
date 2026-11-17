@@ -351,7 +351,7 @@ export const AppShell: React.FC<{ children: React.ReactNode }> = ({ children }) 
                   type="button"
                   onClick={prevScreen}
                   disabled={state.currentScreen <= 1}
-                  className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-sm font-medium text-slate-200 hover:bg-slate-800 disabled:opacity-40 disabled:cursor-not-allowed transition"
+                  className="inline-flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-sm font-semibold text-slate-700 dark:text-slate-200 shadow-sm hover:bg-slate-50 dark:hover:bg-slate-800 disabled:opacity-40 disabled:cursor-not-allowed transition"
                 >
                   <ChevronLeft className="w-4 h-4" />
                   <span>Screen Sebelumnya</span>
@@ -366,10 +366,10 @@ export const AppShell: React.FC<{ children: React.ReactNode }> = ({ children }) 
                       onClick={() => handleNavigateScreen(s.id)}
                       className={`h-2 rounded-full transition-all ${
                         s.id === state.currentScreen
-                          ? 'w-6 bg-cyan-400'
+                          ? 'w-6 bg-cyan-500 shadow-sm'
                           : state.visitedScreens.includes(s.id)
-                          ? 'w-2 bg-emerald-500/70 hover:bg-emerald-400'
-                          : 'w-2 bg-slate-700 hover:bg-slate-500'
+                          ? 'w-2 bg-emerald-500/70 hover:bg-emerald-500'
+                          : 'w-2 bg-slate-300 dark:bg-slate-700 hover:bg-slate-400'
                       }`}
                     />
                   ))}
@@ -379,7 +379,7 @@ export const AppShell: React.FC<{ children: React.ReactNode }> = ({ children }) 
                   <button
                     type="button"
                     onClick={nextScreen}
-                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-semibold text-sm shadow-lg shadow-cyan-500/20 transition"
+                    className="clay-btn clay-btn-primary inline-flex items-center gap-2 px-6 py-3 rounded-2xl text-white font-bold text-sm tracking-wide shadow-md transition"
                   >
                     <span>Screen Selanjutnya</span>
                     <ChevronRight className="w-4 h-4" />
@@ -388,7 +388,7 @@ export const AppShell: React.FC<{ children: React.ReactNode }> = ({ children }) 
                   <button
                     type="button"
                     onClick={() => handleNavigateScreen(3)}
-                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-semibold text-sm transition"
+                    className="clay-btn clay-btn-emerald inline-flex items-center gap-2 px-6 py-3 rounded-2xl text-white font-bold text-sm tracking-wide shadow-md transition"
                   >
                     <Map className="w-4 h-4" />
                     <span>Kembali ke Peta Belajar</span>

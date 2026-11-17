@@ -210,17 +210,19 @@ export const Screen08HukumLenz: React.FC = () => {
                 {[0, 1, 2, 3, 4, 5].map((i) => {
                   const cx = i * 20 + 8; // Titik puncak kawat depan
                   return (
-                    <polygon
-                      key={`arrow-front-${i}`}
-                      points={
-                        isCCW
-                          ? `${cx},-8 ${cx - 5.5},4 ${cx + 5.5},4` // Panah menunjuk ke ATAS
-                          : `${cx},8 ${cx - 5.5},-4 ${cx + 5.5},-4` // Panah menunjuk ke BAWAH
-                      }
-                      fill="#10B981"
-                      stroke="#064E3B"
-                      strokeWidth="1.2"
-                    />
+                    <g key={`arrow-front-${i}`}>
+                      <circle cx={cx} cy={0} r="10" fill="#10B981" fillOpacity="0.3" />
+                      <polygon
+                        points={
+                          isCCW
+                            ? `${cx},-11 ${cx - 7},6 ${cx + 7},6` // Panah menunjuk ke ATAS
+                            : `${cx},11 ${cx - 7},-6 ${cx + 7},-6` // Panah menunjuk ke BAWAH
+                        }
+                        fill="#10B981"
+                        stroke="#064E3B"
+                        strokeWidth="1.8"
+                      />
+                    </g>
                   );
                 })}
 
