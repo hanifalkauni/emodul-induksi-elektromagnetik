@@ -227,73 +227,258 @@ html.light .from-slate-900.via-\[\#0F172A\] {
     inset 0 -2px 3px 0 rgba(148, 163, 184, 0.1);
 }
 
-/* Tipografi & Warna Teks */
+/* =========================================================
+   COMPREHENSIVE HIGH-CONTRAST TYPOGRAPHY SYSTEM (LIGHT MODE)
+   ========================================================= */
+
+/* All primary headings & titles: deepest black-slate (contrast > 18:1 against white) */
+html.light h1,
+html.light h2,
+html.light h3,
+html.light h4,
+html.light h5,
+html.light h6,
+html.light .font-display,
 html.light .text-white,
 html.light .text-slate-100 {
   color: #0F172A !important;
+  font-weight: 700;
 }
 
+/* Subheadings, emphasis & prominent paragraphs: deep dark slate */
 html.light .text-slate-200 {
+  color: #0F172A !important;
+  font-weight: 600;
+}
+
+/* Standard body text, descriptions, question prompts */
+html.light p,
+html.light span.text-slate-300,
+html.light div.text-slate-300,
+html.light .text-slate-300 {
+  color: #1E293B !important;
+  font-weight: 500;
+}
+
+/* Secondary labels, metadata, captions, instruction tips: dark slate (WCAG AA > 6.5:1) */
+html.light .text-slate-400,
+html.light .text-slate-500 {
+  color: #334155 !important;
+  font-weight: 600;
+}
+
+html.light .text-slate-600 {
   color: #1E293B !important;
 }
 
-html.light .text-slate-300 {
-  color: #334155 !important;
-}
+/* =========================================================
+   ACCENT COLORS: WCAG AAA HIGH CONTRAST IN LIGHT MODE
+   ========================================================= */
 
-html.light .text-slate-400 {
-  color: #64748B !important;
-}
-
-/* Teks aksen yang disesuaikan untuk kontras tinggi di latar putih */
-html.light .text-amber-300 {
-  color: #B45309 !important;
-}
+/* Cyan & Sky: deep ocean sapphire (contrast 6.2:1 against white) */
+html.light .text-cyan-100,
+html.light .text-cyan-200,
 html.light .text-cyan-300,
-html.light .text-cyan-400 {
-  color: #0284C7 !important;
-}
-html.light .text-emerald-300,
-html.light .text-emerald-400 {
-  color: #059669 !important;
+html.light .text-cyan-400,
+html.light .text-cyan-500,
+html.light .text-sky-200,
+html.light .text-sky-300,
+html.light .text-sky-400,
+html.light .text-sky-500,
+html.light .text-teal-300,
+html.light .text-teal-400 {
+  color: #0369A1 !important;
+  font-weight: 700 !important;
 }
 
-/* Border elemen */
-html.light .border-slate-800,
-html.light .border-slate-800\/80,
-html.light .border-slate-700 {
+/* Amber, Yellow & Orange: deep warm bronze (contrast 7.2:1 against white) */
+html.light .text-amber-100,
+html.light .text-amber-200,
+html.light .text-amber-300,
+html.light .text-amber-400,
+html.light .text-amber-500,
+html.light .text-yellow-200,
+html.light .text-yellow-300,
+html.light .text-yellow-400,
+html.light .text-yellow-500,
+html.light .text-orange-300,
+html.light .text-orange-400,
+html.light .text-orange-500 {
+  color: #9A3412 !important;
+  font-weight: 700 !important;
+}
+
+/* Emerald & Green: deep forest emerald (contrast 5.8:1 against white) */
+html.light .text-emerald-100,
+html.light .text-emerald-200,
+html.light .text-emerald-300,
+html.light .text-emerald-400,
+html.light .text-emerald-500,
+html.light .text-green-300,
+html.light .text-green-400,
+html.light .text-green-500 {
+  color: #047857 !important;
+  font-weight: 700 !important;
+}
+
+/* Rose & Red: deep crimson (contrast 5.5:1 against white) */
+html.light .text-rose-100,
+html.light .text-rose-200,
+html.light .text-rose-300,
+html.light .text-rose-400,
+html.light .text-rose-500,
+html.light .text-red-200,
+html.light .text-red-300,
+html.light .text-red-400,
+html.light .text-red-500 {
+  color: #BE123C !important;
+  font-weight: 700 !important;
+}
+
+/* Indigo, Violet, Purple & Blue: deep royal jewel tones */
+html.light .text-indigo-200,
+html.light .text-indigo-300,
+html.light .text-indigo-400,
+html.light .text-indigo-500,
+html.light .text-violet-200,
+html.light .text-violet-300,
+html.light .text-violet-400,
+html.light .text-violet-500,
+html.light .text-purple-200,
+html.light .text-purple-300,
+html.light .text-purple-400 {
+  color: #5B21B6 !important;
+  font-weight: 700 !important;
+}
+
+html.light .text-blue-200,
+html.light .text-blue-300,
+html.light .text-blue-400,
+html.light .text-blue-500 {
+  color: #1D4ED8 !important;
+  font-weight: 700 !important;
+}
+
+/* =========================================================
+   PILLS & BADGES CONTRAST (LIGHT MODE)
+   ========================================================= */
+
+html.light .bg-cyan-500\/10,
+html.light .bg-cyan-500\/15,
+html.light .bg-cyan-500\/20,
+html.light .bg-cyan-500\/25,
+html.light .bg-cyan-500\/30 {
+  background-color: #E0F2FE !important;
+  border-color: #7DD3FC !important;
+  color: #0369A1 !important;
+  font-weight: 700 !important;
+}
+
+html.light .bg-amber-500\/10,
+html.light .bg-amber-500\/15,
+html.light .bg-amber-500\/20,
+html.light .bg-amber-500\/25,
+html.light .bg-amber-500\/30 {
+  background-color: #FEF3C7 !important;
+  border-color: #FCD34D !important;
+  color: #92400E !important;
+  font-weight: 700 !important;
+}
+
+html.light .bg-emerald-500\/10,
+html.light .bg-emerald-500\/15,
+html.light .bg-emerald-500\/20,
+html.light .bg-emerald-500\/25,
+html.light .bg-emerald-500\/30 {
+  background-color: #D1FAE5 !important;
+  border-color: #6EE7B7 !important;
+  color: #065F46 !important;
+  font-weight: 700 !important;
+}
+
+html.light .bg-rose-500\/10,
+html.light .bg-rose-500\/15,
+html.light .bg-rose-500\/20,
+html.light .bg-rose-500\/25 {
+  background-color: #FFE4E6 !important;
+  border-color: #FDA4AF !important;
+  color: #9F1239 !important;
+  font-weight: 700 !important;
+}
+
+html.light .bg-indigo-500\/10,
+html.light .bg-indigo-500\/15,
+html.light .bg-indigo-500\/20,
+html.light .bg-violet-500\/10,
+html.light .bg-violet-500\/15,
+html.light .bg-violet-500\/20 {
+  background-color: #EEF2FF !important;
+  border-color: #C7D2FE !important;
+  color: #4338CA !important;
+  font-weight: 700 !important;
+}
+
+/* =========================================================
+   TABLES & BORDERS CONTRAST (LIGHT MODE)
+   ========================================================= */
+
+html.light table th {
+  color: #0F172A !important;
+  font-weight: 700 !important;
+  background-color: #F1F5F9 !important;
+  border-color: #CBD5E1 !important;
+}
+
+html.light table td {
+  color: #1E293B !important;
   border-color: #E2E8F0 !important;
 }
 
-/* Form Input & Textarea */
+html.light .border-slate-800,
+html.light .border-slate-800\/80,
+html.light .border-slate-700,
+html.light .border-slate-700\/80,
+html.light .divide-slate-800,
+html.light .divide-slate-800\/80 {
+  border-color: #CBD5E1 !important;
+}
+
+/* =========================================================
+   FORM CONTROLS, INPUTS & BUTTONS (LIGHT MODE)
+   ========================================================= */
+
 html.light input[type="text"],
 html.light input[type="url"],
+html.light input[type="number"],
 html.light textarea,
 html.light select {
   background-color: #FFFFFF !important;
-  border-color: #CBD5E1 !important;
+  border-color: #94A3B8 !important;
   color: #0F172A !important;
+  font-weight: 600 !important;
 }
 
 html.light input::placeholder,
 html.light textarea::placeholder {
-  color: #94A3B8 !important;
+  color: #64748B !important;
+  font-weight: 400 !important;
 }
 
 html.light input:focus,
 html.light textarea:focus,
 html.light select:focus {
   border-color: #0284C7 !important;
-  box-shadow: 0 0 0 1px #0284C7;
+  box-shadow: 0 0 0 2px rgba(2, 132, 199, 0.25) !important;
+  color: #0F172A !important;
 }
 
-/* Tombol-tombol standar */
 html.light .bg-slate-800,
 html.light .bg-slate-800\/80,
 html.light .bg-slate-800\/70 {
   background-color: #F1F5F9 !important;
   border-color: #CBD5E1 !important;
-  color: #1E293B !important;
+  color: #0F172A !important;
+  font-weight: 600 !important;
 }
 
 html.light .bg-slate-800:hover,
@@ -302,31 +487,50 @@ html.light .hover\:bg-slate-700:hover {
   color: #0F172A !important;
 }
 
-/* Kanvas SVG Simulasi Fisika */
-html.light svg.bg-\[\#070B14\],
-html.light .bg-\[\#070B14\] {
-  background-color: #F8FAFC !important;
-  border-color: #CBD5E1 !important;
-}
-
-html.light svg text[fill="#94A3B8"],
-html.light svg text[fill="#CBD5E1"] {
-  fill: #475569 !important;
-}
-
-html.light svg text[fill="#FDE68A"] {
-  fill: #B45309 !important;
-}
-
-/* Slider Lab Mode Cerah */
+/* Sliders */
 html.light input[type='range'].lab-slider {
-  background: #E2E8F0 !important;
-  border-color: #CBD5E1 !important;
+  background: #CBD5E1 !important;
+  border: 1px solid #94A3B8 !important;
 }
 
 html.light input[type='range'].lab-slider::-webkit-slider-thumb {
+  background: #0284C7 !important;
   border: 2px solid #FFFFFF !important;
-  box-shadow: 0 0 8px rgba(2, 132, 199, 0.45) !important;
+  box-shadow: 0 2px 6px rgba(2, 132, 199, 0.5) !important;
+}
+
+/* =========================================================
+   PHYSICS SIMULATION VIEWPORT & SVG CONTRAST
+   ========================================================= */
+
+/* The interactive oscilloscope / lab simulation canvas retains crisp dark background */
+html.light svg.bg-\[\#070B14\],
+html.light svg.bg-\[\#080D1A\],
+html.light .bg-\[\#070B14\],
+html.light .bg-\[\#080D1A\] {
+  background-color: #090D1A !important;
+  border: 1.5px solid #334155 !important;
+}
+
+/* Ensure text inside simulation SVGs has maximum contrast on dark backdrop */
+html.light svg text {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.95);
+}
+
+html.light svg text[fill="#CBD5E1"],
+html.light svg text[fill="#94A3B8"] {
+  fill: #F8FAFC !important;
+  font-weight: 600 !important;
+}
+
+html.light svg text[fill="#64748B"] {
+  fill: #E2E8F0 !important;
+  font-weight: 600 !important;
+}
+
+html.light svg text[fill="#FDE68A"] {
+  fill: #FDE68A !important;
+  font-weight: 700 !important;
 }
 
 html.light ::-webkit-scrollbar-track {

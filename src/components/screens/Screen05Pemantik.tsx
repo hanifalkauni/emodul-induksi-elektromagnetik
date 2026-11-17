@@ -112,11 +112,13 @@ export const Screen05Pemantik: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           <div className="lg:col-span-7 rounded-2xl bg-slate-950 border border-slate-800 p-4 space-y-3">
             <div className="flex items-center justify-between flex-wrap gap-2">
-              <span className="text-xs font-mono text-cyan-400">ANIMASI FENOMENA INTERAKTIF</span>
+              <span className="text-xs font-mono font-bold text-cyan-700 dark:text-cyan-400 uppercase tracking-wider">
+                ANIMASI FENOMENA INTERAKTIF
+              </span>
               <button
                 type="button"
                 onClick={() => setIsPlaying((p) => !p)}
-                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-medium text-white transition"
+                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-xs font-bold text-slate-900 dark:text-white border border-slate-300 dark:border-slate-700 shadow-sm transition"
               >
                 {isPlaying ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5" />}
                 <span>{isPlaying ? 'Jeda Gerakan' : 'Putar Animasi'}</span>
@@ -240,7 +242,7 @@ export const Screen05Pemantik: React.FC = () => {
               </text>
 
               {/* Status Position Label */}
-              <text x="115" y="144" textAnchor="middle" fill={isInsideCoil ? '#06B6D4' : '#94A3B8'} fontSize="10" fontFamily="JetBrains Mono">
+              <text x="115" y="144" textAnchor="middle" fill={isInsideCoil ? '#38BDF8' : '#F1F5F9'} fontSize="11" fontWeight="bold" fontFamily="JetBrains Mono">
                 {isInsideCoil ? 'Magnet di DALAM kumparan' : 'Magnet di LUAR kumparan'}
               </text>
 
@@ -262,10 +264,10 @@ export const Screen05Pemantik: React.FC = () => {
                 strokeWidth="2"
               />
               <rect x="366" y="108" width="32" height="6" rx="2" fill="#64748B" />
-              <text x="382" y="40" textAnchor="middle" fill={isLit ? '#FDE68A' : '#94A3B8'} fontSize="11" fontWeight="bold" fontFamily="JetBrains Mono">
+              <text x="382" y="40" textAnchor="middle" fill={isLit ? '#FDE68A' : '#F1F5F9'} fontSize="12" fontWeight="bold" fontFamily="JetBrains Mono">
                 {isLit ? 'LED MENYALA!' : 'LED PADAM'}
               </text>
-              <text x="382" y="182" textAnchor="middle" fill="#64748B" fontSize="9.5">
+              <text x="382" y="182" textAnchor="middle" fill="#E2E8F0" fontSize="10" fontWeight="bold">
                 {isLit
                   ? 'Fluks berubah di kumparan!'
                   : !isInsideCoil
@@ -274,10 +276,10 @@ export const Screen05Pemantik: React.FC = () => {
               </text>
             </svg>
 
-            <div className="space-y-1">
-              <div className="flex items-center justify-between text-xs text-slate-400">
+            <div className="space-y-1.5 pt-1">
+              <div className="flex items-center justify-between text-xs font-semibold text-slate-700 dark:text-slate-300">
                 <span>Geser manual magnet keluar-masuk ke dalam kumparan:</span>
-                <span className="font-mono text-cyan-300">
+                <span className="font-mono font-bold text-cyan-600 dark:text-cyan-300">
                   {magnetPos.toFixed(0)} mm ({isInsideCoil ? 'Masuk Kumparan' : 'Di Luar'})
                 </span>
               </div>
@@ -289,7 +291,7 @@ export const Screen05Pemantik: React.FC = () => {
                 onChange={(e) => handleManualSlide(Number(e.target.value))}
                 className="w-full lab-slider"
               />
-              <p className="text-[11px] text-slate-400">
+              <p className="text-xs text-slate-600 dark:text-slate-400 font-medium">
                 Tip: Gerakkan slider bolak-balik masuk dan keluar kumparan untuk melihat LED menyala; jika magnet dibiarkan diam (walaupun di dalam), LED akan padam!
               </p>
             </div>
