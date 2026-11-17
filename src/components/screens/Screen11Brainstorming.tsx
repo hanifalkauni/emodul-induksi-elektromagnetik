@@ -4,10 +4,10 @@ import { useModul } from '../../context/ModulContext';
 import { IdeaNote } from '../../types/emodul';
 
 const NOTE_COLORS: Record<IdeaNote['color'], string> = {
-  cyan: 'bg-cyan-950/50 border-cyan-500/40',
-  amber: 'bg-amber-950/50 border-amber-500/40',
-  emerald: 'bg-emerald-950/50 border-emerald-500/40',
-  indigo: 'bg-indigo-950/50 border-indigo-500/40',
+  cyan: 'bg-cyan-50/90 dark:bg-cyan-950/50 border-cyan-300 dark:border-cyan-500/40 text-slate-800 dark:text-cyan-100 shadow-sm',
+  amber: 'bg-amber-50/90 dark:bg-amber-950/50 border-amber-300 dark:border-amber-500/40 text-slate-800 dark:text-amber-100 shadow-sm',
+  emerald: 'bg-emerald-50/90 dark:bg-emerald-950/50 border-emerald-300 dark:border-emerald-500/40 text-slate-800 dark:text-emerald-100 shadow-sm',
+  indigo: 'bg-indigo-50/90 dark:bg-indigo-950/50 border-indigo-300 dark:border-indigo-500/40 text-slate-800 dark:text-indigo-100 shadow-sm',
 };
 
 export const Screen11Brainstorming: React.FC = () => {
@@ -40,21 +40,21 @@ export const Screen11Brainstorming: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      <div className="rounded-2xl bg-slate-900/90 border border-slate-800 p-6 sm:p-8 space-y-6">
+      <div className="rounded-[32px] clay-card p-6 sm:p-8 space-y-6">
         {/* Header & Rules */}
-        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-slate-800 pb-5">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-800 pb-5">
           <div className="space-y-1.5">
-            <div className="inline-flex items-center gap-2 text-xs font-mono text-amber-400 uppercase tracking-wider">
-              <Lightbulb className="w-4 h-4" />
+            <div className="clay-badge inline-flex items-center gap-2 px-3 py-1 bg-amber-100 dark:bg-amber-500/20 text-amber-800 dark:text-amber-300 text-xs font-mono font-bold">
+              <Lightbulb className="w-4 h-4 text-amber-600" />
               <span>Papan Ide Digital • Penguatan Kreativitas</span>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-display font-bold text-white">
+            <h1 className="text-2xl sm:text-3xl font-display font-black text-slate-900 dark:text-white">
               Brainstorming: “Sebanyak Mungkin Ide!”
             </h1>
           </div>
 
-          <div className="p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-xs text-amber-200 space-y-1">
-            <div className="font-bold">Aturan Emas Brainstorming:</div>
+          <div className="p-4 rounded-2xl bg-amber-50 dark:bg-amber-500/10 border border-amber-300 dark:border-amber-500/30 text-xs text-amber-900 dark:text-amber-200 space-y-1 font-medium shadow-sm">
+            <div className="font-extrabold text-amber-950 dark:text-amber-100">Aturan Emas Brainstorming:</div>
             <div>1. Jangan langsung menilai atau mengkritik ide teman.</div>
             <div>2. Setiap anggota harus menghasilkan minimal 2 ide desain.</div>
           </div>
@@ -64,9 +64,9 @@ export const Screen11Brainstorming: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           <form
             onSubmit={handleSubmit}
-            className="lg:col-span-5 rounded-2xl bg-slate-950 border border-slate-800 p-5 space-y-3.5"
+            className="lg:col-span-5 rounded-2xl clay-card bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-5 space-y-3.5 shadow-sm"
           >
-            <div className="text-xs font-mono text-cyan-400">TAMBAH CATATAN IDE BARU</div>
+            <div className="text-xs font-mono font-bold text-cyan-700 dark:text-cyan-400">TAMBAH CATATAN IDE BARU</div>
 
             <div className="grid grid-cols-2 gap-2.5">
               <input
@@ -74,12 +74,12 @@ export const Screen11Brainstorming: React.FC = () => {
                 value={authorName}
                 onChange={(e) => setAuthorName(e.target.value)}
                 placeholder="Nama Pengusul..."
-                className="px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-cyan-400"
+                className="clay-input px-3 py-2 rounded-xl text-xs font-medium focus:outline-none focus:ring-2 focus:ring-cyan-500"
               />
               <select
                 value={driveMechanism}
                 onChange={(e) => setDriveMechanism(e.target.value as IdeaNote['driveMechanism'])}
-                className="px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-xs text-white focus:outline-none focus:border-cyan-400"
+                className="clay-input px-3 py-2 rounded-xl text-xs font-medium focus:outline-none focus:ring-2 focus:ring-cyan-500"
               >
                 <option value="Engkol Manual">Engkol Manual</option>
                 <option value="Kincir Angin">Kincir Angin</option>
@@ -95,7 +95,7 @@ export const Screen11Brainstorming: React.FC = () => {
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="Judul Ide Desain (contoh: Generator Putar Ganda)"
-              className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-xs sm:text-sm text-white placeholder:text-slate-500 focus:outline-none focus:border-cyan-400"
+              className="clay-input w-full px-3 py-2 rounded-xl text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-cyan-500"
             />
 
             <textarea
@@ -104,7 +104,7 @@ export const Screen11Brainstorming: React.FC = () => {
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Jelaskan cara kerja mekanisme magnet dan kumparan dalam idemu..."
-              className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-cyan-400"
+              className="clay-input w-full px-3 py-2 rounded-xl text-xs font-medium focus:outline-none focus:ring-2 focus:ring-cyan-500"
             />
 
             <div className="flex items-center justify-between pt-1">
@@ -115,7 +115,7 @@ export const Screen11Brainstorming: React.FC = () => {
                     type="button"
                     aria-label={`Warna kartu ${c}`}
                     onClick={() => setColor(c)}
-                    className={`w-5 h-5 rounded-full border-2 ${
+                    className={`w-6 h-6 rounded-full border-2 transition ${
                       c === 'cyan'
                         ? 'bg-cyan-500'
                         : c === 'amber'
@@ -123,13 +123,13 @@ export const Screen11Brainstorming: React.FC = () => {
                         : c === 'emerald'
                         ? 'bg-emerald-500'
                         : 'bg-indigo-500'
-                    } ${color === c ? 'border-white scale-110' : 'border-transparent opacity-60'}`}
+                    } ${color === c ? 'border-slate-900 dark:border-white scale-110 shadow-md' : 'border-transparent opacity-60'}`}
                   />
                 ))}
               </div>
               <button
                 type="submit"
-                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs transition"
+                className="clay-btn-primary inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-white font-bold text-xs shadow-md"
               >
                 <Plus className="w-4 h-4" />
                 <span>Tempelkan Ide</span>
@@ -137,16 +137,16 @@ export const Screen11Brainstorming: React.FC = () => {
             </div>
 
             {/* Member Idea Counter */}
-            <div className="pt-3 border-t border-slate-800 space-y-1.5">
-              <div className="text-[11px] font-mono text-slate-400">STATISTIK IDE ANGGOTA (MIN. 2 IDE):</div>
+            <div className="pt-3 border-t border-slate-200 dark:border-slate-800 space-y-1.5">
+              <div className="text-[11px] font-mono font-bold text-slate-600 dark:text-slate-400">STATISTIK IDE ANGGOTA (MIN. 2 IDE):</div>
               <div className="flex flex-wrap gap-1.5">
                 {Object.entries(memberCounts).map(([member, count]) => (
                   <span
                     key={member}
-                    className={`text-[11px] px-2 py-0.5 rounded-md font-mono border ${
+                    className={`text-[11px] px-2 py-0.5 rounded-md font-mono border font-semibold ${
                       count >= 2
-                        ? 'bg-emerald-500/15 border-emerald-500/40 text-emerald-300'
-                        : 'bg-slate-900 border-slate-700 text-amber-300'
+                        ? 'bg-emerald-50 dark:bg-emerald-500/15 border-emerald-300 dark:border-emerald-500/40 text-emerald-800 dark:text-emerald-300'
+                        : 'bg-amber-50 dark:bg-slate-900 border-amber-300 dark:border-slate-700 text-amber-800 dark:text-amber-300'
                     }`}
                   >
                     {member}: {count} ide
@@ -158,7 +158,7 @@ export const Screen11Brainstorming: React.FC = () => {
 
           {/* Sticky Notes Board */}
           <div className="lg:col-span-7 space-y-4">
-            <div className="flex items-center justify-between text-xs font-mono text-slate-400">
+            <div className="flex items-center justify-between text-xs font-mono font-bold text-slate-700 dark:text-slate-400">
               <span>KUMPULAN IDE KELOMPOK ({state.ideas.length} IDE)</span>
               <span>Klik jempol untuk memberi vote ide terbaik</span>
             </div>
@@ -167,24 +167,24 @@ export const Screen11Brainstorming: React.FC = () => {
               {state.ideas.map((item) => (
                 <div
                   key={item.id}
-                  className={`p-4 rounded-xl border ${NOTE_COLORS[item.color]} flex flex-col justify-between gap-3`}
+                  className={`p-4 rounded-2xl border ${NOTE_COLORS[item.color]} flex flex-col justify-between gap-3`}
                 >
                   <div className="space-y-1.5">
-                    <div className="flex items-center justify-between gap-2 text-[11px] font-mono text-slate-300">
-                      <span className="truncate font-semibold">{item.authorName}</span>
-                      <span className="px-1.5 py-0.5 rounded bg-slate-950/60 text-[10px]">
+                    <div className="flex items-center justify-between gap-2 text-[11px] font-mono font-bold">
+                      <span className="truncate">{item.authorName}</span>
+                      <span className="px-2 py-0.5 rounded-full bg-white/70 dark:bg-slate-950/60 text-[10px] border border-black/5">
                         {item.driveMechanism}
                       </span>
                     </div>
-                    <h3 className="text-sm font-display font-bold text-white">{item.title}</h3>
-                    <p className="text-xs text-slate-200 leading-relaxed">{item.description}</p>
+                    <h3 className="text-sm font-display font-black text-slate-900 dark:text-white">{item.title}</h3>
+                    <p className="text-xs text-slate-700 dark:text-slate-200 leading-relaxed font-medium">{item.description}</p>
                   </div>
 
-                  <div className="flex items-center justify-between pt-2 border-t border-white/10">
+                  <div className="flex items-center justify-between pt-2 border-t border-slate-300/40 dark:border-white/10">
                     <button
                       type="button"
                       onClick={() => voteIdea(item.id)}
-                      className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-950/70 hover:bg-slate-900 text-xs text-amber-300 transition"
+                      className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-white/80 dark:bg-slate-950/70 hover:bg-white text-xs font-bold text-amber-700 dark:text-amber-300 border border-slate-200 dark:border-transparent transition shadow-xs"
                     >
                       <ThumbsUp className="w-3.5 h-3.5" />
                       <span className="font-mono">{item.votes}</span>
@@ -194,7 +194,7 @@ export const Screen11Brainstorming: React.FC = () => {
                       type="button"
                       onClick={() => removeIdea(item.id)}
                       aria-label="Hapus ide"
-                      className="p-1.5 rounded-lg text-slate-400 hover:text-rose-300 hover:bg-rose-950/50 transition"
+                      className="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-100 dark:hover:bg-rose-950/50 transition"
                     >
                       <Trash2 className="w-3.5 h-3.5" />
                     </button>
@@ -206,13 +206,13 @@ export const Screen11Brainstorming: React.FC = () => {
         </div>
 
         {/* Synthesize Final Idea + Record to Teacher Drive */}
-        <div className="p-5 rounded-2xl bg-slate-950 border border-emerald-500/30 space-y-3">
+        <div className="p-5 rounded-2xl clay-card bg-emerald-50/40 dark:bg-slate-900 border-2 border-emerald-300 dark:border-emerald-500/30 space-y-3">
           <div className="flex items-center justify-between flex-wrap gap-2">
-            <label htmlFor="final-idea" className="text-sm font-display font-bold text-white">
+            <label htmlFor="final-idea" className="text-sm font-display font-bold text-slate-900 dark:text-white">
               Gabungkan Ide Menjadi Keputusan Desain Final Kelompok:
             </label>
             {state.driveSyncRecorded && (
-              <span className="inline-flex items-center gap-1 text-xs font-mono text-emerald-400">
+              <span className="inline-flex items-center gap-1 text-xs font-mono font-bold text-emerald-700 dark:text-emerald-400">
                 <CheckCircle2 className="w-3.5 h-3.5" />
                 Ide Final terekam untuk laporan guru
               </span>
@@ -224,13 +224,13 @@ export const Screen11Brainstorming: React.FC = () => {
             value={state.finalSelectedIdea}
             onChange={(e) => updateState('finalSelectedIdea', e.target.value)}
             placeholder="Tuliskan gabungan ide terbaik yang disepakati kelompok untuk dibuat sketsanya..."
-            className="w-full p-3 rounded-xl bg-slate-900 border border-slate-700 text-sm text-white placeholder:text-slate-500 focus:outline-none focus:border-emerald-400"
+            className="clay-input w-full p-3 rounded-xl text-sm font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500"
           />
           <div className="flex justify-end">
             <button
               type="button"
               onClick={() => updateState('driveSyncRecorded', true)}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs transition"
+              className="clay-btn-emerald inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-white font-bold text-xs shadow-md"
             >
               <Cloud className="w-4 h-4" />
               <span>Rekam Ide Final ke Drive Guru</span>

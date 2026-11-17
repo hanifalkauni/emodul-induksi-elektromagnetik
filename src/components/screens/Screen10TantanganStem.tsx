@@ -23,54 +23,54 @@ export const Screen10TantanganStem: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      <div className="rounded-2xl bg-slate-900/90 border border-slate-800 p-6 sm:p-8 space-y-6">
+      <div className="rounded-[32px] clay-card p-6 sm:p-8 space-y-6">
         {/* Hero Mission Banner */}
-        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-amber-500/20 via-orange-500/10 to-slate-950 border border-amber-500/40 p-6 space-y-3">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 text-xs font-mono font-bold">
-            <Rocket className="w-4 h-4" />
+        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-amber-500/15 via-orange-500/10 to-amber-100/30 dark:to-slate-900 border-2 border-amber-300 dark:border-amber-500/40 p-6 space-y-3">
+          <div className="clay-badge inline-flex items-center gap-2 px-3 py-1 bg-amber-500/20 text-amber-800 dark:text-amber-300 text-xs font-mono font-bold">
+            <Rocket className="w-4 h-4 text-amber-600 dark:text-amber-400" />
             <span>ENGINEERING DESIGN PROCESS (EDP) • TAHAP 1</span>
           </div>
-          <h1 className="text-2xl sm:text-4xl font-display font-bold text-white">
+          <h1 className="text-2xl sm:text-4xl font-display font-black text-slate-900 dark:text-white">
             MISI: “DESAIN GENERATOR MINI”
           </h1>
-          <p className="text-sm text-slate-200 max-w-3xl">
+          <p className="text-sm font-medium text-slate-700 dark:text-slate-200 max-w-3xl">
             Saatnya menerapkan pemahaman Hukum Faraday dan Hukum Lenz untuk merancang solusi rekayasa nyata!
           </p>
         </div>
 
         {/* Problem & Challenge Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-          <div className="p-5 rounded-2xl bg-slate-950 border border-slate-800 space-y-2.5">
-            <div className="flex items-center gap-2 text-xs font-mono text-rose-400 uppercase">
-              <AlertCircle className="w-4 h-4" />
+          <div className="p-5 rounded-2xl clay-card bg-rose-50/50 dark:bg-slate-900 border border-rose-200 dark:border-slate-800 space-y-2.5">
+            <div className="flex items-center gap-2 text-xs font-mono font-extrabold text-rose-700 dark:text-rose-400 uppercase">
+              <AlertCircle className="w-4 h-4 text-rose-600" />
               <span>Masalah Dunia Nyata</span>
             </div>
-            <h2 className="text-lg font-display font-bold text-white">Kebutuhan Sumber Energi Sekolah</h2>
-            <p className="text-sm text-slate-300 leading-relaxed">
+            <h2 className="text-lg font-display font-bold text-slate-900 dark:text-white">Kebutuhan Sumber Energi Sekolah</h2>
+            <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
               Sekolah membutuhkan sumber energi sederhana untuk menyalakan LED menggunakan prinsip induksi elektromagnetik tanpa bergantung pada baterai sekali pakai.
             </p>
           </div>
 
-          <div className="p-5 rounded-2xl bg-slate-950 border border-slate-800 space-y-2.5">
-            <div className="flex items-center gap-2 text-xs font-mono text-cyan-400 uppercase">
-              <Rocket className="w-4 h-4" />
+          <div className="p-5 rounded-2xl clay-card bg-sky-50/50 dark:bg-slate-900 border border-sky-200 dark:border-slate-800 space-y-2.5">
+            <div className="flex items-center gap-2 text-xs font-mono font-extrabold text-sky-700 dark:text-sky-400 uppercase">
+              <Rocket className="w-4 h-4 text-sky-600" />
               <span>Tantangan Kelompok</span>
             </div>
-            <h2 className="text-lg font-display font-bold text-white">Optimasi Efektivitas Generator</h2>
-            <p className="text-sm text-slate-300 leading-relaxed">
+            <h2 className="text-lg font-display font-bold text-slate-900 dark:text-white">Optimasi Efektivitas Generator</h2>
+            <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
               Rancang generator mini yang mampu menghasilkan listrik paling efektif dan stabil dengan bahan yang tersedia di sekitarmu.
             </p>
           </div>
         </div>
 
         {/* Design Constraints Checklist */}
-        <div className="p-5 rounded-2xl bg-slate-950 border border-slate-800 space-y-4">
+        <div className="p-5 rounded-2xl clay-card bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-4">
           <div className="flex items-center justify-between flex-wrap gap-2">
-            <div className="flex items-center gap-2 text-sm font-display font-bold text-white">
-              <ShieldCheck className="w-5 h-5 text-emerald-400" />
+            <div className="flex items-center gap-2 text-sm font-display font-bold text-slate-900 dark:text-white">
+              <ShieldCheck className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
               <span>Batasan Desain (Engineering Constraints)</span>
             </div>
-            <span className="text-xs font-mono text-emerald-400">
+            <span className="text-xs font-mono font-extrabold text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-500/10 px-2.5 py-1 rounded-full border border-emerald-200">
               {state.checkedConstraints.length} / {CONSTRAINTS.length} dipahami
             </span>
           </div>
@@ -83,16 +83,16 @@ export const Screen10TantanganStem: React.FC = () => {
                   key={c.id}
                   type="button"
                   onClick={() => toggleConstraint(c.id)}
-                  className={`p-3.5 rounded-xl border text-left flex items-start gap-3 transition ${
+                  className={`p-4 rounded-xl border text-left flex items-start gap-3 transition shadow-sm ${
                     checked
-                      ? 'bg-emerald-500/10 border-emerald-500/40 text-white'
-                      : 'bg-slate-900 border-slate-800 text-slate-300 hover:border-slate-600'
+                      ? 'bg-emerald-50 dark:bg-emerald-500/15 border-emerald-400 text-slate-900 dark:text-white font-bold ring-1 ring-emerald-300'
+                      : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-200 hover:border-slate-400'
                   }`}
                 >
                   {checked ? (
-                    <CheckSquare className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                    <CheckSquare className="w-5 h-5 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
                   ) : (
-                    <Square className="w-4 h-4 text-slate-500 shrink-0 mt-0.5" />
+                    <Square className="w-5 h-5 text-slate-400 shrink-0 mt-0.5" />
                   )}
                   <span className="text-xs sm:text-sm">{c.text}</span>
                 </button>
@@ -100,11 +100,11 @@ export const Screen10TantanganStem: React.FC = () => {
             })}
           </div>
 
-          <div className="flex justify-end pt-2">
+          <div className="flex justify-end pt-3">
             <button
               type="button"
               onClick={nextScreen}
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs sm:text-sm transition"
+              className="clay-btn-primary inline-flex items-center gap-2 px-6 py-3 rounded-2xl text-white font-bold text-xs sm:text-sm shadow-md"
             >
               <span>Lanjut ke Papan Brainstorming Ide</span>
               <ArrowRight className="w-4 h-4" />

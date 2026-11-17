@@ -20,36 +20,38 @@ export const Screen08HukumLenz: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      <div className="rounded-2xl bg-slate-900/90 border border-slate-800 p-6 sm:p-8 space-y-6">
+      <div className="rounded-[32px] clay-card p-6 sm:p-8 space-y-6">
         <div className="space-y-2">
-          <div className="inline-flex items-center gap-2 text-xs font-mono text-emerald-400 uppercase tracking-wider">
-            <Compass className="w-4 h-4" />
-            <span>Eksplorasi Konsep • Hukum Lenz</span>
+          <div className="clay-badge inline-flex items-center gap-2 px-3.5 py-1.5 bg-emerald-100 text-emerald-900 text-xs font-bold font-mono">
+            <Compass className="w-4 h-4 text-emerald-600" />
+            <span>EKSPLORASI KONSEP • HUKUM LENZ</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-display font-bold text-white">
+          <h1 className="text-2xl sm:text-4xl font-display font-extrabold text-slate-900 dark:text-white">
             Hukum Lenz
           </h1>
-          <p className="text-sm text-slate-300 leading-relaxed max-w-3xl">
-            Menurut Lenz, <strong className="text-emerald-300">arah arus induksi selalu sedemikian rupa sehingga medan magnet yang dihasilkan menentang perubahan fluks magnetik yang menyebabkannya.</strong>
+          <p className="text-sm font-medium text-slate-700 dark:text-slate-300 leading-relaxed max-w-3xl">
+            Menurut Lenz, <strong className="text-emerald-700 dark:text-emerald-400 font-bold">arah arus induksi selalu sedemikian rupa sehingga medan magnet yang dihasilkan menentang perubahan fluks magnetik yang menyebabkannya.</strong>
           </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* Interactive Controls & Reference Image */}
           <div className="lg:col-span-5 space-y-4">
-            <div className="rounded-2xl bg-slate-950 border border-slate-800 p-5 space-y-4">
-              <div className="text-xs font-mono text-cyan-400">ATUR SKENARIO KUTUB & GERAK MAGNET</div>
+            <div className="rounded-3xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-5 space-y-4 shadow-sm">
+              <div className="text-xs font-mono font-bold text-cyan-700 dark:text-cyan-400 uppercase tracking-wider">
+                ATUR SKENARIO KUTUB & GERAK MAGNET
+              </div>
 
               <div className="space-y-2">
-                <div className="text-xs font-medium text-slate-300">1. Pilih Kutub Magnet Menghadap Kumparan:</div>
+                <div className="text-xs font-bold text-slate-800 dark:text-slate-300">1. Pilih Kutub Magnet Menghadap Kumparan:</div>
                 <div className="grid grid-cols-2 gap-2">
                   <button
                     type="button"
                     onClick={() => updateState('lenzPole', 'N')}
-                    className={`py-2.5 px-3 rounded-xl border text-xs font-bold transition ${
+                    className={`py-2.5 px-3 rounded-xl border text-xs font-bold transition shadow-sm ${
                       state.lenzPole === 'N'
-                        ? 'bg-red-500/20 border-red-400 text-red-200'
-                        : 'bg-slate-900 border-slate-700 text-slate-300 hover:border-slate-500'
+                        ? 'bg-rose-100 dark:bg-red-500/20 border-rose-400 text-rose-900 dark:text-red-200 font-extrabold ring-1 ring-rose-300'
+                        : 'bg-white dark:bg-slate-900 border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:border-slate-400'
                     }`}
                   >
                     Kutub Utara (U / N)
@@ -57,10 +59,10 @@ export const Screen08HukumLenz: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => updateState('lenzPole', 'S')}
-                    className={`py-2.5 px-3 rounded-xl border text-xs font-bold transition ${
+                    className={`py-2.5 px-3 rounded-xl border text-xs font-bold transition shadow-sm ${
                       state.lenzPole === 'S'
-                        ? 'bg-blue-500/20 border-blue-400 text-blue-200'
-                        : 'bg-slate-900 border-slate-700 text-slate-300 hover:border-slate-500'
+                        ? 'bg-blue-100 dark:bg-blue-500/20 border-blue-400 text-blue-900 dark:text-blue-200 font-extrabold ring-1 ring-blue-300'
+                        : 'bg-white dark:bg-slate-900 border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:border-slate-400'
                     }`}
                   >
                     Kutub Selatan (S)
@@ -69,15 +71,15 @@ export const Screen08HukumLenz: React.FC = () => {
               </div>
 
               <div className="space-y-2">
-                <div className="text-xs font-medium text-slate-300">2. Pilih Arah Gerak Magnet:</div>
+                <div className="text-xs font-bold text-slate-800 dark:text-slate-300">2. Pilih Arah Gerak Magnet:</div>
                 <div className="grid grid-cols-2 gap-2">
                   <button
                     type="button"
                     onClick={() => updateState('lenzMotion', 'approach')}
-                    className={`py-2.5 px-3 rounded-xl border text-xs font-bold flex items-center justify-center gap-1.5 transition ${
+                    className={`py-2.5 px-3 rounded-xl border text-xs font-bold flex items-center justify-center gap-1.5 transition shadow-sm ${
                       state.lenzMotion === 'approach'
-                        ? 'bg-emerald-500/20 border-emerald-400 text-emerald-200'
-                        : 'bg-slate-900 border-slate-700 text-slate-300 hover:border-slate-500'
+                        ? 'bg-emerald-100 dark:bg-emerald-500/20 border-emerald-400 text-emerald-900 dark:text-emerald-200 font-extrabold ring-1 ring-emerald-300'
+                        : 'bg-white dark:bg-slate-900 border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:border-slate-400'
                     }`}
                   >
                     <span>Didekatkan</span>
@@ -86,10 +88,10 @@ export const Screen08HukumLenz: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => updateState('lenzMotion', 'recede')}
-                    className={`py-2.5 px-3 rounded-xl border text-xs font-bold flex items-center justify-center gap-1.5 transition ${
+                    className={`py-2.5 px-3 rounded-xl border text-xs font-bold flex items-center justify-center gap-1.5 transition shadow-sm ${
                       state.lenzMotion === 'recede'
-                        ? 'bg-amber-500/20 border-amber-400 text-amber-200'
-                        : 'bg-slate-900 border-slate-700 text-slate-300 hover:border-slate-500'
+                        ? 'bg-amber-100 dark:bg-amber-500/20 border-amber-400 text-amber-900 dark:text-amber-200 font-extrabold ring-1 ring-amber-300'
+                        : 'bg-white dark:bg-slate-900 border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:border-slate-400'
                     }`}
                   >
                     <ArrowLeft className="w-3.5 h-3.5" />

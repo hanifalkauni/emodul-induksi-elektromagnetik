@@ -46,25 +46,25 @@ export const Screen09EksperimenKit: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      <div className="rounded-2xl bg-slate-900/90 border border-slate-800 p-6 sm:p-8 space-y-6">
+      <div className="rounded-[32px] clay-card p-6 sm:p-8 space-y-6">
         {/* Header */}
         <div className="space-y-2">
-          <div className="inline-flex items-center gap-2 text-xs font-mono text-emerald-400 uppercase tracking-wider">
-            <FlaskConical className="w-4 h-4" />
-            <span>Eksperimen Learning Kit</span>
+          <div className="clay-badge inline-flex items-center gap-2 px-3.5 py-1.5 bg-emerald-100 text-emerald-900 text-xs font-bold font-mono">
+            <FlaskConical className="w-4 h-4 text-emerald-600" />
+            <span>EKSPERIMEN LEARNING KIT (STEM PRAKTIKUM)</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-display font-bold text-white">
+          <h1 className="text-2xl sm:text-4xl font-display font-extrabold text-slate-900 dark:text-white">
             “Sekarang Buktikan!”
           </h1>
-          <p className="text-sm text-slate-300">
-            Gunakan perangkat praktikum fisik (*Learning Kit*) untuk membuktikan konsep Hukum Faraday dan menguji strategi kelompokmu.
+          <p className="text-sm font-medium text-slate-700 dark:text-slate-300 max-w-3xl leading-relaxed">
+            Gunakan perangkat praktikum fisik (*Learning Kit*) untuk membuktikan konsep Hukum Faraday dan menguji strategi kelompokmu secara empiris.
           </p>
         </div>
 
         {/* Tools & Challenge */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-          <div className="lg:col-span-5 rounded-2xl bg-slate-950 border border-slate-800 p-5 space-y-3">
-            <div className="text-xs font-mono text-cyan-400">KELENGKAPAN ALAT PRAKTIKUM</div>
+          <div className="lg:col-span-5 rounded-3xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-5 space-y-3 shadow-sm">
+            <div className="text-xs font-mono font-bold text-cyan-700 dark:text-cyan-400 uppercase tracking-wider">KELENGKAPAN ALAT PRAKTIKUM</div>
             <div className="grid grid-cols-2 gap-2.5">
               {LAB_TOOLS.map((tool) => {
                 const checked = state.checkedTools.includes(tool);
@@ -73,16 +73,16 @@ export const Screen09EksperimenKit: React.FC = () => {
                     key={tool}
                     type="button"
                     onClick={() => toggleTool(tool)}
-                    className={`p-3 rounded-xl border text-left text-xs font-medium flex items-center gap-2 transition ${
+                    className={`p-3 rounded-2xl border text-left text-xs font-semibold flex items-center gap-2 transition shadow-sm ${
                       checked
-                        ? 'bg-emerald-500/15 border-emerald-500/40 text-emerald-200'
-                        : 'bg-slate-900 border-slate-800 text-slate-300 hover:border-slate-600'
+                        ? 'bg-emerald-50 dark:bg-emerald-500/15 border-emerald-400 text-slate-900 dark:text-white ring-1 ring-emerald-300'
+                        : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:border-slate-400'
                     }`}
                   >
                     {checked ? (
-                      <CheckSquare className="w-4 h-4 text-emerald-400 shrink-0" />
+                      <CheckSquare className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
                     ) : (
-                      <Square className="w-4 h-4 text-slate-500 shrink-0" />
+                      <Square className="w-4 h-4 text-slate-400 shrink-0" />
                     )}
                     <span>{tool}</span>
                   </button>
@@ -91,12 +91,12 @@ export const Screen09EksperimenKit: React.FC = () => {
             </div>
           </div>
 
-          <div className="lg:col-span-7 rounded-2xl bg-gradient-to-br from-slate-950 to-slate-900 border border-amber-500/30 p-5 space-y-3">
-            <div className="text-xs font-mono text-amber-400 uppercase">Tantangan Eksperimen</div>
-            <h2 className="text-lg font-display font-bold text-white">
+          <div className="lg:col-span-7 rounded-3xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-5 space-y-3 shadow-sm">
+            <div className="text-xs font-mono font-bold text-amber-800 dark:text-amber-400 uppercase tracking-wider">TANTANGAN EKSPERIMEN</div>
+            <h2 className="text-lg font-display font-bold text-slate-900 dark:text-white">
               “Bagaimana menghasilkan GGL induksi sebesar mungkin?”
             </h2>
-            <p className="text-xs text-slate-300">
+            <p className="text-xs font-medium text-slate-600 dark:text-slate-300">
               Kelompok diberi kebebasan menentukan strategi percobaan (kombinasi jumlah lilitan, kecepatan gerakan magnet, posisi magnet, atau rangkaian kumparan).
             </p>
             <textarea
@@ -104,58 +104,58 @@ export const Screen09EksperimenKit: React.FC = () => {
               value={state.experimentStrategy}
               onChange={(e) => updateState('experimentStrategy', e.target.value)}
               placeholder="Tuliskan strategi kelompokmu untuk menghasilkan GGL induksi maksimum..."
-              className="w-full p-3 rounded-xl bg-slate-950 border border-slate-700 text-xs sm:text-sm text-white placeholder:text-slate-500 focus:outline-none focus:border-amber-400"
+              className="clay-input w-full p-3.5 text-xs sm:text-sm text-slate-900 dark:text-white placeholder:text-slate-400"
             />
           </div>
         </div>
 
         {/* Role Assignment Table */}
-        <div className="rounded-2xl bg-slate-950 border border-slate-800 p-5 space-y-4">
+        <div className="rounded-3xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-5 space-y-4 shadow-sm">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
-              <div className="flex items-center gap-2 text-sm font-display font-bold text-white">
-                <Users className="w-4 h-4 text-cyan-400" />
+              <div className="flex items-center gap-2 text-base font-display font-bold text-slate-900 dark:text-white">
+                <Users className="w-5 h-5 text-cyan-600" />
                 <span>Pembagian Peran Kolaborasi Terukur</span>
               </div>
-              <p className="text-xs text-slate-400 mt-0.5">
+              <p className="text-xs font-medium text-slate-600 dark:text-slate-400 mt-0.5">
                 Tetapkan nama anggota kelompok pada masing-masing peran. Peran dapat diputar pada aktivitas berikutnya.
               </p>
             </div>
             <button
               type="button"
               onClick={rotateRoles}
-              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-600 text-xs font-semibold text-cyan-300 transition"
+              className="clay-btn clay-btn-primary px-4 py-2 text-xs font-bold"
             >
-              <RefreshCw className="w-3.5 h-3.5" />
+              <RefreshCw className="w-3.5 h-3.5 mr-1.5" />
               <span>Putar Peran</span>
             </button>
           </div>
 
-          <div className="overflow-x-auto">
+          <div className="overflow-x-auto rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="border-b border-slate-800 text-xs font-mono text-slate-400">
-                  <th className="py-2.5 px-3">Peran</th>
-                  <th className="py-2.5 px-3">Tugas</th>
-                  <th className="py-2.5 px-3">Nama Anggota Kelompok</th>
+                <tr className="border-b border-slate-200 dark:border-slate-800 text-xs font-mono font-bold text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-800/80">
+                  <th className="py-3 px-4">Peran</th>
+                  <th className="py-3 px-4">Tugas</th>
+                  <th className="py-3 px-4">Nama Anggota Kelompok</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-800/80 text-sm">
+              <tbody className="divide-y divide-slate-200 dark:divide-slate-800 text-sm">
                 {state.roles.map((item, idx) => (
                   <tr key={item.role}>
-                    <td className="py-2.5 px-3 font-display font-bold text-cyan-300 whitespace-nowrap">
+                    <td className="py-3 px-4 font-display font-extrabold text-cyan-800 dark:text-cyan-300 whitespace-nowrap">
                       {item.role}
                     </td>
-                    <td className="py-2.5 px-3 text-slate-300 text-xs sm:text-sm">
+                    <td className="py-3 px-4 text-slate-700 dark:text-slate-300 text-xs sm:text-sm font-medium">
                       {item.taskDescription}
                     </td>
-                    <td className="py-2.5 px-3">
+                    <td className="py-3 px-4">
                       <input
                         type="text"
                         value={item.memberName}
                         onChange={(e) => updateRoleMember(idx, e.target.value)}
                         placeholder={`Nama ${item.role}...`}
-                        className="w-full min-w-[160px] px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-700 text-xs sm:text-sm text-white placeholder:text-slate-500 focus:outline-none focus:border-cyan-400"
+                        className="clay-input w-full min-w-[160px] px-3 py-1.5 text-xs text-slate-900 dark:text-white"
                       />
                     </td>
                   </tr>
@@ -166,18 +166,18 @@ export const Screen09EksperimenKit: React.FC = () => {
         </div>
 
         {/* LKPD Download & Lab Report Upload */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="p-5 rounded-2xl bg-slate-950 border border-slate-800 flex flex-col justify-between gap-4">
-            <div className="space-y-1">
-              <div className="text-sm font-display font-bold text-white">Link Unduh LKPD</div>
-              <p className="text-xs text-slate-400">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <div className="p-6 rounded-3xl clay-card flex flex-col justify-between gap-4">
+            <div className="space-y-1.5">
+              <div className="text-base font-display font-bold text-slate-900 dark:text-white">Link Unduh LKPD</div>
+              <p className="text-xs font-medium text-slate-600 dark:text-slate-400">
                 Unduh/cetak Lembar Kerja Peserta Didik (LKPD) otomatis yang telah terisi identitas dan peran kelompokmu.
               </p>
             </div>
             <button
               type="button"
               onClick={() => openPrintableLkpd(state)}
-              className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-semibold text-xs sm:text-sm transition"
+              className="clay-btn clay-btn-primary px-5 py-3 text-xs sm:text-sm font-bold shadow-md"
             >
               <Download className="w-4 h-4" />
               <span>Unduh / Cetak LKPD (PDF)</span>

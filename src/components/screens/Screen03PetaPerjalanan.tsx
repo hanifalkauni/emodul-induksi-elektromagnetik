@@ -19,82 +19,82 @@ const JOURNEY_STEPS = [
   {
     step: 1,
     label: 'FENOMENA',
-    description: 'Amati fenomena yang disajikan dalam e-modul.',
+    description: 'Amati fenomena lampu menyala tanpa baterai yang disajikan dalam e-modul.',
     targetScreen: 5,
     icon: Eye,
-    accent: 'from-cyan-500/20 to-sky-500/20 border-cyan-500/40 text-cyan-300',
+    accent: 'bg-cyan-50 dark:bg-cyan-500/20 border-cyan-300 dark:border-cyan-500/40 text-cyan-900 dark:text-cyan-300',
   },
   {
     step: 2,
     label: 'PERTANYAAN',
-    description: 'Kenali masalah yang perlu kamu selesaikan.',
+    description: 'Kenali rumusan masalah yang perlu kamu selesaikan bersama kelompok.',
     targetScreen: 5,
     icon: HelpCircle,
-    accent: 'from-sky-500/20 to-blue-500/20 border-sky-500/40 text-sky-300',
+    accent: 'bg-sky-50 dark:bg-sky-500/20 border-sky-300 dark:border-sky-500/40 text-sky-900 dark:text-sky-300',
   },
   {
     step: 3,
     label: 'EKSPLORASI',
-    description: 'Pelajari konsep induksi elektromagnetik.',
+    description: 'Pelajari konsep fluks magnetik dan hukum Faraday secara kuantitatif.',
     targetScreen: 6,
     icon: Compass,
-    accent: 'from-blue-500/20 to-indigo-500/20 border-blue-500/40 text-blue-300',
+    accent: 'bg-blue-50 dark:bg-blue-500/20 border-blue-300 dark:border-blue-500/40 text-blue-900 dark:text-blue-300',
   },
   {
     step: 4,
     label: 'KONSEP',
-    description: 'Coba simulasi untuk memahami konsep yang dipelajari.',
-    targetScreen: 7,
+    description: 'Coba simulasi Hukum Lenz untuk memahami arah arus induksi kawat depan.',
+    targetScreen: 8,
     icon: Cpu,
-    accent: 'from-indigo-500/20 to-violet-500/20 border-indigo-500/40 text-indigo-300',
+    accent: 'bg-indigo-50 dark:bg-indigo-500/20 border-indigo-300 dark:border-indigo-500/40 text-indigo-900 dark:text-indigo-300',
   },
   {
     step: 5,
     label: 'EKSPERIMEN',
-    description: 'Lakukan eksperimen untuk membuktikan konsep.',
+    description: 'Lakukan eksperimen virtual kit untuk menguji pengaruh lilitan & kecepatan.',
     targetScreen: 9,
     icon: FlaskConical,
-    accent: 'from-emerald-500/20 to-teal-500/20 border-emerald-500/40 text-emerald-300',
+    accent: 'bg-emerald-50 dark:bg-emerald-500/20 border-emerald-300 dark:border-emerald-500/40 text-emerald-900 dark:text-emerald-300',
   },
   {
     step: 6,
     label: 'ENGINEERING DESIGN',
-    description: 'Rancang solusi untuk menyelesaikan masalah.',
+    description: 'Pahami tantangan EDP merancang prototipe generator mini darurat.',
     targetScreen: 10,
     icon: PencilRuler,
-    accent: 'from-amber-500/20 to-orange-500/20 border-amber-500/40 text-amber-300',
+    accent: 'bg-amber-50 dark:bg-amber-500/20 border-amber-300 dark:border-amber-500/40 text-amber-900 dark:text-amber-300',
   },
   {
     step: 7,
     label: 'PROJECT (PRODUK)',
-    description: 'Buat produk sesuai rancanganmu.',
+    description: 'Rancang prototipe generator magnet-kumparan sesuai sketsa desain.',
     targetScreen: 13,
     icon: Wrench,
-    accent: 'from-orange-500/20 to-rose-500/20 border-orange-500/40 text-orange-300',
+    accent: 'bg-orange-50 dark:bg-orange-500/20 border-orange-300 dark:border-orange-500/40 text-orange-900 dark:text-orange-300',
   },
   {
     step: 8,
     label: 'KOLABORASI PROYEK',
-    description: 'Bekerja sama dengan teman dalam menyelesaikan proyek.',
+    description: 'Bekerja sama, curah gagasan (brainstorming), dan tetapkan peran tim.',
     targetScreen: 11,
     icon: Users,
-    accent: 'from-pink-500/20 to-rose-500/20 border-pink-500/40 text-pink-300',
+    accent: 'bg-purple-50 dark:bg-purple-500/20 border-purple-300 dark:border-purple-500/40 text-purple-900 dark:text-purple-300',
   },
   {
     step: 9,
     label: 'PRESENTASI',
-    description: 'Presentasikan hasil proyekmu kepada teman dan guru.',
+    description: 'Presentasikan hasil pengujian prototipe kepada rekan dan guru.',
     targetScreen: 16,
     icon: Presentation,
-    accent: 'from-teal-500/20 to-emerald-500/20 border-teal-500/40 text-teal-300',
+    accent: 'bg-teal-50 dark:bg-teal-500/20 border-teal-300 dark:border-teal-500/40 text-teal-900 dark:text-teal-300',
   },
   {
     step: 10,
     label: 'REFLEKSI',
-    description: 'Lakukan refleksi dengan melihat kembali pengalaman dan hasil belajarmu.',
+    description: 'Evaluasi diri (kreativitas & kolaborasi) serta ekspor portofolio LKPD format PDF.',
     targetScreen: 17,
     icon: RefreshCw,
-    accent: 'from-cyan-500/20 to-emerald-500/20 border-cyan-500/40 text-cyan-300',
+    accent: 'bg-rose-50 dark:bg-rose-500/20 border-rose-300 dark:border-rose-500/40 text-rose-900 dark:text-rose-300',
   },
 ];
 
@@ -103,21 +103,21 @@ export const Screen03PetaPerjalanan: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      <div className="rounded-2xl bg-slate-900/90 border border-slate-800 p-6 sm:p-8 space-y-6">
+      <div className="rounded-[32px] clay-card p-6 sm:p-8 space-y-6">
         <div className="space-y-2">
-          <div className="text-xs font-mono uppercase tracking-wider text-cyan-400">
-            Learning Journey Roadmap
+          <div className="clay-badge inline-flex items-center gap-1.5 px-3 py-1 bg-cyan-100 text-cyan-800 text-xs font-bold font-mono">
+            <span>LEARNING JOURNEY ROADMAP (10 TAHAP STEM)</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-display font-bold text-white">
+          <h1 className="text-2xl sm:text-4xl font-display font-extrabold text-slate-900 dark:text-white">
             Peta Perjalanan Belajar
           </h1>
-          <p className="text-sm text-slate-300 max-w-3xl">
-            Ikuti alur perjalanan belajar di bawah ini dari pengamatan fenomena hingga refleksi akhir. Setiap tahap dapat diklik dan langsung terhubung ke screen modul yang sesuai.
+          <p className="text-sm font-medium text-slate-600 dark:text-slate-300 max-w-3xl leading-relaxed">
+            Ikuti alur perjalanan belajar di bawah ini dari pengamatan fenomena awal hingga refleksi akhir. Klik salah satu kartu tahap untuk langsung meluncur ke layar pembelajaran terkait.
           </p>
         </div>
 
         {/* Visual S-Curve Journey Ribbon Overview */}
-        <div className="p-4 rounded-2xl bg-slate-950/80 border border-slate-800 overflow-x-auto">
+        <div className="p-5 rounded-3xl bg-slate-50 dark:bg-slate-950/80 border border-slate-200 dark:border-slate-800 shadow-inner overflow-x-auto">
           <div className="min-w-[680px] space-y-4">
             {/* Row 1: Left -> Right */}
             <div className="grid grid-cols-5 gap-3">
@@ -128,15 +128,15 @@ export const Screen03PetaPerjalanan: React.FC = () => {
                     key={item.step}
                     type="button"
                     onClick={() => setScreen(item.targetScreen)}
-                    className={`relative p-3 rounded-xl border bg-gradient-to-br ${item.accent} text-left hover:scale-[1.02] transition-transform`}
+                    className={`relative p-3.5 rounded-2xl border ${item.accent} text-left hover:scale-[1.03] transition-transform shadow-sm`}
                   >
-                    <div className="flex items-center justify-between text-[11px] font-mono mb-1">
+                    <div className="flex items-center justify-between text-[11px] font-mono font-bold mb-1">
                       <span>TAHAP 0{item.step}</span>
-                      {visited && <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />}
+                      {visited && <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />}
                     </div>
-                    <div className="font-display font-bold text-xs text-white">{item.label}</div>
+                    <div className="font-display font-extrabold text-xs text-slate-900 dark:text-white">{item.label}</div>
                     {idx < 4 && (
-                      <ArrowRight className="hidden md:block w-4 h-4 text-slate-500 absolute -right-3.5 top-1/2 -translate-y-1/2 z-10" />
+                      <ArrowRight className="hidden md:block w-4 h-4 text-slate-400 absolute -right-3.5 top-1/2 -translate-y-1/2 z-10" />
                     )}
                   </button>
                 );
@@ -152,13 +152,13 @@ export const Screen03PetaPerjalanan: React.FC = () => {
                     key={item.step}
                     type="button"
                     onClick={() => setScreen(item.targetScreen)}
-                    className={`relative p-3 rounded-xl border bg-gradient-to-br ${item.accent} text-left hover:scale-[1.02] transition-transform`}
+                    className={`relative p-3.5 rounded-2xl border ${item.accent} text-left hover:scale-[1.03] transition-transform shadow-sm`}
                   >
-                    <div className="flex items-center justify-between text-[11px] font-mono mb-1">
+                    <div className="flex items-center justify-between text-[11px] font-mono font-bold mb-1">
                       <span>TAHAP {item.step < 10 ? `0${item.step}` : item.step}</span>
-                      {visited && <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />}
+                      {visited && <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />}
                     </div>
-                    <div className="font-display font-bold text-xs text-white">{item.label}</div>
+                    <div className="font-display font-extrabold text-xs text-slate-900 dark:text-white">{item.label}</div>
                   </button>
                 );
               })}
@@ -176,30 +176,29 @@ export const Screen03PetaPerjalanan: React.FC = () => {
                 key={item.step}
                 type="button"
                 onClick={() => setScreen(item.targetScreen)}
-                className="group p-4 rounded-xl bg-slate-950/70 border border-slate-800 hover:border-cyan-500/50 hover:bg-slate-900 text-left flex items-start gap-4 transition"
+                className="group p-5 rounded-3xl clay-card text-left flex items-start gap-4 hover:-translate-y-1 transition"
               >
-                <div className={`w-11 h-11 rounded-xl border bg-gradient-to-br ${item.accent} flex items-center justify-center shrink-0`}>
-                  <Icon className="w-5 h-5" />
+                <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-cyan-500/20 to-blue-500/20 border border-cyan-400/40 flex items-center justify-center shrink-0 shadow-sm">
+                  <Icon className="w-6 h-6 text-cyan-600 dark:text-cyan-400" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between gap-2">
-                    <span className="text-[11px] font-mono text-slate-400">
-                      TAHAP {item.step} • SCREEN {item.targetScreen}
+                    <span className="text-xs font-mono font-bold text-cyan-700 dark:text-cyan-400">
+                      TAHAP {item.step < 10 ? `0${item.step}` : item.step}
                     </span>
-                    <span
-                      className={`text-[10px] font-mono px-2 py-0.5 rounded-full ${
-                        isVisited
-                          ? 'bg-emerald-500/15 text-emerald-300 border border-emerald-500/30'
-                          : 'bg-slate-800 text-slate-400'
-                      }`}
-                    >
-                      {isVisited ? 'Dikunjungi' : 'Belum'}
-                    </span>
+                    {isVisited && (
+                      <span className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-600 dark:text-emerald-400">
+                        <CheckCircle2 className="w-3.5 h-3.5" />
+                        <span>Selesai</span>
+                      </span>
+                    )}
                   </div>
-                  <h3 className="text-sm font-display font-bold text-white group-hover:text-cyan-300 mt-0.5">
+                  <h3 className="font-display font-bold text-base text-slate-900 dark:text-white group-hover:text-cyan-600 transition">
                     {item.label}
                   </h3>
-                  <p className="text-xs text-slate-300 mt-1 leading-relaxed">{item.description}</p>
+                  <p className="mt-1 text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-medium">
+                    {item.description}
+                  </p>
                 </div>
               </button>
             );

@@ -1,50 +1,59 @@
 # DESIGN SYSTEM MASTER BLUEPRINT
-## E-Modul Interaktif Fisika: Induksi Elektromagnetik
-
-Mengikuti standar **UI/UX Pro Max (`nextlevelbuilder/ui-ux-pro-max-skill`)** dengan prinsip *Design System-First*, *Vector-Only Assets*, *WCAG AA Compliance*, dan estetika *High-Craft Scientific Laboratory & Interactive STEM Studio*.
-
----
-
-### 1. Identitas Visual & Gaya Antarmuka
-* **Aesthetic Persona**: High-Craft Scientific Laboratory & Interactive STEM Studio
-* **Layout Structure**: Bento Grid Laboratorium, Kanvas Simulasi Real-Time, Navigasi Sidebar/Drawer yang Rapi, dan Header Telemetri Siswa
-* **Glass & Surface Depth**: Permukaan gelap berteknologi tinggi (*Deep Slate*) dengan border halus untuk menjaga keterbacaan formula fisika, lampu LED virtual, dan garis medan magnet bercahaya tanpa silau.
+## Playful Educational Platform (Claymorphism & Vibrant STEM Studio)
+### Based on UI/UX Pro Max (`nextlevelbuilder/ui-ux-pro-max-skill`) & `uupm.cc/demo/educational-platform`
 
 ---
 
-### 2. Token Warna (Color Tokens)
-
-| Token | Hex | Kegunaan | Rasio Kontras (vs `#0B1120`) |
-| :--- | :--- | :--- | :--- |
-| `--bg-primary` | `#0B1120` | Latar belakang utama ruang laboratorium digital | Base |
-| `--bg-surface` | `#111827` | Permukaan panel utama & kartu komponen | - |
-| `--bg-elevated` | `#1E293B` | Kartu interaktif, kontrol simulator, input field | - |
-| `--border-subtle` | `#334155` | Garis tepi panel dan pembatas tabel | - |
-| `--text-primary` | `#F8FAFC` | Teks judul dan isi utama (WCAG AAA) | ~17.5:1 |
-| `--text-secondary` | `#CBD5E1` | Teks penjelasan materi dan subjudul | ~11.8:1 |
-| `--text-muted` | `#94A3B8` | Label satuan, timestamp, placeholder | ~6.8:1 |
-| `--accent-flux` | `#06B6D4` | Fluks Magnetik ($\Phi$), garis gaya medan, highlight ilmiah | ~7.6:1 |
-| `--accent-emf` | `#F59E0B` | GGL Induksi ($\varepsilon$), lilitan tembaga, pendar LED | ~8.8:1 |
-| `--pole-north` | `#EF4444` | Kutub Utara Magnet (U / N) | ~4.9:1 |
-| `--pole-south` | `#3B82F6` | Kutub Selatan Magnet (S) | ~5.4:1 |
-| `--accent-current` | `#10B981` | Arus Induksi ($I$), status selesai, indikator keberhasilan | ~7.9:1 |
+### 1. Aesthetic Persona & Design Philosophy
+* **Design Style**: Claymorphism (Soft 3D, tactile pillowy containers, generous border radii, dual-layer outer drop shadow + inner highlight & depth).
+* **Vibe**: Playful, vibrant, welcoming, educational, and high-craft gamified STEM learning.
+* **Canvas Backdrop**: Soft pastel tinted canvas (`#F5F3FF` to `#F8FAFC` with subtle mesh blobs of cyan, violet, and amber).
+* **Typography Ink**: Deep Indigo-Black (`#1E1B4B` / `#0F172A`) ensuring **WCAG AAA Compliance (> 7:1 contrast ratio)** across all cards, tables, and inputs.
 
 ---
 
-### 3. Tipografi (Typography Pairing)
+### 2. Color Palette & Tokens (Vibrant & Engaging)
 
-| Peran | Keluarga Huruf | Kegunaan |
+| Token | Light Hex | Role & Contrast Ratio (vs `#FFFFFF`) |
 | :--- | :--- | :--- |
-| **Display & Headings** | `Space Grotesk` | Judul screen, angka tahapan perjalanan belajar, header hero |
-| **UI & Reading Body** | `Plus Jakarta Sans` | Paragraf materi, instruksi praktikum, pertanyaan pemantik, form |
-| **Telemetry & Formulas** | `JetBrains Mono` | Pembacaan multimeter digital, nilai $\Phi$ ($\text{Wb}$), $\varepsilon$ ($\text{V}$), persamaan matematis |
+| `--bg-canvas` | `#F5F3FF` | Soft Lavender/White playful canvas |
+| `--card-base` | `#FFFFFF` | Claymorphic inflated card base with triple-shadow |
+| `--text-heading` | `#1E1B4B` | Deep Indigo-Slate for all headers & titles (Contrast > 15:1) |
+| `--text-body` | `#1E293B` | Dark Slate body copy (Contrast > 12:1) |
+| `--text-caption`| `#334155` | Slate-700 for labels, badges & metadata (Contrast > 7:1) |
+| `--accent-cyan` | `#0284C7` | Ocean Blue for Magnetic Flux ($\Phi$) & interactive actions |
+| `--accent-amber`| `#D97706` | Warm Amber for EMF ($\varepsilon$), coil windings, awards |
+| `--accent-emerald`| `#059669`| Mint Emerald for Current Direction ($I$) & completed steps |
+| `--accent-purple` | `#7C3AED` | Playful Purple for EDP Challenges & milestone badges |
+| `--accent-rose` | `#E11D48` | Coral Rose for North Pole ($U$) & alerts |
+| `--sim-viewport`| `#0A0F1D` | Dedicated oscilloscope viewport for live physics simulations |
 
 ---
 
-### 4. Pedoman Komponen & Aksesibilitas (Guardrails)
-1. **Vector-Only Icons**: Seluruh ikon navigasi (Home, Materi, Eksperimen, Tantangan, Kolaborasi, Evaluasi, Refleksi) menggunakan SVG vektor konsisten dari `lucide-react`. Tidak ada ikon raster atau navigasi berbasis emoji mentah.
-2. **Tactile Physics Sliders**: Semua kontrol variabel ($B$, $A$, $\theta$, $N$, $\Delta\Phi/\Delta t$) memiliki label eksplisit, angka real-time dengan font monospace, dan satuan fisik yang jelas (`T`, `m²`, `°`, `Wb`, `Lilitan`, `V`).
-3. **Interaction States**: Setiap tombol, card tahapan, dan checkbox memiliki state `hover`, `focus-visible` (ring `#06B6D4`), `active`, dan `disabled` yang jelas.
-4. **Responsive Integrity**: Bebas horizontal scroll di breakpoint mobile (`360px`), tablet (`768px`), hingga desktop (`1440px+`).
-5. **Auto-Save Persistence**: Seluruh input hipotesis, tabel pengujian, catatan ide, dan rubrik refleksi tersimpan otomatis ke `localStorage` secara instan dengan indikator status penyimpanan di header.
+### 3. Claymorphic Shadow & Geometry Recipe
+```css
+/* Tactile Clay Card */
+border-radius: 28px;
+background: #FFFFFF;
+border: 2px solid rgba(255, 255, 255, 0.95);
+box-shadow: 
+  0 14px 28px -6px rgba(30, 27, 75, 0.08),
+  0 6px 12px -3px rgba(30, 27, 75, 0.04),
+  inset 0 3px 6px 0 rgba(255, 255, 255, 0.95),
+  inset 0 -3px 6px 0 rgba(30, 27, 75, 0.06);
 
+/* Squishy Tactile Button */
+border-radius: 20px;
+border: 2px solid rgba(255, 255, 255, 0.5);
+box-shadow: 
+  0 8px 18px -3px rgba(14, 165, 233, 0.4),
+  inset 0 2px 4px rgba(255, 255, 255, 0.65),
+  inset 0 -3px 4px rgba(0, 0, 0, 0.18);
+```
+
+---
+
+### 4. Interactive Simulation Viewport Rule
+Setiap kanvas simulasi fisika (kumparan, fluks magnetik, Hukum Faraday, Hukum Lenz) ditempatkan di dalam monitor mini laboratorium berlatar gelap pekat (`#0A0F1D`) agar pendaran LED, garis fluks magnetik cyan, dan panah arus hijau kawat depan berpendar kontras tinggi tanpa pernah pudar di latar putih.
+Semua teks di dalam layar simulasi wajib menggunakan `#FFFFFF` atau `#F8FAFC`.
+Semua teks di luar layar simulasi (di kartu putih) wajib menggunakan `#1E1B4B` atau `#1E293B`.

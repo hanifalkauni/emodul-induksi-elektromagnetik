@@ -30,33 +30,33 @@ export const Screen04Tujuan: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      <div className="rounded-2xl bg-slate-900/90 border border-slate-800 p-6 sm:p-8 space-y-6">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-5">
+      <div className="rounded-[32px] clay-card p-6 sm:p-8 space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-800 pb-5">
           <div className="space-y-1.5">
-            <div className="inline-flex items-center gap-2 text-xs font-mono text-cyan-400 uppercase tracking-wider">
-              <Target className="w-4 h-4" />
-              <span>Capaian Kompetensi Pembelajaran</span>
+            <div className="clay-badge inline-flex items-center gap-2 px-3 py-1 bg-cyan-100 text-cyan-800 text-xs font-bold font-mono">
+              <Target className="w-4 h-4 text-cyan-600" />
+              <span>CAPAIAN KOMPETENSI BELAJAR</span>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-display font-bold text-white">
+            <h1 className="text-2xl sm:text-4xl font-display font-extrabold text-slate-900 dark:text-white">
               Tujuan Pembelajaran
             </h1>
-            <p className="text-sm text-slate-300">
-              Setelah pembelajaran menggunakan e-modul ini, siswa diharapkan mampu menguasai 10 kompetensi berikut. Centang kompetensi yang sudah kamu pahami atau kuasai.
+            <p className="text-sm font-medium text-slate-600 dark:text-slate-300 max-w-2xl">
+              Setelah mempelajari e-modul ini, siswa diharapkan mampu menguasai 10 kompetensi berikut. Centang tujuan yang telah berhasil kamu pahami.
             </p>
           </div>
 
-          <div className="p-3.5 rounded-xl bg-slate-950 border border-slate-800 flex items-center gap-3 shrink-0">
-            <Award className="w-7 h-7 text-amber-400" />
+          <div className="p-4 rounded-2xl bg-amber-50 dark:bg-slate-950 border border-amber-300 dark:border-slate-800 flex items-center gap-3 shrink-0 shadow-sm">
+            <Award className="w-8 h-8 text-amber-500" />
             <div>
-              <div className="text-[11px] font-mono text-slate-400">Pencapaian Mandiri</div>
-              <div className="text-lg font-mono font-bold text-emerald-400">
+              <div className="text-[11px] font-mono font-bold text-slate-600 dark:text-slate-400">Pencapaian Mandiri</div>
+              <div className="text-xl font-mono font-extrabold text-emerald-600 dark:text-emerald-400">
                 {state.checkedObjectives.length} / {LEARNING_OBJECTIVES.length} ({progress}%)
               </div>
             </div>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {LEARNING_OBJECTIVES.map((obj, index) => {
             const checked = state.checkedObjectives.includes(index);
             return (
@@ -64,22 +64,22 @@ export const Screen04Tujuan: React.FC = () => {
                 key={index}
                 type="button"
                 onClick={() => toggleObjective(index)}
-                className={`p-4 rounded-xl border text-left flex items-start gap-3 transition ${
+                className={`p-5 rounded-2xl border text-left flex items-start gap-3.5 transition-all shadow-sm ${
                   checked
-                    ? 'bg-emerald-500/10 border-emerald-500/40 text-white'
-                    : 'bg-slate-950/70 border-slate-800 hover:border-slate-600 text-slate-200'
+                    ? 'bg-emerald-50 dark:bg-emerald-500/15 border-emerald-400 text-slate-900 dark:text-white font-bold ring-1 ring-emerald-300'
+                    : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:border-cyan-400 text-slate-700 dark:text-slate-200'
                 }`}
               >
                 {checked ? (
-                  <CheckSquare className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
+                  <CheckSquare className="w-5 h-5 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
                 ) : (
-                  <Square className="w-5 h-5 text-slate-500 shrink-0 mt-0.5" />
+                  <Square className="w-5 h-5 text-slate-400 shrink-0 mt-0.5" />
                 )}
-                <div className="space-y-0.5">
-                  <span className="text-[11px] font-mono text-cyan-400">
+                <div className="space-y-1">
+                  <span className="text-[11px] font-mono font-extrabold text-cyan-700 dark:text-cyan-400 uppercase tracking-wider">
                     TUJUAN #{index + 1}
                   </span>
-                  <p className="text-sm leading-relaxed">{obj}</p>
+                  <p className="text-sm font-medium leading-relaxed">{obj}</p>
                 </div>
               </button>
             );

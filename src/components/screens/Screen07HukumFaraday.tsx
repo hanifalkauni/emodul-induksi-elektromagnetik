@@ -29,42 +29,42 @@ export const Screen07HukumFaraday: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      <div className="rounded-2xl bg-slate-900/90 border border-slate-800 p-6 sm:p-8 space-y-6">
+      <div className="rounded-[32px] clay-card p-6 sm:p-8 space-y-6">
         <div className="space-y-2">
-          <div className="inline-flex items-center gap-2 text-xs font-mono text-amber-400 uppercase tracking-wider">
-            <Zap className="w-4 h-4" />
-            <span>Eksplorasi Konsep • Hukum Faraday</span>
+          <div className="clay-badge inline-flex items-center gap-2 px-3.5 py-1.5 bg-amber-100 text-amber-900 text-xs font-bold font-mono">
+            <Zap className="w-4 h-4 text-amber-600" />
+            <span>EKSPLORASI KONSEP • HUKUM FARADAY</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-display font-bold text-white">
+          <h1 className="text-2xl sm:text-4xl font-display font-extrabold text-slate-900 dark:text-white">
             Hukum Faraday
           </h1>
-          <p className="text-sm text-slate-300 leading-relaxed max-w-3xl">
+          <p className="text-sm font-medium text-slate-700 dark:text-slate-300 leading-relaxed max-w-3xl">
             Hukum Faraday menjelaskan bahwa perubahan fluks magnetik yang menembus kumparan dapat menghasilkan{' '}
-            <strong className="text-amber-300">Gaya Gerak Listrik (GGL) induksi</strong>. Semakin cepat perubahan fluks magnetik, semakin besar GGL induksi yang dihasilkan.
+            <strong className="text-amber-800 dark:text-amber-400 font-bold">Gaya Gerak Listrik (GGL) induksi</strong>. Semakin cepat perubahan fluks magnetik, semakin besar GGL induksi yang dihasilkan.
           </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* Equation & Controls ("Coba ubah!") */}
-          <div className="lg:col-span-5 rounded-2xl bg-slate-950 border border-slate-800 p-5 space-y-5">
+          <div className="lg:col-span-5 rounded-3xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-5 space-y-5 shadow-sm">
             <div>
-              <div className="text-xs font-mono text-slate-400 mb-2">PERSAMAAN HUKUM FARADAY</div>
-              <div className="py-4 px-4 rounded-xl bg-slate-900 border border-amber-500/30 text-center font-mono text-2xl font-bold text-amber-300">
+              <div className="text-xs font-mono font-bold text-slate-600 dark:text-slate-400 mb-2">PERSAMAAN HUKUM FARADAY</div>
+              <div className="py-4 px-4 rounded-2xl bg-amber-50 dark:bg-slate-900 border-2 border-amber-300 dark:border-amber-500/30 text-center font-mono text-2xl font-extrabold text-amber-800 dark:text-amber-300 shadow-sm">
                 ε = -N · (ΔΦ / Δt)
               </div>
             </div>
 
             <div className="space-y-4">
-              <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-cyan-400">
+              <div className="flex items-center gap-2 text-xs font-mono font-bold uppercase tracking-wider text-cyan-700 dark:text-cyan-400">
                 <Sliders className="w-4 h-4" />
                 <span>Fitur “Coba Ubah!”</span>
               </div>
 
               {/* N Slider */}
               <div className="space-y-1">
-                <div className="flex justify-between text-xs">
-                  <span className="text-amber-300 font-medium">Jumlah lilitan (N)</span>
-                  <span className="font-mono text-white">{state.faradayTurns} lilitan</span>
+                <div className="flex justify-between text-xs font-semibold">
+                  <span className="text-amber-800 dark:text-amber-300">Jumlah lilitan (N)</span>
+                  <span className="font-mono font-bold text-slate-900 dark:text-white">{state.faradayTurns} lilitan</span>
                 </div>
                 <input
                   type="range"
@@ -79,9 +79,9 @@ export const Screen07HukumFaraday: React.FC = () => {
 
               {/* Speed ΔΦ/Δt Slider */}
               <div className="space-y-1">
-                <div className="flex justify-between text-xs">
-                  <span className="text-cyan-300 font-medium">Kecepatan magnet (ΔΦ/Δt)</span>
-                  <span className="font-mono text-white">Level {state.faradaySpeed} / 10</span>
+                <div className="flex justify-between text-xs font-semibold">
+                  <span className="text-cyan-700 dark:text-cyan-300">Kecepatan gerak (ΔΦ/Δt)</span>
+                  <span className="font-mono font-bold text-slate-900 dark:text-white">Level {state.faradaySpeed} / 10</span>
                 </div>
                 <input
                   type="range"
@@ -96,9 +96,9 @@ export const Screen07HukumFaraday: React.FC = () => {
 
               {/* B Strength Slider */}
               <div className="space-y-1">
-                <div className="flex justify-between text-xs">
-                  <span className="text-emerald-300 font-medium">Kekuatan magnet (B)</span>
-                  <span className="font-mono text-white">{state.faradayB.toFixed(1)} T</span>
+                <div className="flex justify-between text-xs font-semibold">
+                  <span className="text-emerald-700 dark:text-emerald-300">Kekuatan magnet (B)</span>
+                  <span className="font-mono font-bold text-slate-900 dark:text-white">{state.faradayB.toFixed(1)} T</span>
                 </div>
                 <input
                   type="range"
@@ -112,7 +112,7 @@ export const Screen07HukumFaraday: React.FC = () => {
               </div>
             </div>
 
-            <div className="p-3.5 rounded-xl bg-slate-900 border border-slate-800 text-xs text-slate-300 space-y-1">
+            <div className="p-3.5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs text-slate-700 dark:text-slate-300 space-y-1 shadow-sm font-medium">
               <div className="font-semibold text-white">Kesimpulan Sistem Real-Time:</div>
               <p>
                 Puncak GGL Induksi terukur:{' '}

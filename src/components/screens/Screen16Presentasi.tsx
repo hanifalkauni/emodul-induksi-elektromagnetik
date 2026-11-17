@@ -45,34 +45,34 @@ export const Screen16Presentasi: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      <div className="rounded-2xl bg-slate-900/90 border border-slate-800 p-6 sm:p-8 space-y-6">
-        <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-800 pb-5">
+      <div className="rounded-[32px] clay-card p-6 sm:p-8 space-y-6">
+        <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-800 pb-5">
           <div className="space-y-1.5">
-            <div className="inline-flex items-center gap-2 text-xs font-mono text-teal-400 uppercase tracking-wider">
-              <Presentation className="w-4 h-4" />
-              <span>Presentasi Kelompok</span>
+            <div className="clay-badge inline-flex items-center gap-2 px-3 py-1 bg-teal-100 dark:bg-teal-500/20 text-teal-800 dark:text-teal-300 text-xs font-mono font-bold">
+              <Presentation className="w-4 h-4 text-teal-600" />
+              <span>PRESENTASI KELOMPOK</span>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-display font-bold text-white">
+            <h1 className="text-2xl sm:text-3xl font-display font-black text-slate-900 dark:text-white">
               “Showcase Your Innovation”
             </h1>
-            <p className="text-sm text-slate-300">
+            <p className="text-sm font-medium text-slate-600 dark:text-slate-300">
               Susun bahan presentasi kelompok mencakup 9 aspek lengkap perjalanan proyek STEM dari masalah hingga hasil akhir.
             </p>
           </div>
 
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-2.5">
             <button
               type="button"
               onClick={autoFillFromModule}
-              className="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-600 text-xs font-semibold text-cyan-300 transition"
+              className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-600 text-xs font-bold text-cyan-800 dark:text-cyan-300 transition shadow-xs"
             >
-              <Wand2 className="w-4 h-4" />
-              <span>Isi Otomatis dari Progres Modul</span>
+              <Wand2 className="w-4 h-4 text-cyan-600" />
+              <span>Isi Otomatis dari Modul</span>
             </button>
             <button
               type="button"
               onClick={() => setShowcaseMode(true)}
-              className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-teal-500 hover:bg-teal-400 text-slate-950 font-bold text-xs transition"
+              className="clay-btn-emerald inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-white font-bold text-xs shadow-md"
             >
               <Play className="w-4 h-4" />
               <span>Mode Layar Presentasi</span>
@@ -83,22 +83,22 @@ export const Screen16Presentasi: React.FC = () => {
         {/* 9 Presentation Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {PRESENTATION_SECTIONS.map((sec) => (
-            <label key={sec.key} className="block p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-2">
-              <span className="text-xs font-display font-bold text-cyan-300">{sec.label}</span>
+            <label key={sec.key} className="block p-4 rounded-2xl clay-card bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-2 shadow-sm">
+              <span className="text-xs font-display font-bold text-teal-800 dark:text-cyan-300">{sec.label}</span>
               <textarea
                 rows={3}
                 value={state.presentationPoints[sec.key]}
                 onChange={(e) => updatePoint(sec.key, e.target.value)}
                 placeholder={`Ringkas poin ${sec.label.slice(3)}...`}
-                className="w-full p-2.5 rounded-lg bg-slate-900 border border-slate-700 text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-teal-400"
+                className="clay-input w-full p-2.5 rounded-xl text-xs font-medium focus:outline-none focus:ring-2 focus:ring-teal-500"
               />
             </label>
           ))}
         </div>
 
-        <div className="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-2">
-          <label className="flex items-center gap-1.5 text-xs font-semibold text-slate-200">
-            <Link2 className="w-4 h-4 text-teal-400" />
+        <div className="p-5 rounded-2xl clay-card bg-sky-50/50 dark:bg-slate-900 border border-sky-200 dark:border-slate-800 space-y-2.5 shadow-sm">
+          <label className="flex items-center gap-2 text-xs font-bold text-slate-800 dark:text-slate-200">
+            <Link2 className="w-4 h-4 text-teal-600" />
             <span>Tautan Slide Presentasi / Video Showcase (Canva / Google Slides):</span>
           </label>
           <input
@@ -106,7 +106,7 @@ export const Screen16Presentasi: React.FC = () => {
             value={state.presentationSlideLink}
             onChange={(e) => updateState('presentationSlideLink', e.target.value)}
             placeholder="https://docs.google.com/presentation/..."
-            className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-sm text-white placeholder:text-slate-500 focus:outline-none focus:border-teal-400"
+            className="clay-input w-full px-3.5 py-2.5 rounded-xl text-sm font-medium focus:outline-none focus:ring-2 focus:ring-teal-500"
           />
         </div>
       </div>
@@ -117,15 +117,15 @@ export const Screen16Presentasi: React.FC = () => {
           <div className="max-w-5xl mx-auto space-y-6">
             <div className="flex items-center justify-between border-b border-slate-800 pb-4">
               <div>
-                <div className="text-xs font-mono text-teal-400">SHOWCASE YOUR INNOVATION</div>
-                <h2 className="text-2xl font-display font-bold text-white">
+                <div className="text-xs font-mono font-bold text-teal-400">SHOWCASE YOUR INNOVATION</div>
+                <h2 className="text-2xl font-display font-black text-white">
                   {state.designName || 'Proyek Generator Mini'} — {state.identity.groupName || 'Kelompok'}
                 </h2>
               </div>
               <button
                 type="button"
                 onClick={() => setShowcaseMode(false)}
-                className="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-white"
+                className="p-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white transition"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -133,9 +133,9 @@ export const Screen16Presentasi: React.FC = () => {
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               {PRESENTATION_SECTIONS.map((sec) => (
-                <div key={sec.key} className="p-4 rounded-2xl bg-slate-900 border border-slate-700 space-y-2">
+                <div key={sec.key} className="p-5 rounded-2xl bg-slate-900 border border-slate-700 space-y-2 shadow-lg">
                   <div className="text-xs font-mono font-bold text-amber-300">{sec.label}</div>
-                  <p className="text-sm text-slate-200 leading-relaxed">
+                  <p className="text-sm text-slate-200 leading-relaxed font-medium">
                     {state.presentationPoints[sec.key] || '(Belum diisi)'}
                   </p>
                 </div>
