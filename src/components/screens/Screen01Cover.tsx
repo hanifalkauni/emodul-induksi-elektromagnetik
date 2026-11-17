@@ -18,6 +18,8 @@ import {
   ShieldCheck,
   TrendingUp,
   Cpu,
+  Magnet,
+  Wrench,
 } from 'lucide-react';
 import { useModul } from '../../context/ModulContext';
 
@@ -93,7 +95,8 @@ const TESTIMONIALS = [
     role: 'Siswa Kelas XII MIPA 1',
     school: 'SMAN 1 Nusantara',
     rating: 5,
-    avatar: '👩‍🎓',
+    icon: GraduationCap,
+    iconColor: 'text-sky-600 bg-sky-100 dark:bg-sky-500/20 border-sky-300',
     quote:
       'Animasi magnet keluar-masuk kumparan dengan panah arus kawat depan langsung bikin paham konsep Hukum Lenz yang selama ini abstrak di buku paket!',
   },
@@ -102,7 +105,8 @@ const TESTIMONIALS = [
     role: 'Ketua Kelompok 3 STEM',
     school: 'SMAN 3 Kota Baru',
     rating: 5,
-    avatar: '👨‍🔬',
+    icon: FlaskConical,
+    iconColor: 'text-amber-600 bg-amber-100 dark:bg-amber-500/20 border-amber-300',
     quote:
       'Alur Engineering Design Process (EDP)-nya mantap! Dari brainstorming ide, sketsa desain, sampai uji prototipe generator mini terasa seperti insinyur sungguhan.',
   },
@@ -111,7 +115,8 @@ const TESTIMONIALS = [
     role: 'Siswa Kelas XII MIPA 2',
     school: 'SMAN 5 Unggulan',
     rating: 5,
-    avatar: '💡',
+    icon: Lightbulb,
+    iconColor: 'text-emerald-600 bg-emerald-100 dark:bg-emerald-500/20 border-emerald-300',
     quote:
       'Fitur ekspor Portofolio LKPD PDF sangat memudahkan pengumpulan tugas ke guru. Desainnya cerah, interaktif, dan seru banget buat belajar!',
   },
@@ -425,7 +430,7 @@ export const Screen01Cover: React.FC = () => {
 
             <button
               type="submit"
-              className="clay-btn clay-btn-primary w-full sm:w-auto px-8 py-4 text-base font-display font-bold tracking-wide"
+              className="clay-btn-accent w-full sm:w-auto px-8 py-4 text-base font-display font-bold tracking-wide shadow-xl"
             >
               <span>MULAI PEMBELAJARAN SEKARANG</span>
               <ArrowRight className="w-5 h-5 ml-2" />
@@ -540,43 +545,43 @@ export const Screen01Cover: React.FC = () => {
 
         {/* Milestone Badges Demo */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-          <div className="p-3.5 rounded-2xl bg-white/80 border border-slate-200 dark:border-slate-800 flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-amber-500/20 flex items-center justify-center text-lg">
-              🧲
+          <div className="p-3.5 rounded-2xl bg-white/90 border border-slate-200 dark:border-slate-800 flex items-center gap-3 shadow-xs">
+            <div className="w-10 h-10 rounded-xl bg-amber-100 dark:bg-amber-500/20 border border-amber-300 flex items-center justify-center text-amber-700 dark:text-amber-400 shrink-0">
+              <Magnet className="w-5 h-5" />
             </div>
             <div>
               <div className="text-xs font-bold text-slate-900 dark:text-white">Master Fluks</div>
-              <div className="text-[10px] text-emerald-600 font-semibold">Screen 6 • Buka</div>
+              <div className="text-[10px] text-emerald-700 dark:text-emerald-400 font-bold">Screen 6 • Buka</div>
             </div>
           </div>
 
-          <div className="p-3.5 rounded-2xl bg-white/80 border border-slate-200 dark:border-slate-800 flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-cyan-500/20 flex items-center justify-center text-lg">
-              ⚡
+          <div className="p-3.5 rounded-2xl bg-white/90 border border-slate-200 dark:border-slate-800 flex items-center gap-3 shadow-xs">
+            <div className="w-10 h-10 rounded-xl bg-cyan-100 dark:bg-cyan-500/20 border border-cyan-300 flex items-center justify-center text-cyan-700 dark:text-cyan-400 shrink-0">
+              <Zap className="w-5 h-5" />
             </div>
             <div>
               <div className="text-xs font-bold text-slate-900 dark:text-white">Kaidah Lenz</div>
-              <div className="text-[10px] text-emerald-600 font-semibold">Screen 8 • Buka</div>
+              <div className="text-[10px] text-emerald-700 dark:text-emerald-400 font-bold">Screen 8 • Buka</div>
             </div>
           </div>
 
-          <div className="p-3.5 rounded-2xl bg-white/80 border border-slate-200 dark:border-slate-800 flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-violet-500/20 flex items-center justify-center text-lg">
-              🛠️
+          <div className="p-3.5 rounded-2xl bg-white/90 border border-slate-200 dark:border-slate-800 flex items-center gap-3 shadow-xs">
+            <div className="w-10 h-10 rounded-xl bg-violet-100 dark:bg-violet-500/20 border border-violet-300 flex items-center justify-center text-violet-700 dark:text-violet-400 shrink-0">
+              <Wrench className="w-5 h-5" />
             </div>
             <div>
               <div className="text-xs font-bold text-slate-900 dark:text-white">Insinyur EDP</div>
-              <div className="text-[10px] text-emerald-600 font-semibold">Screen 13 • Buka</div>
+              <div className="text-[10px] text-emerald-700 dark:text-emerald-400 font-bold">Screen 13 • Buka</div>
             </div>
           </div>
 
-          <div className="p-3.5 rounded-2xl bg-white/80 border border-slate-200 dark:border-slate-800 flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-emerald-500/20 flex items-center justify-center text-lg">
-              🏆
+          <div className="p-3.5 rounded-2xl bg-white/90 border border-slate-200 dark:border-slate-800 flex items-center gap-3 shadow-xs">
+            <div className="w-10 h-10 rounded-xl bg-emerald-100 dark:bg-emerald-500/20 border border-emerald-300 flex items-center justify-center text-emerald-700 dark:text-emerald-400 shrink-0">
+              <Award className="w-5 h-5" />
             </div>
             <div>
               <div className="text-xs font-bold text-slate-900 dark:text-white">Portofolio STEM</div>
-              <div className="text-[10px] text-emerald-600 font-semibold">Screen 17 • Buka</div>
+              <div className="text-[10px] text-emerald-700 dark:text-emerald-400 font-bold">Screen 17 • Buka</div>
             </div>
           </div>
         </div>
@@ -600,33 +605,36 @@ export const Screen01Cover: React.FC = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-          {TESTIMONIALS.map((t, idx) => (
-            <div
-              key={idx}
-              className="clay-card p-6 flex flex-col justify-between space-y-4 hover:-translate-y-1 transition duration-200"
-            >
-              <div className="space-y-3">
-                <div className="flex items-center gap-1">
-                  {[...Array(t.rating)].map((_, i) => (
-                    <Star key={i} className="w-4 h-4 text-amber-400 fill-amber-400" />
-                  ))}
+          {TESTIMONIALS.map((t, idx) => {
+            const Icon = t.icon;
+            return (
+              <div
+                key={idx}
+                className="clay-card p-6 flex flex-col justify-between space-y-4 hover:-translate-y-1 transition duration-200"
+              >
+                <div className="space-y-3">
+                  <div className="flex items-center gap-1">
+                    {[...Array(t.rating)].map((_, i) => (
+                      <Star key={i} className="w-4 h-4 text-amber-400 fill-amber-400" />
+                    ))}
+                  </div>
+                  <p className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed italic">
+                    "{t.quote}"
+                  </p>
                 </div>
-                <p className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed italic">
-                  "{t.quote}"
-                </p>
-              </div>
 
-              <div className="pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center gap-3">
-                <div className="w-10 h-10 rounded-2xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-xl shrink-0 shadow-inner">
-                  {t.avatar}
-                </div>
-                <div>
-                  <div className="text-xs font-bold text-slate-900 dark:text-white">{t.name}</div>
-                  <div className="text-[11px] text-slate-500">{t.role} • {t.school}</div>
+                <div className="pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center gap-3">
+                  <div className={`w-10 h-10 rounded-2xl flex items-center justify-center border shrink-0 shadow-inner ${t.iconColor}`}>
+                    <Icon className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <div className="text-xs font-bold text-slate-900 dark:text-white">{t.name}</div>
+                    <div className="text-[11px] text-slate-500">{t.role} • {t.school}</div>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </section>
 
@@ -649,7 +657,7 @@ export const Screen01Cover: React.FC = () => {
             onClick={() => {
               window.scrollTo({ top: 320, behavior: 'smooth' });
             }}
-            className="clay-btn clay-btn-primary px-8 py-3.5 text-sm font-display font-bold shadow-lg"
+            className="clay-btn-accent px-8 py-4 text-sm font-display font-bold shadow-xl"
           >
             <span>ISI IDENTITAS & MULAI SEKARANG</span>
             <Rocket className="w-4 h-4 ml-2" />

@@ -4,6 +4,16 @@ export default {
   theme: {
     extend: {
       colors: {
+        primary: {
+          DEFAULT: '#0D9488',
+          hover: '#0F766E',
+          light: '#2DD4BF',
+        },
+        accent: {
+          DEFAULT: '#EA580C',
+          hover: '#C2410C',
+          light: '#FB923C',
+        },
         lab: {
           bg: '#0B1120',
           surface: '#111827',
@@ -19,7 +29,7 @@ export default {
         current: '#10B981',
       },
       fontFamily: {
-        display: ['"Space Grotesk"', 'system-ui', 'sans-serif'],
+        display: ['"Baloo 2"', '"Space Grotesk"', 'system-ui', 'sans-serif'],
         sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
         mono: ['"JetBrains Mono"', 'monospace'],
       },
