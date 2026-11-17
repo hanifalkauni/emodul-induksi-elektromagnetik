@@ -17,8 +17,187 @@
   }
 }
 
-/* Lab blueprint background grid */
-.bg-lab-grid {
+/* =========================================================
+   LIGHT THEME (DEFAULT CERAH / PUTIH EDUKATIF)
+   ========================================================= */
+html.light {
+  color-scheme: light;
+}
+
+html.light body {
+  background-color: #F8FAFC !important;
+  color: #0F172A !important;
+}
+
+/* Background grid cetak biru edukasi cerah */
+html.light .bg-lab-grid {
+  background-color: #F8FAFC !important;
+  background-image:
+    linear-gradient(to right, rgba(148, 163, 184, 0.22) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(148, 163, 184, 0.22) 1px, transparent 1px) !important;
+  background-size: 28px 28px;
+}
+
+/* Header & Navigasi */
+html.light header {
+  background-color: rgba(255, 255, 255, 0.94) !important;
+  border-color: #E2E8F0 !important;
+  box-shadow: 0 1px 4px 0 rgba(15, 23, 42, 0.05);
+}
+
+html.light nav[aria-label="Navigasi Pilar Utama"] {
+  background-color: #F1F5F9 !important;
+  border-color: #E2E8F0 !important;
+}
+
+html.light aside {
+  background-color: #F8FAFC !important;
+  border-color: #E2E8F0 !important;
+}
+
+/* Kartu & Container */
+html.light .bg-slate-900,
+html.light .bg-slate-900\/90,
+html.light .bg-slate-900\/80,
+html.light .bg-slate-900\/70,
+html.light .bg-slate-900\/40 {
+  background-color: #FFFFFF !important;
+  border-color: #E2E8F0 !important;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.04), 0 1px 2px -1px rgba(0, 0, 0, 0.02);
+}
+
+html.light .bg-slate-950,
+html.light .bg-slate-950\/90,
+html.light .bg-slate-950\/80,
+html.light .bg-slate-950\/70,
+html.light .bg-slate-950\/60 {
+  background-color: #F8FAFC !important;
+  border-color: #E2E8F0 !important;
+}
+
+/* Hero card cover */
+html.light .from-slate-900.via-\[\#0F172A\] {
+  background-image: linear-gradient(to bottom right, #FFFFFF, #F1F5F9, #FFFFFF) !important;
+  border-color: #CBD5E1 !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+/* Tipografi & Warna Teks */
+html.light .text-white,
+html.light .text-slate-100 {
+  color: #0F172A !important;
+}
+
+html.light .text-slate-200 {
+  color: #1E293B !important;
+}
+
+html.light .text-slate-300 {
+  color: #334155 !important;
+}
+
+html.light .text-slate-400 {
+  color: #64748B !important;
+}
+
+/* Teks aksen yang disesuaikan untuk kontras tinggi di latar putih */
+html.light .text-amber-300 {
+  color: #B45309 !important;
+}
+html.light .text-cyan-300,
+html.light .text-cyan-400 {
+  color: #0284C7 !important;
+}
+html.light .text-emerald-300,
+html.light .text-emerald-400 {
+  color: #059669 !important;
+}
+
+/* Border elemen */
+html.light .border-slate-800,
+html.light .border-slate-800\/80,
+html.light .border-slate-700 {
+  border-color: #E2E8F0 !important;
+}
+
+/* Form Input & Textarea */
+html.light input[type="text"],
+html.light input[type="url"],
+html.light textarea,
+html.light select {
+  background-color: #FFFFFF !important;
+  border-color: #CBD5E1 !important;
+  color: #0F172A !important;
+}
+
+html.light input::placeholder,
+html.light textarea::placeholder {
+  color: #94A3B8 !important;
+}
+
+html.light input:focus,
+html.light textarea:focus,
+html.light select:focus {
+  border-color: #0284C7 !important;
+  box-shadow: 0 0 0 1px #0284C7;
+}
+
+/* Tombol-tombol standar */
+html.light .bg-slate-800,
+html.light .bg-slate-800\/80,
+html.light .bg-slate-800\/70 {
+  background-color: #F1F5F9 !important;
+  border-color: #CBD5E1 !important;
+  color: #1E293B !important;
+}
+
+html.light .bg-slate-800:hover,
+html.light .hover\:bg-slate-700:hover {
+  background-color: #E2E8F0 !important;
+  color: #0F172A !important;
+}
+
+/* Kanvas SVG Simulasi Fisika */
+html.light svg.bg-\[\#070B14\],
+html.light .bg-\[\#070B14\] {
+  background-color: #F8FAFC !important;
+  border-color: #CBD5E1 !important;
+}
+
+html.light svg text[fill="#94A3B8"],
+html.light svg text[fill="#CBD5E1"] {
+  fill: #475569 !important;
+}
+
+html.light svg text[fill="#FDE68A"] {
+  fill: #B45309 !important;
+}
+
+/* Slider Lab Mode Cerah */
+html.light input[type='range'].lab-slider {
+  background: #E2E8F0 !important;
+  border-color: #CBD5E1 !important;
+}
+
+html.light input[type='range'].lab-slider::-webkit-slider-thumb {
+  border: 2px solid #FFFFFF !important;
+  box-shadow: 0 0 8px rgba(2, 132, 199, 0.45) !important;
+}
+
+html.light ::-webkit-scrollbar-track {
+  background: #F8FAFC;
+}
+html.light ::-webkit-scrollbar-thumb {
+  background: #CBD5E1;
+}
+html.light ::-webkit-scrollbar-thumb:hover {
+  background: #94A3B8;
+}
+
+/* =========================================================
+   DARK THEME
+   ========================================================= */
+html.dark .bg-lab-grid {
   background-color: #0B1120;
   background-image:
     linear-gradient(to right, rgba(51, 65, 85, 0.16) 1px, transparent 1px),
@@ -26,7 +205,6 @@
   background-size: 32px 32px;
 }
 
-/* Custom scientific range slider */
 input[type='range'].lab-slider {
   -webkit-appearance: none;
   appearance: none;
@@ -65,19 +243,18 @@ input[type='range'].lab-slider.slider-emerald::-webkit-slider-thumb {
   box-shadow: 0 0 12px rgba(16, 185, 129, 0.65);
 }
 
-/* Custom subtle scrollbars */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
-::-webkit-scrollbar-track {
+html.dark ::-webkit-scrollbar-track {
   background: #0B1120;
 }
-::-webkit-scrollbar-thumb {
+html.dark ::-webkit-scrollbar-thumb {
   background: #334155;
   border-radius: 4px;
 }
-::-webkit-scrollbar-thumb:hover {
+html.dark ::-webkit-scrollbar-thumb:hover {
   background: #475569;
 }
 
@@ -103,4 +280,3 @@ input[type='range'].lab-slider.slider-emerald::-webkit-slider-thumb {
     display: none !important;
   }
 }
-

@@ -25,3 +25,4 @@ Proyek ini sudah dilengkapi `vercel.json` dan 100% berjalan sebagai *static site
 1. Push repositori ini ke GitHub.
 2. Buka [vercel.com](https://vercel.com), pilih **Add New Project** → impor repositori ini.
 3. Klik **Deploy** (Framework Preset `Vite`, Build Command `npm run build`, Output Directory `dist` terdeteksi otomatis).
+

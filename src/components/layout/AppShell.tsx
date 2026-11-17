@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Home,
   PlayCircle,
@@ -16,6 +16,8 @@ import {
   RotateCcw,
   Zap,
   Map,
+  Sun,
+  Moon,
 } from 'lucide-react';
 import { SCREENS, useModul } from '../../context/ModulContext';
 import { NavPillar } from '../../types/emodul';
@@ -33,6 +35,47 @@ const PILLAR_NAV: { id: NavPillar; label: string; icon: React.ComponentType<{ cl
 export const AppShell: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { state, setScreen, nextScreen, prevScreen, loadDemoData, resetAllData, completionPercent } = useModul();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  // Theme state: default 'light' (cerah / putih)
+  const [theme, setTheme] = useState<'light' | 'dark'>(() => {
+    try {
+      const saved = localStorage.getItem('emodul_theme');
+      if (saved === 'dark' || saved === 'light') return saved;
+    } catch {}
+    return 'light';
+  });
+
+  useEffect(() => {
+    if (theme === 'light') {
+      document.documentElement.classList.remove('dark');
+      document.documentElement.classList.add('light');
+    } else {
+      document.documentElement.classList.remove('light');
+      document.documentElement.classList.add('dark');
+    }
+    try {
+      localStorage.setItem('emodul_theme', theme);
+    } catch {}
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme((prev) => (prev === 'light' ? 'dark' : 'light'));
+  };
+
+  const isIdentityFilled =
+    Boolean(state.identity.studentName?.trim()) &&
+    Boolean(state.identity.studentClass?.trim()) &&
+    Boolean(state.identity.groupName?.trim()) &&
+    Boolean(state.identity.schoolName?.trim());
+
+  const handleNavigateScreen = (targetId: number) => {
+    if (targetId > 1 && !isIdentityFilled) {
+      alert('Mohon lengkapi Nama siswa, Kelas, Kelompok, dan Sekolah pada halaman Cover terlebih dahulu, lalu klik tombol "MULAI PEMBELAJARAN".');
+      return;
+    }
+    setScreen(targetId);
+    setSidebarOpen(false);
+  };
 
   const activeScreenMeta = SCREENS.find((s) => s.id === state.currentScreen) || SCREENS[0];
 
@@ -79,7 +122,7 @@ export const AppShell: React.FC<{ children: React.ReactNode }> = ({ children }) 
                 <button
                   key={pillar.id}
                   type="button"
-                  onClick={() => setScreen(pillar.targetScreen)}
+                  onClick={() => handleNavigateScreen(pillar.targetScreen)}
                   className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
                     isActive
                       ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 shadow-sm'
@@ -95,9 +138,33 @@ export const AppShell: React.FC<{ children: React.ReactNode }> = ({ children }) 
 
           {/* Right Student Telemetry & Quick Actions */}
           <div className="flex items-center gap-2">
+            {/* Theme Switcher Toggle (Default: Cerah / Putih) */}
             <button
               type="button"
-              onClick={() => setScreen(3)}
+              onClick={toggleTheme}
+              title={theme === 'light' ? 'Beralih ke Mode Gelap' : 'Beralih ke Mode Cerah (Putih)'}
+              className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border text-xs font-medium transition ${
+                theme === 'light'
+                  ? 'bg-amber-500/10 border-amber-500/30 text-amber-700 hover:bg-amber-500/20'
+                  : 'bg-slate-800/80 border-slate-700 text-cyan-300 hover:bg-slate-700'
+              }`}
+            >
+              {theme === 'light' ? (
+                <>
+                  <Sun className="w-3.5 h-3.5 text-amber-600" />
+                  <span className="hidden sm:inline">Mode Cerah</span>
+                </>
+              ) : (
+                <>
+                  <Moon className="w-3.5 h-3.5 text-cyan-400" />
+                  <span className="hidden sm:inline">Mode Gelap</span>
+                </>
+              )}
+            </button>
+
+            <button
+              type="button"
+              onClick={() => handleNavigateScreen(3)}
               title="Peta Perjalanan Belajar"
               className="hidden sm:flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-slate-800/80 border border-slate-700 text-xs text-slate-200 hover:border-cyan-500/50 transition"
             >
@@ -145,7 +212,7 @@ export const AppShell: React.FC<{ children: React.ReactNode }> = ({ children }) 
                 <button
                   key={pillar.id}
                   type="button"
-                  onClick={() => setScreen(pillar.targetScreen)}
+                  onClick={() => handleNavigateScreen(pillar.targetScreen)}
                   className={`flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium whitespace-nowrap transition ${
                     isActive
                       ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40'
@@ -210,10 +277,7 @@ export const AppShell: React.FC<{ children: React.ReactNode }> = ({ children }) 
                   <button
                     key={scr.id}
                     type="button"
-                    onClick={() => {
-                      setScreen(scr.id);
-                      setSidebarOpen(false);
-                    }}
+                    onClick={() => handleNavigateScreen(scr.id)}
                     className={`w-full flex items-center justify-between gap-2 px-2.5 py-2 rounded-lg text-left text-xs transition ${
                       isCurrent
                         ? 'bg-cyan-500/20 text-cyan-200 border border-cyan-500/40 font-semibold'
@@ -273,53 +337,64 @@ export const AppShell: React.FC<{ children: React.ReactNode }> = ({ children }) 
           <div className="flex-1">{children}</div>
 
           {/* Bottom Screen Stepper Bar */}
-          <footer className="mt-8 pt-4 border-t border-slate-800 flex items-center justify-between gap-4">
-            <button
-              type="button"
-              onClick={prevScreen}
-              disabled={state.currentScreen <= 1}
-              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-sm font-medium text-slate-200 hover:bg-slate-800 disabled:opacity-40 disabled:cursor-not-allowed transition"
-            >
-              <ChevronLeft className="w-4 h-4" />
-              <span>Screen Sebelumnya</span>
-            </button>
-
-            <div className="hidden sm:flex items-center gap-1.5">
-              {SCREENS.map((s) => (
-                <button
-                  key={s.id}
-                  type="button"
-                  aria-label={`Ke Screen ${s.id}: ${s.shortTitle}`}
-                  onClick={() => setScreen(s.id)}
-                  className={`h-2 rounded-full transition-all ${
-                    s.id === state.currentScreen
-                      ? 'w-6 bg-cyan-400'
-                      : state.visitedScreens.includes(s.id)
-                      ? 'w-2 bg-emerald-500/70 hover:bg-emerald-400'
-                      : 'w-2 bg-slate-700 hover:bg-slate-500'
-                  }`}
-                />
-              ))}
-            </div>
-
-            {state.currentScreen < 17 ? (
-              <button
-                type="button"
-                onClick={nextScreen}
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-semibold text-sm shadow-lg shadow-cyan-500/20 transition"
-              >
-                <span>Screen Selanjutnya</span>
-                <ChevronRight className="w-4 h-4" />
-              </button>
+          <footer className="mt-8 pt-4 border-t border-slate-800">
+            {state.currentScreen === 1 ? (
+              <div className="flex items-center justify-center p-3 rounded-xl bg-slate-900/60 border border-slate-800 text-center text-xs text-slate-400">
+                <span>
+                  Silakan isi identitas diri di atas, lalu klik tombol{' '}
+                  <strong className="text-cyan-400 font-semibold">"MULAI PEMBELAJARAN →"</strong> untuk masuk ke materi.
+                </span>
+              </div>
             ) : (
-              <button
-                type="button"
-                onClick={() => setScreen(3)}
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-semibold text-sm transition"
-              >
-                <Map className="w-4 h-4" />
-                <span>Kembali ke Peta Belajar</span>
-              </button>
+              <div className="flex items-center justify-between gap-4">
+                <button
+                  type="button"
+                  onClick={prevScreen}
+                  disabled={state.currentScreen <= 1}
+                  className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-sm font-medium text-slate-200 hover:bg-slate-800 disabled:opacity-40 disabled:cursor-not-allowed transition"
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                  <span>Screen Sebelumnya</span>
+                </button>
+
+                <div className="hidden sm:flex items-center gap-1.5">
+                  {SCREENS.map((s) => (
+                    <button
+                      key={s.id}
+                      type="button"
+                      aria-label={`Ke Screen ${s.id}: ${s.shortTitle}`}
+                      onClick={() => handleNavigateScreen(s.id)}
+                      className={`h-2 rounded-full transition-all ${
+                        s.id === state.currentScreen
+                          ? 'w-6 bg-cyan-400'
+                          : state.visitedScreens.includes(s.id)
+                          ? 'w-2 bg-emerald-500/70 hover:bg-emerald-400'
+                          : 'w-2 bg-slate-700 hover:bg-slate-500'
+                      }`}
+                    />
+                  ))}
+                </div>
+
+                {state.currentScreen < 17 ? (
+                  <button
+                    type="button"
+                    onClick={nextScreen}
+                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-semibold text-sm shadow-lg shadow-cyan-500/20 transition"
+                  >
+                    <span>Screen Selanjutnya</span>
+                    <ChevronRight className="w-4 h-4" />
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => handleNavigateScreen(3)}
+                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-semibold text-sm transition"
+                  >
+                    <Map className="w-4 h-4" />
+                    <span>Kembali ke Peta Belajar</span>
+                  </button>
+                )}
+              </div>
             )}
           </footer>
         </main>

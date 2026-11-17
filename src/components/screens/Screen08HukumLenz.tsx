@@ -206,18 +206,28 @@ export const Screen08HukumLenz: React.FC = () => {
                   />
                 ))}
 
-                {/* Current direction arrows on loops */}
-                {[0, 2, 4].map((i) => (
-                  <polygon
-                    key={i}
-                    points={
-                      isCCW
-                        ? `${i * 20 - 8},-4 ${i * 20 - 13},6 ${i * 20 - 3},6`
-                        : `${i * 20 - 8},8 ${i * 20 - 13},-2 ${i * 20 - 3},-2`
-                    }
-                    fill="#10B981"
-                  />
-                ))}
+                {/* Current direction arrows directly on FRONT windings (tepat pada kawat bagian depan yang dilingkari merah) */}
+                {[0, 1, 2, 3, 4, 5].map((i) => {
+                  const cx = i * 20 + 8; // Titik puncak kawat depan
+                  return (
+                    <polygon
+                      key={`arrow-front-${i}`}
+                      points={
+                        isCCW
+                          ? `${cx},-8 ${cx - 5.5},4 ${cx + 5.5},4` // Panah menunjuk ke ATAS
+                          : `${cx},8 ${cx - 5.5},-4 ${cx + 5.5},-4` // Panah menunjuk ke BAWAH
+                      }
+                      fill="#10B981"
+                      stroke="#064E3B"
+                      strokeWidth="1.2"
+                    />
+                  );
+                })}
+
+                {/* Label penjelas panah arus di kawat depan */}
+                <text x="50" y="58" textAnchor="middle" fill="#10B981" fontSize="10" fontWeight="bold" fontFamily="JetBrains Mono">
+                  ▲ Panah Arus (I) pada Kawat Depan ({isCCW ? 'Ke Atas / CCW' : 'Ke Bawah / CW'})
+                </text>
 
                 {/* Induced Pole Labels (placed neatly on coil shoulder so magnet slides cleanly inside) */}
                 <circle cx="-16" cy="-48" r="13" fill={facingInducedPole === 'N' ? '#EF4444' : '#3B82F6'} stroke="#0B1120" strokeWidth="2" />
