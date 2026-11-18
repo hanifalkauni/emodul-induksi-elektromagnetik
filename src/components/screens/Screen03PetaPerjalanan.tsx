@@ -179,7 +179,7 @@ export const Screen03PetaPerjalanan: React.FC = () => {
                 className="group p-5 card card-hover text-left flex items-start gap-4"
               >
                 <div className="w-12 h-12 rounded-lg bg-brand-50 border border-brand-200 flex items-center justify-center shrink-0">
-                  <Icon className="w-6 h-6 text-brand-600" />
+                  <Icon className="w-6 h-6 text-brand-700" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between gap-2">
@@ -193,7 +193,7 @@ export const Screen03PetaPerjalanan: React.FC = () => {
                       </span>
                     )}
                   </div>
-                  <h3 className="font-display font-bold text-base text-slate-900 group-hover:text-brand-600 transition">
+                  <h3 className="font-display font-bold text-base text-slate-900 group-hover:text-brand-700 transition">
                     {item.label}
                   </h3>
                   <p className="mt-1 text-xs text-slate-600 leading-relaxed font-medium">

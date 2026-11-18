@@ -18,7 +18,7 @@ export const Screen15Improve: React.FC = () => {
         {/* Header Quote */}
         <div className="p-6 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
           <div className="badge inline-flex items-center gap-2 px-3 py-1 bg-brand-50 border-brand-200 text-brand-700 text-xs font-mono font-bold">
-            <Wrench className="w-4 h-4 text-brand-600" />
+            <Wrench className="w-4 h-4 text-brand-700" />
             <span>EDP TAHAP IMPROVE • ITERASI DESAIN</span>
           </div>
           <h1 className="text-2xl sm:text-3xl font-display font-bold text-slate-900">
@@ -34,7 +34,7 @@ export const Screen15Improve: React.FC = () => {
           {CREATIVITY_4_PILLARS.map((p) => (
             <div key={p.name} className="p-4 card space-y-1">
               <div className="flex items-center gap-1.5 text-xs font-mono font-bold text-brand-700">
-                <Sparkles className="w-4 h-4 text-brand-600" />
+                <Sparkles className="w-4 h-4 text-brand-700" />
                 <span>{p.name}</span>
               </div>
               <p className="text-xs text-slate-600 leading-relaxed font-medium">{p.desc}</p>
@@ -137,7 +137,7 @@ export const Screen15Improve: React.FC = () => {
 
           <div className="pt-2 space-y-2 border-t border-slate-200">
             <label className="flex items-center gap-1.5 text-xs font-bold text-slate-800">
-              <Link2 className="w-4 h-4 text-brand-600" />
+              <Link2 className="w-4 h-4 text-brand-700" />
               <span>Link Drive untuk Unggah Desain & Prototipe V2:</span>
             </label>
             <input

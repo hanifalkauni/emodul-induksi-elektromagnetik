@@ -97,7 +97,7 @@ export const Screen05Pemantik: React.FC = () => {
       <div className="card p-6 sm:p-8 space-y-6">
         <div className="space-y-2 border-b border-slate-200 pb-5">
           <div className="badge inline-flex items-center gap-2 px-3.5 py-1.5 bg-brand-50 border-brand-200 text-brand-700 text-xs font-mono font-bold">
-            <Sparkles className="w-4 h-4 text-brand-600" />
+            <Sparkles className="w-4 h-4 text-brand-700" />
             <span>FENOMENA PEMANTIK</span>
           </div>
           <h1 className="text-2xl sm:text-4xl font-display font-bold text-slate-900">
@@ -120,7 +120,7 @@ export const Screen05Pemantik: React.FC = () => {
                 onClick={() => setIsPlaying((p) => !p)}
                 className="btn btn-secondary px-3.5 py-1.5 min-h-0 h-9 text-xs"
               >
-                {isPlaying ? <Pause className="w-3.5 h-3.5 text-brand-600" /> : <Play className="w-3.5 h-3.5 text-brand-600" />}
+                {isPlaying ? <Pause className="w-3.5 h-3.5 text-brand-700" /> : <Play className="w-3.5 h-3.5 text-brand-700" />}
                 <span>{isPlaying ? 'Jeda Gerakan' : 'Putar Animasi'}</span>
               </button>
             </div>
@@ -293,7 +293,7 @@ export const Screen05Pemantik: React.FC = () => {
                 className="w-full slider"
               />
               <p className="text-xs text-slate-600 font-medium">
-                <Lightbulb className="inline w-3.5 h-3.5 text-brand-600 -mt-0.5 mr-1" aria-hidden="true" /><strong>Tip Penyelidikan:</strong> Gerakkan slider bolak-balik keluar-masuk kumparan untuk melihat LED menyala. Jika magnet dibiarkan diam (walaupun berada di dalam kumparan), LED akan tetap padam!
+                <Lightbulb className="inline w-3.5 h-3.5 text-brand-700 -mt-0.5 mr-1" aria-hidden="true" /><strong>Tip Penyelidikan:</strong> Gerakkan slider bolak-balik keluar-masuk kumparan untuk melihat LED menyala. Jika magnet dibiarkan diam (walaupun berada di dalam kumparan), LED akan tetap padam!
               </p>
             </div>
           </div>
@@ -301,7 +301,7 @@ export const Screen05Pemantik: React.FC = () => {
           {/* Storyboard Visual References */}
           <div className="lg:col-span-5 space-y-3">
             <div className="flex items-center gap-2 text-xs font-mono font-bold text-slate-700">
-              <ImageIcon className="w-4 h-4 text-brand-600" />
+              <ImageIcon className="w-4 h-4 text-brand-700" />
               <span>REFERENSI VISUAL STORYBOARD</span>
             </div>
             <div className="grid grid-cols-2 gap-2.5">
@@ -328,7 +328,7 @@ export const Screen05Pemantik: React.FC = () => {
         {/* 5 Guiding Questions */}
         <div className="space-y-4">
           <div className="flex items-center gap-2 text-sm font-display font-bold text-slate-900">
-            <HelpCircle className="w-4 h-4 text-brand-600" />
+            <HelpCircle className="w-4 h-4 text-brand-700" />
             <span>Pertanyaan Pemantik (Diskusikan & Catat Jawaban Awalmu):</span>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">

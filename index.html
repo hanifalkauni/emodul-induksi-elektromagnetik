@@ -3,8 +3,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="color-scheme" content="light" />
+    <meta name="color-scheme" content="light dark" />
     <meta name="theme-color" content="#FFFFFF" />
+    <script>
+      try {
+        if (localStorage.getItem("emodul_theme") === "dark") document.documentElement.classList.add("dark");
+      } catch (e) {}
+    </script>
     <title>E-Modul Interaktif Fisika: Induksi Elektromagnetik</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -13,7 +18,7 @@
       rel="stylesheet"
     />
   </head>
-  <body class="bg-white text-slate-900 antialiased selection:bg-brand-100 selection:text-brand-900">
+  <body class="bg-white text-slate-900 antialiased selection:bg-brand-200 selection:text-brand-900">
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

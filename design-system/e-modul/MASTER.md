@@ -4,7 +4,7 @@
 > If that file exists, its rules **override** this Master file. Otherwise follow the rules below.
 
 **Project:** e-modul (Induksi Elektromagnetik)
-**Style:** Minimalism & Swiss, "Clean Academic" (white base, light only)
+**Style:** Minimalism & Swiss, "Clean Academic" (white base, mode terang default + mode gelap)
 **Revision:** 2026-11-18, replaces the earlier Claymorphism / teal-cream / dark-mode system.
 
 ---
@@ -25,7 +25,7 @@
 
 Physics-only colors (SVG simulations): north pole `#DC2626`, south pole `#2563EB`, field lines `#0891B2`, copper coil `#D97706`, induced current `#059669`.
 
-Rules: one brand hue; no gradients, glows, blurred blobs or dark panels; no dark mode. Semantic colors (success/warning/danger) are for status only.
+Rules: one brand hue; no gradients, glows or blurred blobs. Semantic colors (success/warning/danger) are for status only.
 
 ## Typography
 
@@ -57,3 +57,12 @@ Rules: one brand hue; no gradients, glows, blurred blobs or dark panels; no dark
 - Body text contrast at least 4.5:1; honor `prefers-reduced-motion`.
 - File inputs use `sr-only` (not `hidden`) so they stay keyboard reachable.
 - Check at 375, 768, 1024 and 1440px widths.
+
+## Dark Mode
+
+- Toggle (Sun/Moon) di header; pilihan disimpan di `localStorage` key `emodul_theme`, default terang. Class `dark` dipasang pada `<html>` (skrip inline di `index.html` mencegah kilatan).
+- Semua skala warna (slate, brand, emerald, amber, rose, red) membaca CSS variable dari `src/theme-tokens.css`. Mode gelap membalik skala slate (50<->950) dan memakai versi gelap/terang untuk tint dan teks aksen. `brand-600` tetap agar tombol solid berteks putih tetap kontras.
+- `bg-white` mengikuti mode (permukaan slate-900 di gelap). Pakai `bg-[#fff]` untuk elemen yang harus tetap putih (kertas sketsa, gambar referensi, QR).
+- Teks/ikon brand memakai `text-brand-700` (bukan 600) agar kontras di kedua mode.
+- SVG simulasi: warna terang pada atribut ditimpa lewat selector `.dark svg [fill=...]` di `index.css`; warna fisika tidak berubah.
+- Halaman cetak LKPD/portofolio selalu terang.

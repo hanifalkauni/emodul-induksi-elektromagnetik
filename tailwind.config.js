@@ -1,22 +1,22 @@
 /** @type {import('tailwindcss').Config} */
+const shades = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950];
+// Semua skala warna membaca CSS variable (src/theme-tokens.css) sehingga mode terang/gelap
+// hanya perlu mengganti nilai variable pada class `.dark`.
+const scale = (name) =>
+  Object.fromEntries(shades.map((s) => [s, `rgb(var(--${name}-${s}) / <alpha-value>)`]));
+
 export default {
+  darkMode: 'class',
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
       colors: {
-        // Single brand hue (blue). Dipakai untuk aksi utama, fokus, dan status aktif.
-        brand: {
-          50: '#EFF6FF',
-          100: '#DBEAFE',
-          200: '#BFDBFE',
-          300: '#93C5FD',
-          400: '#60A5FA',
-          500: '#3B82F6',
-          600: '#2563EB',
-          700: '#1D4ED8',
-          800: '#1E40AF',
-          900: '#1E3A8A',
-        },
+        slate: scale('slate'),
+        brand: scale('brand'),
+        emerald: scale('emerald'),
+        amber: scale('amber'),
+        rose: scale('rose'),
+        red: scale('red'),
         // Warna semantik fisika (dipakai pada simulasi SVG & legenda)
         flux: '#0891B2',
         emf: '#D97706',

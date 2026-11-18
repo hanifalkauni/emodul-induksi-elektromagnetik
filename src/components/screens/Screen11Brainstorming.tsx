@@ -45,7 +45,7 @@ export const Screen11Brainstorming: React.FC = () => {
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-slate-200 pb-5">
           <div className="space-y-1.5">
             <div className="badge inline-flex items-center gap-2 px-3 py-1 bg-brand-50 border-brand-200 text-brand-700 text-xs font-mono font-bold">
-              <Lightbulb className="w-4 h-4 text-brand-600" />
+              <Lightbulb className="w-4 h-4 text-brand-700" />
               <span>Papan Ide Digital • Penguatan Kreativitas</span>
             </div>
             <h1 className="text-2xl sm:text-3xl font-display font-bold text-slate-900">
@@ -186,7 +186,7 @@ export const Screen11Brainstorming: React.FC = () => {
                       onClick={() => voteIdea(item.id)}
                       className="btn btn-secondary px-3 py-1 min-h-0 h-8 text-xs"
                     >
-                      <ThumbsUp className="w-3.5 h-3.5 text-brand-600" />
+                      <ThumbsUp className="w-3.5 h-3.5 text-brand-700" />
                       <span className="font-mono">{item.votes}</span>
                     </button>
 

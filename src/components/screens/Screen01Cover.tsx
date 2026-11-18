@@ -162,7 +162,7 @@ export const Screen01Cover: React.FC = () => {
           <div className="lg:col-span-6 space-y-5">
             <div className="flex flex-wrap items-center gap-2">
               <span className="badge inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-brand-50 border-brand-200 text-brand-700 text-xs font-bold font-mono">
-                <Sparkles className="w-3.5 h-3.5 text-brand-600" />
+                <Sparkles className="w-3.5 h-3.5 text-brand-700" />
                 <span>PLATFORM BELAJAR FISIKA STEM</span>
               </span>
               <span className="badge inline-flex items-center gap-1.5 px-3 py-1 bg-slate-50 text-slate-700 text-xs font-semibold">
@@ -173,7 +173,7 @@ export const Screen01Cover: React.FC = () => {
 
             <h1 className="text-3xl sm:text-5xl font-display font-bold leading-tight text-slate-900 tracking-tight">
               E-Modul Interaktif <br />
-              <span className="text-brand-600">
+              <span className="text-brand-700">
                 Induksi Elektromagnetik
               </span>
             </h1>
@@ -190,15 +190,15 @@ export const Screen01Cover: React.FC = () => {
             {/* Quick Feature Badges */}
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 pt-1 text-xs font-medium text-slate-700">
               <div className="p-2.5 rounded-lg bg-white border border-slate-200 flex items-center gap-2">
-                <Zap className="w-4 h-4 text-brand-600 shrink-0" />
+                <Zap className="w-4 h-4 text-brand-700 shrink-0" />
                 <span>Simulasi Interaktif</span>
               </div>
               <div className="p-2.5 rounded-lg bg-white border border-slate-200 flex items-center gap-2">
-                <FlaskConical className="w-4 h-4 text-brand-600 shrink-0" />
+                <FlaskConical className="w-4 h-4 text-brand-700 shrink-0" />
                 <span>Virtual Lab Kit</span>
               </div>
               <div className="p-2.5 rounded-lg bg-white border border-slate-200 flex items-center gap-2">
-                <Award className="w-4 h-4 text-brand-600 shrink-0" />
+                <Award className="w-4 h-4 text-brand-700 shrink-0" />
                 <span>Portofolio LKPD</span>
               </div>
             </div>
@@ -321,7 +321,7 @@ export const Screen01Cover: React.FC = () => {
 
             <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 text-[11px] text-slate-600 font-medium px-1">
               <span className="flex items-center gap-1.5">
-                <Lightbulb className="w-3.5 h-3.5 text-brand-600" />
+                <Lightbulb className="w-3.5 h-3.5 text-brand-700" />
                 <span>Magnet keluar-masuk memicu fluks dan arus listrik</span>
               </span>
               <span className="text-emerald-600 font-mono font-bold">▲ Panah Hijau: Arah Arus I</span>
@@ -357,7 +357,7 @@ export const Screen01Cover: React.FC = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
             <label className="block space-y-1.5">
               <span className="flex items-center gap-1.5 text-xs font-bold text-slate-700">
-                <User className="w-4 h-4 text-brand-600" /> Nama Siswa
+                <User className="w-4 h-4 text-brand-700" /> Nama Siswa
               </span>
               <input
                 type="text"
@@ -370,7 +370,7 @@ export const Screen01Cover: React.FC = () => {
 
             <label className="block space-y-1.5">
               <span className="flex items-center gap-1.5 text-xs font-bold text-slate-700">
-                <GraduationCap className="w-4 h-4 text-brand-600" /> Kelas
+                <GraduationCap className="w-4 h-4 text-brand-700" /> Kelas
               </span>
               <input
                 type="text"
@@ -383,7 +383,7 @@ export const Screen01Cover: React.FC = () => {
 
             <label className="block space-y-1.5">
               <span className="flex items-center gap-1.5 text-xs font-bold text-slate-700">
-                <Users className="w-4 h-4 text-brand-600" /> Kelompok
+                <Users className="w-4 h-4 text-brand-700" /> Kelompok
               </span>
               <input
                 type="text"
@@ -396,7 +396,7 @@ export const Screen01Cover: React.FC = () => {
 
             <label className="block space-y-1.5">
               <span className="flex items-center gap-1.5 text-xs font-bold text-slate-700">
-                <Building2 className="w-4 h-4 text-brand-600" /> Sekolah
+                <Building2 className="w-4 h-4 text-brand-700" /> Sekolah
               </span>
               <input
                 type="text"
@@ -469,13 +469,13 @@ export const Screen01Cover: React.FC = () => {
 
                   <div className="flex items-start gap-3">
                     <div className="w-10 h-10 rounded-lg bg-brand-50 border border-brand-200 flex items-center justify-center shrink-0">
-                      <Icon className="w-5 h-5 text-brand-600" />
+                      <Icon className="w-5 h-5 text-brand-700" />
                     </div>
                     <div>
                       <h3 className="font-display font-bold text-slate-900 text-base leading-snug">
                         {item.title}
                       </h3>
-                      <span className="text-[11px] font-semibold text-brand-600">
+                      <span className="text-[11px] font-semibold text-brand-700">
                         {item.badge}
                       </span>
                     </div>
@@ -486,7 +486,7 @@ export const Screen01Cover: React.FC = () => {
                   </p>
                 </div>
 
-                <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-semibold text-brand-600">
+                <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-semibold text-brand-700">
                   <span>Lihat Detail Materi</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </div>
@@ -526,7 +526,7 @@ export const Screen01Cover: React.FC = () => {
         <div className="space-y-2 p-5 rounded-xl bg-white border border-slate-200">
           <div className="flex items-center justify-between text-xs font-bold">
             <span className="text-slate-700">Progres Keseluruhan E-Modul</span>
-            <span className="font-mono text-brand-600">{state.visitedScreens.length} / 17 Layar ({Math.round((state.visitedScreens.length / 17) * 100)}%)</span>
+            <span className="font-mono text-brand-700">{state.visitedScreens.length} / 17 Layar ({Math.round((state.visitedScreens.length / 17) * 100)}%)</span>
           </div>
           <div className="w-full h-3 bg-slate-200 rounded-full overflow-hidden">
             <div
@@ -586,7 +586,7 @@ export const Screen01Cover: React.FC = () => {
       <section className="space-y-6">
         <div className="text-center max-w-2xl mx-auto space-y-2">
           <div className="badge inline-flex items-center gap-1.5 px-3 py-1 bg-brand-50 border-brand-200 text-brand-700 text-xs font-bold font-mono">
-            <Star className="w-3.5 h-3.5 text-brand-600 fill-brand-600" />
+            <Star className="w-3.5 h-3.5 text-brand-700 fill-brand-700" />
             <span>TESTIMONI PEMBELAJARAN</span>
           </div>
           <h2 className="text-2xl sm:text-3xl font-display font-bold text-slate-900">

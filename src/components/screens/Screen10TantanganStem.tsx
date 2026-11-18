@@ -27,7 +27,7 @@ export const Screen10TantanganStem: React.FC = () => {
         {/* Hero Mission Banner */}
         <div className="rounded-xl bg-slate-50 border border-slate-200 p-6 space-y-3">
           <div className="badge inline-flex items-center gap-2 px-3 py-1 bg-brand-50 border-brand-200 text-brand-700 text-xs font-mono font-bold">
-            <Rocket className="w-4 h-4 text-brand-600" />
+            <Rocket className="w-4 h-4 text-brand-700" />
             <span>ENGINEERING DESIGN PROCESS (EDP) • TAHAP 1</span>
           </div>
           <h1 className="text-2xl sm:text-4xl font-display font-bold text-slate-900">
@@ -42,7 +42,7 @@ export const Screen10TantanganStem: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           <div className="p-5 card space-y-2.5">
             <div className="flex items-center gap-2 text-xs font-mono font-bold text-slate-600 uppercase">
-              <AlertCircle className="w-4 h-4 text-brand-600" />
+              <AlertCircle className="w-4 h-4 text-brand-700" />
               <span>Masalah Dunia Nyata</span>
             </div>
             <h2 className="text-lg font-display font-bold text-slate-900">Kebutuhan Sumber Energi Sekolah</h2>
@@ -53,7 +53,7 @@ export const Screen10TantanganStem: React.FC = () => {
 
           <div className="p-5 card space-y-2.5">
             <div className="flex items-center gap-2 text-xs font-mono font-bold text-brand-700 uppercase">
-              <Rocket className="w-4 h-4 text-brand-600" />
+              <Rocket className="w-4 h-4 text-brand-700" />
               <span>Tantangan Kelompok</span>
             </div>
             <h2 className="text-lg font-display font-bold text-slate-900">Optimasi Efektivitas Generator</h2>
@@ -67,7 +67,7 @@ export const Screen10TantanganStem: React.FC = () => {
         <div className="p-5 card space-y-4">
           <div className="flex items-center justify-between flex-wrap gap-2">
             <div className="flex items-center gap-2 text-sm font-display font-bold text-slate-900">
-              <ShieldCheck className="w-5 h-5 text-brand-600" />
+              <ShieldCheck className="w-5 h-5 text-brand-700" />
               <span>Batasan Desain (Engineering Constraints)</span>
             </div>
             <span className="text-xs font-mono font-bold text-brand-700 bg-brand-50 px-2.5 py-1 rounded-full border border-brand-200">
@@ -90,7 +90,7 @@ export const Screen10TantanganStem: React.FC = () => {
                   }`}
                 >
                   {checked ? (
-                    <CheckSquare className="w-5 h-5 text-brand-600 shrink-0 mt-0.5" />
+                    <CheckSquare className="w-5 h-5 text-brand-700 shrink-0 mt-0.5" />
                   ) : (
                     <Square className="w-5 h-5 text-slate-400 shrink-0 mt-0.5" />
                   )}

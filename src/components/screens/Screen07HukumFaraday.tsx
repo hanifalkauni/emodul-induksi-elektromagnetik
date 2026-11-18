@@ -32,7 +32,7 @@ export const Screen07HukumFaraday: React.FC = () => {
       <div className="card p-6 sm:p-8 space-y-6">
         <div className="space-y-2">
           <div className="badge inline-flex items-center gap-2 px-3.5 py-1.5 bg-brand-50 border-brand-200 text-brand-700 text-xs font-bold font-mono">
-            <Zap className="w-4 h-4 text-brand-600" />
+            <Zap className="w-4 h-4 text-brand-700" />
             <span>EKSPLORASI KONSEP • HUKUM FARADAY</span>
           </div>
           <h1 className="text-2xl sm:text-4xl font-display font-bold text-slate-900">
@@ -130,7 +130,7 @@ export const Screen07HukumFaraday: React.FC = () => {
           <div className="lg:col-span-7 rounded-xl bg-slate-50 border border-slate-200 p-5 space-y-4">
             <div className="flex items-center justify-between flex-wrap gap-2">
               <span className="flex items-center gap-2 text-xs font-mono font-bold text-brand-700">
-                <Gauge className="w-4 h-4 text-brand-600" />
+                <Gauge className="w-4 h-4 text-brand-700" />
                 <span>GALVANOMETER & SIMULASI GGL INDUKSI</span>
               </span>
               <span className="font-mono text-sm font-bold text-brand-700 bg-white px-3 py-1 rounded-lg border border-slate-200">

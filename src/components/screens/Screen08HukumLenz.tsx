@@ -23,7 +23,7 @@ export const Screen08HukumLenz: React.FC = () => {
       <div className="card p-6 sm:p-8 space-y-6">
         <div className="space-y-2">
           <div className="badge inline-flex items-center gap-2 px-3.5 py-1.5 bg-brand-50 border-brand-200 text-brand-700 text-xs font-bold font-mono">
-            <Compass className="w-4 h-4 text-brand-600" />
+            <Compass className="w-4 h-4 text-brand-700" />
             <span>EKSPLORASI KONSEP • HUKUM LENZ</span>
           </div>
           <h1 className="text-2xl sm:text-4xl font-display font-bold text-slate-900">
@@ -107,7 +107,7 @@ export const Screen08HukumLenz: React.FC = () => {
                   Magnet kutub <strong>{state.lenzPole === 'N' ? 'Utara (U)' : 'Selatan (S)'}</strong> sedang{' '}
                   <strong>{state.lenzMotion === 'approach' ? 'didekatkan (fluks bertambah)' : 'dijauhkan (fluks berkurang)'}</strong>.
                   Untuk menentangnya, sisi kumparan membentuk kutub{' '}
-                  <strong className={facingInducedPole === 'N' ? 'text-red-600' : 'text-brand-600'}>
+                  <strong className={facingInducedPole === 'N' ? 'text-red-600' : 'text-brand-700'}>
                     {facingInducedPole === 'N' ? 'Utara (U)' : 'Selatan (S)'}
                   </strong>{' '}
                   sehingga arus induksi mengalir{' '}
@@ -124,7 +124,7 @@ export const Screen08HukumLenz: React.FC = () => {
               <img
                 src="/media/image5.png"
                 alt="Diagram Arah Arus Induksi Hukum Lenz"
-                className="w-full rounded-lg bg-white border border-slate-200 object-contain max-h-44"
+                className="w-full rounded-lg bg-[#fff] border border-slate-200 object-contain max-h-44"
               />
             </div>
           </div>
@@ -134,7 +134,7 @@ export const Screen08HukumLenz: React.FC = () => {
             <div className="flex items-center justify-between text-xs font-mono">
               <span className="text-brand-700 font-bold">SIMULASI VEKTOR HUKUM LENZ</span>
               <span className="inline-flex items-center gap-1.5 text-slate-800 font-bold">
-                {isCCW ? <RotateCcw className="w-3.5 h-3.5 text-brand-600" /> : <RotateCw className="w-3.5 h-3.5 text-brand-600" />}
+                {isCCW ? <RotateCcw className="w-3.5 h-3.5 text-brand-700" /> : <RotateCw className="w-3.5 h-3.5 text-brand-700" />}
                 <span>{isCCW ? 'Arus Berlawanan Jarum Jam' : 'Arus Searah Jarum Jam'}</span>
               </span>
             </div>

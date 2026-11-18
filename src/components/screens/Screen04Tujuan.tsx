@@ -34,7 +34,7 @@ export const Screen04Tujuan: React.FC = () => {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-5">
           <div className="space-y-1.5">
             <div className="badge inline-flex items-center gap-2 px-3 py-1 bg-brand-50 border-brand-200 text-brand-700 text-xs font-bold font-mono">
-              <Target className="w-4 h-4 text-brand-600" />
+              <Target className="w-4 h-4 text-brand-700" />
               <span>CAPAIAN KOMPETENSI BELAJAR</span>
             </div>
             <h1 className="text-2xl sm:text-4xl font-display font-bold text-slate-900">
@@ -46,7 +46,7 @@ export const Screen04Tujuan: React.FC = () => {
           </div>
 
           <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 flex items-center gap-3 shrink-0">
-            <Award className="w-8 h-8 text-brand-600" />
+            <Award className="w-8 h-8 text-brand-700" />
             <div>
               <div className="text-[11px] font-mono font-bold text-slate-600">Pencapaian Mandiri</div>
               <div className="text-xl font-mono font-bold text-brand-700">
@@ -71,7 +71,7 @@ export const Screen04Tujuan: React.FC = () => {
                 }`}
               >
                 {checked ? (
-                  <CheckSquare className="w-5 h-5 text-brand-600 shrink-0 mt-0.5" />
+                  <CheckSquare className="w-5 h-5 text-brand-700 shrink-0 mt-0.5" />
                 ) : (
                   <Square className="w-5 h-5 text-slate-400 shrink-0 mt-0.5" />
                 )}

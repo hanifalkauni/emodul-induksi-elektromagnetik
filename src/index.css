@@ -3,10 +3,11 @@
 @tailwind utilities;
 
 /* =========================================================
-   E-MODUL DESIGN SYSTEM — "Clean Academic" (white base)
+   E-MODUL DESIGN SYSTEM — "Clean Academic" (terang & gelap)
    Style   : Minimalism & Swiss (ui-ux-pro-max)
-   Base    : #FFFFFF, teks slate-900, satu warna brand (blue-600)
-   Surface : putih + border 1px slate-200, radius 12px, tanpa gradient
+   Mode    : terang (default, basis putih) + gelap (class `.dark` pada <html>)
+   Token   : src/theme-tokens.css (CSS variable per warna), dibaca tailwind.config.js
+   Surface : border 1px, radius 12px, tanpa gradient
    Font    : Outfit (judul) / Work Sans (isi) / JetBrains Mono (angka & label)
    Sumber kebenaran: design-system/e-modul/MASTER.md
    ========================================================= */
@@ -14,33 +15,23 @@
 @layer base {
   :root {
     color-scheme: light;
-    --color-bg: #ffffff;
-    --color-surface: #ffffff;
-    --color-subtle: #f8fafc;
-    --color-border: #e2e8f0;
-    --color-border-strong: #cbd5e1;
-    --color-text: #0f172a;
-    --color-text-muted: #475569;
-    --color-brand: #2563eb;
-    --color-brand-hover: #1d4ed8;
-    --color-brand-soft: #eff6ff;
-    --color-success: #059669;
-    --color-warning: #d97706;
-    --color-danger: #dc2626;
-    --radius-card: 12px;
-    --radius-control: 10px;
+  }
+
+  .dark {
+    color-scheme: dark;
   }
 
   html {
     font-family: 'Work Sans', system-ui, sans-serif;
     scroll-behavior: smooth;
-    background-color: #ffffff;
+    background-color: rgb(var(--surface));
   }
 
   body {
-    background-color: #ffffff;
-    color: #0f172a;
+    background-color: rgb(var(--surface));
+    color: theme('colors.slate.900');
   }
+
 
   h1,
   h2,
@@ -58,7 +49,7 @@
   }
 
   :focus-visible {
-    outline: 2px solid #2563eb;
+    outline: 2px solid rgb(var(--focus));
     outline-offset: 2px;
   }
 
@@ -79,11 +70,15 @@
 @layer components {
   /* ---------- Surface ---------- */
   .card {
-    background-color: #ffffff;
-    border: 1px solid #e2e8f0;
+    background-color: rgb(var(--surface));
+    border: 1px solid theme('colors.slate.200');
     border-radius: 12px;
     box-shadow: 0 1px 2px 0 rgba(15, 23, 42, 0.04);
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .dark .card {
+    box-shadow: none;
   }
 
   /* Tambahan untuk kartu yang bisa diklik / interaktif */
@@ -92,13 +87,13 @@
   }
 
   .card-hover:hover {
-    border-color: #93c5fd;
+    border-color: theme('colors.brand.400');
     box-shadow: 0 4px 12px -2px rgba(15, 23, 42, 0.08);
   }
 
   .card-tint {
-    background-color: #f8fafc;
-    border-color: #e2e8f0;
+    background-color: theme('colors.slate.50');
+    border-color: theme('colors.slate.200');
   }
 
   /* ---------- Buttons ---------- */
@@ -145,37 +140,37 @@
   }
 
   .btn-secondary {
-    background-color: #ffffff;
-    color: #0f172a;
-    border-color: #cbd5e1;
+    background-color: rgb(var(--surface));
+    color: theme('colors.slate.900');
+    border-color: theme('colors.slate.300');
   }
 
   .btn-secondary:hover:not(:disabled) {
-    background-color: #f8fafc;
-    border-color: #94a3b8;
+    background-color: theme('colors.slate.50');
+    border-color: theme('colors.slate.400');
   }
 
   /* ---------- Form ---------- */
   .input {
     border-radius: 10px;
-    background-color: #ffffff;
-    border: 1px solid #cbd5e1;
-    color: #0f172a;
+    background-color: rgb(var(--surface));
+    border: 1px solid theme('colors.slate.300');
+    color: theme('colors.slate.900');
     transition: border-color 0.15s ease, box-shadow 0.15s ease;
   }
 
   .input::placeholder {
-    color: #94a3b8;
+    color: theme('colors.slate.400');
   }
 
   .input:hover {
-    border-color: #94a3b8;
+    border-color: theme('colors.slate.400');
   }
 
   .input:focus {
-    border-color: #2563eb;
+    border-color: rgb(var(--focus));
     outline: none;
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.18);
+    box-shadow: 0 0 0 3px rgb(var(--focus) / 0.25);
   }
 
   /* ---------- Badge ---------- */
@@ -183,13 +178,13 @@
     display: inline-flex;
     align-items: center;
     border-radius: 9999px;
-    border: 1px solid #e2e8f0;
+    border: 1px solid theme('colors.slate.200');
   }
 
-  /* ---------- Simulation viewport (kanvas terang) ---------- */
+  /* ---------- Simulation viewport ---------- */
   .sim-canvas {
-    background-color: #f8fafc;
-    border: 1px solid #e2e8f0;
+    background-color: theme('colors.slate.50');
+    border: 1px solid theme('colors.slate.200');
     border-radius: 12px;
   }
 
@@ -199,7 +194,7 @@
     appearance: none;
     height: 6px;
     border-radius: 9999px;
-    background: #e2e8f0;
+    background: theme('colors.slate.200');
     outline: none;
     cursor: pointer;
   }
@@ -211,14 +206,14 @@
     height: 20px;
     border-radius: 50%;
     background: #2563eb;
-    border: 3px solid #ffffff;
+    border: 3px solid rgb(var(--surface));
     box-shadow: 0 0 0 1px #2563eb, 0 1px 3px rgba(15, 23, 42, 0.25);
     cursor: pointer;
     transition: box-shadow 0.15s ease;
   }
 
   input[type='range'].slider::-webkit-slider-thumb:hover {
-    box-shadow: 0 0 0 1px #1d4ed8, 0 0 0 5px rgba(37, 99, 235, 0.18);
+    box-shadow: 0 0 0 1px #1d4ed8, 0 0 0 5px rgb(var(--focus) / 0.25);
   }
 
   input[type='range'].slider::-moz-range-thumb {
@@ -226,14 +221,68 @@
     height: 16px;
     border-radius: 50%;
     background: #2563eb;
-    border: 3px solid #ffffff;
+    border: 3px solid rgb(var(--surface));
     box-shadow: 0 0 0 1px #2563eb, 0 1px 3px rgba(15, 23, 42, 0.25);
     cursor: pointer;
   }
 
   input[type='range'].slider:focus-visible::-webkit-slider-thumb {
-    box-shadow: 0 0 0 1px #1d4ed8, 0 0 0 5px rgba(37, 99, 235, 0.3);
+    box-shadow: 0 0 0 1px #1d4ed8, 0 0 0 5px rgb(var(--focus) / 0.4);
   }
+}
+
+/* Permukaan "putih" mengikuti mode. Di luar @layer agar menang atas utilitas Tailwind.
+   Gunakan bg-[#fff] bila elemen harus selalu putih (kertas sketsa, gambar, QR). */
+.bg-white {
+  background-color: rgb(var(--surface));
+}
+
+/* =========================================================
+   SIMULASI SVG — penyesuaian mode gelap
+   Atribut warna terang pada SVG ditimpa lewat selector atribut.
+   Warna fisika (magnet, medan, kumparan, arus) dibiarkan.
+   ========================================================= */
+
+.dark svg [fill='#F1F5F9'] {
+  fill: #1e293b;
+}
+.dark svg [stroke='#CBD5E1'] {
+  stroke: #334155;
+}
+.dark svg rect[fill='#FFFFFF'] {
+  fill: #0f172a;
+}
+.dark svg [fill='#E2E8F0'] {
+  fill: #334155;
+}
+.dark svg text[fill='#334155'],
+.dark svg text[fill='#475569'] {
+  fill: #cbd5e1;
+}
+.dark svg text[fill='#64748B'] {
+  fill: #94a3b8;
+}
+.dark svg text[fill='#B45309'] {
+  fill: #fbbf24;
+}
+.dark svg text[fill='#1D4ED8'] {
+  fill: #93c5fd;
+}
+.dark svg text[fill='#047857'] {
+  fill: #34d399;
+}
+.dark svg [fill='#ECFDF5'] {
+  fill: #064e3b;
+}
+.dark svg circle[fill='#0F172A'] {
+  fill: #e2e8f0;
+}
+.dark svg path[stroke='#B45309'] {
+  stroke: #d97706;
+}
+.dark svg line[stroke='#475569'],
+.dark svg path[stroke='#475569'] {
+  stroke: #94a3b8;
 }
 
 /* =========================================================
@@ -246,16 +295,16 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: #f8fafc;
+  background: theme('colors.slate.50');
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
+  background: theme('colors.slate.300');
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
+  background: theme('colors.slate.400');
 }
 
 @keyframes pulse-flux {
@@ -273,6 +322,7 @@
 }
 
 @media print {
+  html,
   body {
     background: #ffffff !important;
     color: #0f172a !important;

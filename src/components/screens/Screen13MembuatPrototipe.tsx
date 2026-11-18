@@ -27,7 +27,7 @@ export const Screen13MembuatPrototipe: React.FC = () => {
       <div className="card p-6 sm:p-8 space-y-6">
         <div className="space-y-2 border-b border-slate-200 pb-5">
           <div className="badge inline-flex items-center gap-2 px-3 py-1 bg-brand-50 border-brand-200 text-brand-700 text-xs font-mono font-bold">
-            <Wrench className="w-4 h-4 text-brand-600" />
+            <Wrench className="w-4 h-4 text-brand-700" />
             <span>EDP TAHAP CREATE • MEMBUAT PROTOTIPE</span>
           </div>
           <h1 className="text-2xl sm:text-3xl font-display font-bold text-slate-900">
@@ -61,7 +61,7 @@ export const Screen13MembuatPrototipe: React.FC = () => {
             )}
 
             <label className="btn btn-secondary cursor-pointer px-4 py-2.5 text-xs focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-brand-600">
-              <Upload className="w-4 h-4 text-brand-600" />
+              <Upload className="w-4 h-4 text-brand-700" />
               <span className="truncate">{state.processPhotoName ? state.processPhotoName : 'Unggah Foto Proses'}</span>
               <input
                 type="file"
@@ -93,7 +93,7 @@ export const Screen13MembuatPrototipe: React.FC = () => {
             )}
 
             <label className="btn btn-secondary cursor-pointer px-4 py-2.5 text-xs focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-brand-600">
-              <Upload className="w-4 h-4 text-brand-600" />
+              <Upload className="w-4 h-4 text-brand-700" />
               <span className="truncate">{state.prototypePhotoName ? state.prototypePhotoName : 'Unggah Foto Prototype'}</span>
               <input
                 type="file"
@@ -137,7 +137,7 @@ export const Screen13MembuatPrototipe: React.FC = () => {
         {/* Link Unggah E-Modul / LMS */}
         <div className="p-5 rounded-xl bg-slate-50 border border-slate-200 space-y-2.5">
           <div className="flex items-center gap-2 text-sm font-display font-bold text-slate-900">
-            <Link2 className="w-4 h-4 text-brand-600" />
+            <Link2 className="w-4 h-4 text-brand-700" />
             <span>Link Unggah ke E-Modul / LMS Kelas</span>
           </div>
           <p className="text-xs text-slate-600 font-medium">

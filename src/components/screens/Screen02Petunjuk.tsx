@@ -80,7 +80,7 @@ export const Screen02Petunjuk: React.FC = () => {
         <div className="flex items-start justify-between gap-4 flex-wrap">
           <div className="space-y-2">
             <div className="badge inline-flex items-center gap-2 px-3.5 py-1.5 bg-brand-50 border-brand-200 text-brand-700 text-xs font-bold font-mono">
-              <Compass className="w-4 h-4 text-brand-600" />
+              <Compass className="w-4 h-4 text-brand-700" />
               <span>PANDUAN NAVIGASI E-MODUL</span>
             </div>
             <h1 className="text-2xl sm:text-4xl font-display font-bold text-slate-900">
@@ -116,7 +116,7 @@ export const Screen02Petunjuk: React.FC = () => {
                     <Icon className={`w-6 h-6 ${item.color}`} />
                   </div>
                   <div>
-                    <h3 className="text-lg font-display font-bold text-slate-900 group-hover:text-brand-600 transition">
+                    <h3 className="text-lg font-display font-bold text-slate-900 group-hover:text-brand-700 transition">
                       {item.name}
                     </h3>
                     <p className="mt-1.5 text-xs sm:text-sm font-medium text-slate-600 leading-relaxed">

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Home,
   PlayCircle,
@@ -16,6 +16,8 @@ import {
   RotateCcw,
   Zap,
   Map,
+  Sun,
+  Moon,
 } from 'lucide-react';
 import { SCREENS, useModul } from '../../context/ModulContext';
 import { NavPillar } from '../../types/emodul';
@@ -33,6 +35,20 @@ const PILLAR_NAV: { id: NavPillar; label: string; icon: React.ComponentType<{ cl
 export const AppShell: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { state, setScreen, nextScreen, prevScreen, loadDemoData, resetAllData, completionPercent } = useModul();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  // Tema: terang (default) atau gelap. Disimpan di localStorage dan diterapkan sebagai class .dark pada <html>.
+  const [theme, setTheme] = useState<'light' | 'dark'>(() =>
+    document.documentElement.classList.contains('dark') ? 'dark' : 'light'
+  );
+
+  useEffect(() => {
+    document.documentElement.classList.toggle('dark', theme === 'dark');
+    try {
+      localStorage.setItem('emodul_theme', theme);
+    } catch {
+      // abaikan jika penyimpanan tidak tersedia
+    }
+  }, [theme]);
 
   const isIdentityFilled =
     Boolean(state.identity.studentName?.trim()) &&
@@ -114,11 +130,25 @@ export const AppShell: React.FC<{ children: React.ReactNode }> = ({ children }) 
           <div className="flex items-center gap-2">
             <button
               type="button"
+              onClick={() => setTheme((t) => (t === 'dark' ? 'light' : 'dark'))}
+              title={theme === 'dark' ? 'Beralih ke mode terang' : 'Beralih ke mode gelap'}
+              aria-label={theme === 'dark' ? 'Beralih ke mode terang' : 'Beralih ke mode gelap'}
+              aria-pressed={theme === 'dark'}
+              className="btn btn-secondary p-2 min-h-0 w-9 h-9"
+            >
+              {theme === 'dark' ? (
+                <Sun className="w-4 h-4 text-amber-500" aria-hidden="true" />
+              ) : (
+                <Moon className="w-4 h-4 text-slate-600" aria-hidden="true" />
+              )}
+            </button>
+            <button
+              type="button"
               onClick={() => handleNavigateScreen(3)}
               title="Peta Perjalanan Belajar"
               className="hidden sm:inline-flex btn btn-secondary px-3 py-1.5 min-h-0 h-9 text-xs"
             >
-              <Map className="w-4 h-4 text-brand-600" aria-hidden="true" />
+              <Map className="w-4 h-4 text-brand-700" aria-hidden="true" />
               <span>Peta Belajar</span>
             </button>
 
@@ -268,7 +298,7 @@ export const AppShell: React.FC<{ children: React.ReactNode }> = ({ children }) 
         {sidebarOpen && (
           <div
             onClick={() => setSidebarOpen(false)}
-            className="fixed inset-0 z-40 bg-slate-900/30 lg:hidden"
+            className="fixed inset-0 z-40 bg-black/40 lg:hidden"
           />
         )}
 

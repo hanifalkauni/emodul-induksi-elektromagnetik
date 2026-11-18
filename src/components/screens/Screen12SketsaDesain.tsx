@@ -74,7 +74,7 @@ export const Screen12SketsaDesain: React.FC = () => {
       <div className="card p-6 sm:p-8 space-y-6">
         <div className="space-y-1.5 border-b border-slate-200 pb-5">
           <div className="badge inline-flex items-center gap-2 px-3 py-1 bg-brand-50 border-brand-200 text-brand-700 text-xs font-mono font-bold">
-            <PencilRuler className="w-4 h-4 text-brand-600" />
+            <PencilRuler className="w-4 h-4 text-brand-700" />
             <span>EDP TAHAP PLAN • SKETSA DESAIN</span>
           </div>
           <h1 className="text-2xl sm:text-3xl font-display font-bold text-slate-900">
@@ -166,7 +166,7 @@ export const Screen12SketsaDesain: React.FC = () => {
               onPointerMove={moveDraw}
               onPointerUp={endDraw}
               onPointerLeave={endDraw}
-              className="w-full h-56 rounded-xl bg-white border border-slate-300 cursor-crosshair touch-none"
+              className="w-full h-56 rounded-xl bg-[#fff] border border-slate-300 cursor-crosshair touch-none"
             />
             <p className="text-[11px] font-medium text-slate-600">
               Goreskan sketsa desain langsung di kanvas putih di atas, atau unggah foto sketsa kertas kelompokmu di bawah ini.
@@ -174,7 +174,7 @@ export const Screen12SketsaDesain: React.FC = () => {
 
             <div className="space-y-3 pt-2 border-t border-slate-200">
               <label className="btn btn-secondary cursor-pointer w-full px-5 py-3 text-xs focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-brand-600">
-                <Upload className="w-4 h-4 text-brand-600" />
+                <Upload className="w-4 h-4 text-brand-700" />
                 <span>Unggah Foto Desain (JPG / PNG)</span>
                 <input type="file" accept="image/*" onChange={handlePhotoUpload} className="sr-only" />
               </label>
@@ -188,7 +188,7 @@ export const Screen12SketsaDesain: React.FC = () => {
                   <img
                     src={state.designSketchDataUrl}
                     alt="Pratinjau Sketsa Desain Generator"
-                    className="w-full max-h-36 object-contain rounded-lg bg-white border border-slate-200"
+                    className="w-full max-h-36 object-contain rounded-lg bg-[#fff] border border-slate-200"
                   />
                 </div>
               )}

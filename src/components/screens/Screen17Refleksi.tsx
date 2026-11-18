@@ -41,7 +41,7 @@ export const Screen17Refleksi: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 border-b border-slate-200 pb-6 items-center">
           <div className="lg:col-span-8 space-y-2">
             <div className="badge inline-flex items-center gap-2 px-3.5 py-1.5 bg-brand-50 border-brand-200 text-brand-700 text-xs font-bold font-mono">
-              <RefreshCw className="w-4 h-4 text-brand-600" />
+              <RefreshCw className="w-4 h-4 text-brand-700" />
               <span>REFLEKSI PEMBELAJARAN & PENILAIAN DIRI</span>
             </div>
             <h1 className="text-2xl sm:text-4xl font-display font-bold text-slate-900">
@@ -72,7 +72,7 @@ export const Screen17Refleksi: React.FC = () => {
 
           {/* Crisp Vector QR Code Placeholder Representing Class Barcode */}
           <div className="lg:col-span-4 flex flex-col items-center p-5 rounded-xl bg-slate-50 border border-slate-200 gap-2">
-            <div className="p-3.5 rounded-xl bg-white border border-slate-200 text-slate-900">
+            <div className="p-3.5 rounded-xl bg-[#fff] border border-slate-200 text-[#0f172a]">
               <QrCode className="w-20 h-20" strokeWidth={1.8} />
             </div>
             <span className="text-[11px] font-mono font-bold text-slate-600 text-center">
@@ -219,7 +219,7 @@ export const Screen17Refleksi: React.FC = () => {
         {/* Export Complete Portfolio CTA */}
         <div className="p-5 rounded-xl bg-slate-50 border border-slate-200 flex flex-wrap items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <Award className="w-8 h-8 text-brand-600 shrink-0" />
+            <Award className="w-8 h-8 text-brand-700 shrink-0" />
             <div>
               <div className="text-sm font-display font-bold text-slate-900">
                 Selesaikan & Cetak Portofolio Pembelajaran (PDF)

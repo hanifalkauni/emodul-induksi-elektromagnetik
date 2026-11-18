@@ -50,7 +50,7 @@ export const Screen09EksperimenKit: React.FC = () => {
         {/* Header */}
         <div className="space-y-2">
           <div className="badge inline-flex items-center gap-2 px-3.5 py-1.5 bg-brand-50 border-brand-200 text-brand-700 text-xs font-bold font-mono">
-            <FlaskConical className="w-4 h-4 text-brand-600" />
+            <FlaskConical className="w-4 h-4 text-brand-700" />
             <span>EKSPERIMEN LEARNING KIT (STEM PRAKTIKUM)</span>
           </div>
           <h1 className="text-2xl sm:text-4xl font-display font-bold text-slate-900">
@@ -80,7 +80,7 @@ export const Screen09EksperimenKit: React.FC = () => {
                     }`}
                   >
                     {checked ? (
-                      <CheckSquare className="w-4 h-4 text-brand-600 shrink-0" />
+                      <CheckSquare className="w-4 h-4 text-brand-700 shrink-0" />
                     ) : (
                       <Square className="w-4 h-4 text-slate-400 shrink-0" />
                     )}
@@ -114,7 +114,7 @@ export const Screen09EksperimenKit: React.FC = () => {
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
               <div className="flex items-center gap-2 text-base font-display font-bold text-slate-900">
-                <Users className="w-5 h-5 text-brand-600" />
+                <Users className="w-5 h-5 text-brand-700" />
                 <span>Pembagian Peran Kolaborasi Terukur</span>
               </div>
               <p className="text-xs font-medium text-slate-600 mt-0.5">
@@ -193,7 +193,7 @@ export const Screen09EksperimenKit: React.FC = () => {
             </div>
             <div className="flex flex-col gap-2">
               <label className="btn btn-secondary cursor-pointer px-4 py-2 text-xs focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-brand-600">
-                <Upload className="w-4 h-4 text-brand-600" />
+                <Upload className="w-4 h-4 text-brand-700" />
                 <span>
                   {state.labReportFileName
                     ? `Berkas dipilih: ${state.labReportFileName}`

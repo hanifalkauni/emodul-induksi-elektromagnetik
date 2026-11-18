@@ -39,7 +39,7 @@ export const Screen14Testing: React.FC = () => {
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div className="space-y-1.5">
             <div className="badge inline-flex items-center gap-2 px-3.5 py-1.5 bg-brand-50 border-brand-200 text-brand-700 text-xs font-bold font-mono">
-              <Activity className="w-4 h-4 text-brand-600" />
+              <Activity className="w-4 h-4 text-brand-700" />
               <span>EDP TAHAP TEST • UJI DESAIN KELOMPOK</span>
             </div>
             <h1 className="text-2xl sm:text-4xl font-display font-bold text-slate-900">

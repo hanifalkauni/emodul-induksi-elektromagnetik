@@ -44,7 +44,7 @@ export const Screen06FluksMagnetik: React.FC = () => {
         {/* Header & Concept */}
         <div className="space-y-2">
           <div className="badge inline-flex items-center gap-2 px-3.5 py-1.5 bg-brand-50 border-brand-200 text-brand-700 text-xs font-bold font-mono">
-            <Atom className="w-4 h-4 text-brand-600" />
+            <Atom className="w-4 h-4 text-brand-700" />
             <span>EKSPLORASI KONSEP • BAGIAN A</span>
           </div>
           <h1 className="text-2xl sm:text-4xl font-display font-bold text-slate-900">
@@ -94,7 +94,7 @@ export const Screen06FluksMagnetik: React.FC = () => {
               </div>
               <div className="p-3.5 rounded-xl bg-white border border-slate-200 text-xs space-y-1">
                 <div className="flex items-center gap-1.5 font-bold text-brand-700">
-                  <Info className="w-4 h-4 text-brand-600" />
+                  <Info className="w-4 h-4 text-brand-700" />
                   <span>
                     {VAR_DETAILS[selectedVar].symbol} → {VAR_DETAILS[selectedVar].title} ({VAR_DETAILS[selectedVar].unit})
                   </span>
@@ -111,7 +111,7 @@ export const Screen06FluksMagnetik: React.FC = () => {
               <img
                 src="/media/image4.png"
                 alt="Visualisasi Fluks Magnetik dari Magnet ke Kumparan"
-                className="w-full rounded-xl border border-slate-200 bg-white object-contain max-h-40"
+                className="w-full rounded-xl border border-slate-200 bg-[#fff] object-contain max-h-40"
               />
             </div>
           </div>

@@ -49,7 +49,7 @@ export const Screen16Presentasi: React.FC = () => {
         <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-200 pb-5">
           <div className="space-y-1.5">
             <div className="badge inline-flex items-center gap-2 px-3 py-1 bg-brand-50 border-brand-200 text-brand-700 text-xs font-mono font-bold">
-              <Presentation className="w-4 h-4 text-brand-600" />
+              <Presentation className="w-4 h-4 text-brand-700" />
               <span>PRESENTASI KELOMPOK</span>
             </div>
             <h1 className="text-2xl sm:text-3xl font-display font-bold text-slate-900">
@@ -66,7 +66,7 @@ export const Screen16Presentasi: React.FC = () => {
               onClick={autoFillFromModule}
               className="btn btn-secondary px-4 py-2.5 text-xs"
             >
-              <Wand2 className="w-4 h-4 text-brand-600" />
+              <Wand2 className="w-4 h-4 text-brand-700" />
               <span>Isi Otomatis dari Modul</span>
             </button>
             <button
@@ -98,7 +98,7 @@ export const Screen16Presentasi: React.FC = () => {
 
         <div className="p-5 rounded-xl bg-slate-50 border border-slate-200 space-y-2.5">
           <label className="flex items-center gap-2 text-xs font-bold text-slate-800">
-            <Link2 className="w-4 h-4 text-brand-600" />
+            <Link2 className="w-4 h-4 text-brand-700" />
             <span>Tautan Slide Presentasi / Video Showcase (Canva / Google Slides):</span>
           </label>
           <input
