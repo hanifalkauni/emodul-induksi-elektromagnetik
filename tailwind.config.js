@@ -4,37 +4,37 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: {
-          DEFAULT: '#0D9488',
-          hover: '#0F766E',
-          light: '#2DD4BF',
+        // Single brand hue (blue). Dipakai untuk aksi utama, fokus, dan status aktif.
+        brand: {
+          50: '#EFF6FF',
+          100: '#DBEAFE',
+          200: '#BFDBFE',
+          300: '#93C5FD',
+          400: '#60A5FA',
+          500: '#3B82F6',
+          600: '#2563EB',
+          700: '#1D4ED8',
+          800: '#1E40AF',
+          900: '#1E3A8A',
         },
-        accent: {
-          DEFAULT: '#EA580C',
-          hover: '#C2410C',
-          light: '#FB923C',
-        },
-        lab: {
-          bg: '#0B1120',
-          surface: '#111827',
-          elevated: '#1E293B',
-          border: '#334155',
-        },
-        flux: '#06B6D4',
-        emf: '#F59E0B',
+        // Warna semantik fisika (dipakai pada simulasi SVG & legenda)
+        flux: '#0891B2',
+        emf: '#D97706',
         pole: {
-          north: '#EF4444',
-          south: '#3B82F6',
+          north: '#DC2626',
+          south: '#2563EB',
         },
-        current: '#10B981',
+        current: '#059669',
       },
       fontFamily: {
-        display: ['"Baloo 2"', '"Space Grotesk"', 'system-ui', 'sans-serif'],
-        sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
-        mono: ['"JetBrains Mono"', 'monospace'],
+        display: ['Outfit', 'system-ui', 'sans-serif'],
+        sans: ['"Work Sans"', 'system-ui', 'sans-serif'],
+        mono: ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
+      },
+      borderRadius: {
+        card: '12px',
       },
     },
   },
   plugins: [],
 };
-

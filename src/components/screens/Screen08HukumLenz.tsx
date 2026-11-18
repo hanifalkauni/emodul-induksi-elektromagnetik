@@ -20,38 +20,38 @@ export const Screen08HukumLenz: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      <div className="rounded-[32px] clay-card p-6 sm:p-8 space-y-6">
+      <div className="card p-6 sm:p-8 space-y-6">
         <div className="space-y-2">
-          <div className="clay-badge inline-flex items-center gap-2 px-3.5 py-1.5 bg-emerald-100 text-emerald-900 text-xs font-bold font-mono">
-            <Compass className="w-4 h-4 text-emerald-600" />
+          <div className="badge inline-flex items-center gap-2 px-3.5 py-1.5 bg-brand-50 border-brand-200 text-brand-700 text-xs font-bold font-mono">
+            <Compass className="w-4 h-4 text-brand-600" />
             <span>EKSPLORASI KONSEP • HUKUM LENZ</span>
           </div>
-          <h1 className="text-2xl sm:text-4xl font-display font-extrabold text-slate-900 dark:text-white">
+          <h1 className="text-2xl sm:text-4xl font-display font-bold text-slate-900">
             Hukum Lenz
           </h1>
-          <p className="text-sm font-medium text-slate-700 dark:text-slate-300 leading-relaxed max-w-3xl">
-            Menurut Lenz, <strong className="text-emerald-700 dark:text-emerald-400 font-bold">arah arus induksi selalu sedemikian rupa sehingga medan magnet yang dihasilkan menentang perubahan fluks magnetik yang menyebabkannya.</strong>
+          <p className="text-sm font-medium text-slate-700 leading-relaxed max-w-3xl">
+            Menurut Lenz, <strong className="text-brand-700 font-bold">arah arus induksi selalu sedemikian rupa sehingga medan magnet yang dihasilkan menentang perubahan fluks magnetik yang menyebabkannya.</strong>
           </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* Interactive Controls & Reference Image */}
           <div className="lg:col-span-5 space-y-4">
-            <div className="rounded-3xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-5 space-y-4 shadow-sm">
-              <div className="text-xs font-mono font-bold text-cyan-700 dark:text-cyan-400 uppercase tracking-wider">
+            <div className="rounded-xl bg-slate-50 border border-slate-200 p-5 space-y-4">
+              <div className="text-xs font-mono font-bold text-brand-700 uppercase tracking-wider">
                 ATUR SKENARIO KUTUB & GERAK MAGNET
               </div>
 
               <div className="space-y-2">
-                <div className="text-xs font-bold text-slate-800 dark:text-slate-300">1. Pilih Kutub Magnet Menghadap Kumparan:</div>
+                <div className="text-xs font-bold text-slate-800">1. Pilih Kutub Magnet Menghadap Kumparan:</div>
                 <div className="grid grid-cols-2 gap-2">
                   <button
                     type="button"
                     onClick={() => updateState('lenzPole', 'N')}
-                    className={`py-2.5 px-3 rounded-xl border text-xs font-bold transition shadow-sm ${
+                    className={`py-2.5 px-3 rounded-lg border text-xs font-bold cursor-pointer transition-colors ${
                       state.lenzPole === 'N'
-                        ? 'bg-rose-100 dark:bg-red-500/20 border-rose-400 text-rose-900 dark:text-red-200 font-extrabold ring-1 ring-rose-300'
-                        : 'bg-white dark:bg-slate-900 border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:border-slate-400'
+                        ? 'bg-brand-50 border-brand-500 text-brand-800 ring-1 ring-brand-500'
+                        : 'bg-white border-slate-300 text-slate-700 hover:border-brand-400'
                     }`}
                   >
                     Kutub Utara (U / N)
@@ -59,10 +59,10 @@ export const Screen08HukumLenz: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => updateState('lenzPole', 'S')}
-                    className={`py-2.5 px-3 rounded-xl border text-xs font-bold transition shadow-sm ${
+                    className={`py-2.5 px-3 rounded-lg border text-xs font-bold cursor-pointer transition-colors ${
                       state.lenzPole === 'S'
-                        ? 'bg-blue-100 dark:bg-blue-500/20 border-blue-400 text-blue-900 dark:text-blue-200 font-extrabold ring-1 ring-blue-300'
-                        : 'bg-white dark:bg-slate-900 border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:border-slate-400'
+                        ? 'bg-brand-50 border-brand-500 text-brand-800 ring-1 ring-brand-500'
+                        : 'bg-white border-slate-300 text-slate-700 hover:border-brand-400'
                     }`}
                   >
                     Kutub Selatan (S)
@@ -71,15 +71,15 @@ export const Screen08HukumLenz: React.FC = () => {
               </div>
 
               <div className="space-y-2">
-                <div className="text-xs font-bold text-slate-800 dark:text-slate-300">2. Pilih Arah Gerak Magnet:</div>
+                <div className="text-xs font-bold text-slate-800">2. Pilih Arah Gerak Magnet:</div>
                 <div className="grid grid-cols-2 gap-2">
                   <button
                     type="button"
                     onClick={() => updateState('lenzMotion', 'approach')}
-                    className={`py-2.5 px-3 rounded-xl border text-xs font-bold flex items-center justify-center gap-1.5 transition shadow-sm ${
+                    className={`py-2.5 px-3 rounded-lg border text-xs font-bold flex items-center justify-center gap-1.5 cursor-pointer transition-colors ${
                       state.lenzMotion === 'approach'
-                        ? 'bg-emerald-100 dark:bg-emerald-500/20 border-emerald-400 text-emerald-900 dark:text-emerald-200 font-extrabold ring-1 ring-emerald-300'
-                        : 'bg-white dark:bg-slate-900 border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:border-slate-400'
+                        ? 'bg-brand-50 border-brand-500 text-brand-800 ring-1 ring-brand-500'
+                        : 'bg-white border-slate-300 text-slate-700 hover:border-brand-400'
                     }`}
                   >
                     <span>Didekatkan</span>
@@ -88,10 +88,10 @@ export const Screen08HukumLenz: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => updateState('lenzMotion', 'recede')}
-                    className={`py-2.5 px-3 rounded-xl border text-xs font-bold flex items-center justify-center gap-1.5 transition shadow-sm ${
+                    className={`py-2.5 px-3 rounded-lg border text-xs font-bold flex items-center justify-center gap-1.5 cursor-pointer transition-colors ${
                       state.lenzMotion === 'recede'
-                        ? 'bg-amber-100 dark:bg-amber-500/20 border-amber-400 text-amber-900 dark:text-amber-200 font-extrabold ring-1 ring-amber-300'
-                        : 'bg-white dark:bg-slate-900 border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:border-slate-400'
+                        ? 'bg-brand-50 border-brand-500 text-brand-800 ring-1 ring-brand-500'
+                        : 'bg-white border-slate-300 text-slate-700 hover:border-brand-400'
                     }`}
                   >
                     <ArrowLeft className="w-3.5 h-3.5" />
@@ -101,17 +101,17 @@ export const Screen08HukumLenz: React.FC = () => {
               </div>
 
               {/* Reasoning Summary */}
-              <div className="p-3.5 rounded-xl bg-slate-900 border border-slate-800 space-y-1.5 text-xs">
-                <div className="font-semibold text-emerald-300">Hasil Analisis Hukum Lenz:</div>
-                <p className="text-slate-300 leading-relaxed">
+              <div className="p-3.5 rounded-lg bg-white border border-slate-200 space-y-1.5 text-xs">
+                <div className="font-semibold text-brand-700">Hasil Analisis Hukum Lenz:</div>
+                <p className="text-slate-700 leading-relaxed">
                   Magnet kutub <strong>{state.lenzPole === 'N' ? 'Utara (U)' : 'Selatan (S)'}</strong> sedang{' '}
                   <strong>{state.lenzMotion === 'approach' ? 'didekatkan (fluks bertambah)' : 'dijauhkan (fluks berkurang)'}</strong>.
                   Untuk menentangnya, sisi kumparan membentuk kutub{' '}
-                  <strong className={facingInducedPole === 'N' ? 'text-red-300' : 'text-blue-300'}>
+                  <strong className={facingInducedPole === 'N' ? 'text-red-600' : 'text-brand-600'}>
                     {facingInducedPole === 'N' ? 'Utara (U)' : 'Selatan (S)'}
                   </strong>{' '}
                   sehingga arus induksi mengalir{' '}
-                  <strong className="text-emerald-300">
+                  <strong className="text-slate-900">
                     {isCCW ? 'Berlawanan Arah Jarum Jam (CCW)' : 'Searah Jarum Jam (CW)'}
                   </strong>{' '}
                   bila dilihat dari sisi magnet.
@@ -119,37 +119,37 @@ export const Screen08HukumLenz: React.FC = () => {
               </div>
             </div>
 
-            <div className="rounded-2xl bg-slate-950 border border-slate-800 p-4 space-y-2">
-              <div className="text-[11px] font-mono text-slate-400">DIAGRAM REFERENSI STORYBOARD</div>
+            <div className="rounded-xl bg-slate-50 border border-slate-200 p-4 space-y-2">
+              <div className="text-[11px] font-mono font-semibold text-slate-600">DIAGRAM REFERENSI STORYBOARD</div>
               <img
                 src="/media/image5.png"
                 alt="Diagram Arah Arus Induksi Hukum Lenz"
-                className="w-full rounded-xl bg-white/95 object-contain max-h-44"
+                className="w-full rounded-lg bg-white border border-slate-200 object-contain max-h-44"
               />
             </div>
           </div>
 
           {/* Interactive SVG Animation */}
-          <div className="lg:col-span-7 rounded-3xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-5 flex flex-col justify-between space-y-4 shadow-sm">
+          <div className="lg:col-span-7 rounded-xl bg-slate-50 border border-slate-200 p-5 flex flex-col space-y-4">
             <div className="flex items-center justify-between text-xs font-mono">
-              <span className="text-emerald-700 dark:text-emerald-400 font-bold">SIMULASI VEKTOR HUKUM LENZ</span>
-              <span className="inline-flex items-center gap-1.5 text-slate-800 dark:text-slate-300 font-bold">
-                {isCCW ? <RotateCcw className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" /> : <RotateCw className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />}
+              <span className="text-brand-700 font-bold">SIMULASI VEKTOR HUKUM LENZ</span>
+              <span className="inline-flex items-center gap-1.5 text-slate-800 font-bold">
+                {isCCW ? <RotateCcw className="w-3.5 h-3.5 text-brand-600" /> : <RotateCw className="w-3.5 h-3.5 text-brand-600" />}
                 <span>{isCCW ? 'Arus Berlawanan Jarum Jam' : 'Arus Searah Jarum Jam'}</span>
               </span>
             </div>
 
-            <div className="rounded-2xl p-2.5 bg-[#070B14] border-2 border-slate-800 shadow-inner">
-              <svg viewBox="0 0 460 240" className="w-full h-auto rounded-xl bg-[#070B14]">
+            <div className="sim-canvas p-2.5">
+              <svg viewBox="0 0 460 240" className="w-full h-auto">
               {/* Coil Back Shell & Back Windings */}
               <g transform="translate(245, 117)">
-                <rect x="-12" y="-56" width="135" height="112" rx="14" fill="#1E293B" fillOpacity="0.45" stroke="#334155" />
+                <rect x="-12" y="-56" width="135" height="112" rx="14" fill="#F1F5F9" stroke="#CBD5E1" />
                 {[0, 1, 2, 3, 4, 5].map((i) => (
                   <path
                     key={`back-${i}`}
                     d={`M ${i * 20} -42 A 8 42 0 0 0 ${i * 20} 42`}
                     fill="none"
-                    stroke="#92400E"
+                    stroke="#B45309"
                     strokeWidth="3.5"
                   />
                 ))}
@@ -163,7 +163,7 @@ export const Screen08HukumLenz: React.FC = () => {
                   width="55"
                   height="38"
                   rx="4"
-                  fill={state.lenzPole === 'N' ? '#3B82F6' : '#EF4444'}
+                  fill={state.lenzPole === 'N' ? '#2563EB' : '#DC2626'}
                 />
                 <rect
                   x="85"
@@ -171,7 +171,7 @@ export const Screen08HukumLenz: React.FC = () => {
                   width="55"
                   height="38"
                   rx="4"
-                  fill={state.lenzPole === 'N' ? '#EF4444' : '#3B82F6'}
+                  fill={state.lenzPole === 'N' ? '#DC2626' : '#2563EB'}
                 />
                 <text x="57" y="123" textAnchor="middle" fill="#fff" fontSize="15" fontWeight="bold" fontFamily="JetBrains Mono">
                   {state.lenzPole === 'N' ? 'S' : 'U'}
@@ -183,15 +183,15 @@ export const Screen08HukumLenz: React.FC = () => {
                 {/* Velocity Arrow */}
                 {state.lenzMotion === 'approach' ? (
                   <g>
-                    <line x1="65" y1="75" x2="125" y2="75" stroke="#10B981" strokeWidth="3" />
-                    <polygon points="133,75 122,69 122,81" fill="#10B981" />
-                    <text x="95" y="64" textAnchor="middle" fill="#10B981" fontSize="10" fontFamily="JetBrains Mono">v (Mendekat)</text>
+                    <line x1="65" y1="75" x2="125" y2="75" stroke="#059669" strokeWidth="3" />
+                    <polygon points="133,75 122,69 122,81" fill="#059669" />
+                    <text x="95" y="64" textAnchor="middle" fill="#059669" fontSize="10" fontFamily="JetBrains Mono">v (Mendekat)</text>
                   </g>
                 ) : (
                   <g>
-                    <line x1="125" y1="75" x2="65" y2="75" stroke="#F59E0B" strokeWidth="3" />
-                    <polygon points="57,75 68,69 68,81" fill="#F59E0B" />
-                    <text x="95" y="64" textAnchor="middle" fill="#F59E0B" fontSize="10" fontFamily="JetBrains Mono">v (Menjauh)</text>
+                    <line x1="125" y1="75" x2="65" y2="75" stroke="#D97706" strokeWidth="3" />
+                    <polygon points="57,75 68,69 68,81" fill="#D97706" />
+                    <text x="95" y="64" textAnchor="middle" fill="#B45309" fontSize="10" fontFamily="JetBrains Mono">v (Menjauh)</text>
                   </g>
                 )}
               </g>
@@ -203,7 +203,7 @@ export const Screen08HukumLenz: React.FC = () => {
                     key={`front-${i}`}
                     d={`M ${i * 20} -42 A 8 42 0 0 1 ${i * 20} 42`}
                     fill="none"
-                    stroke="#F59E0B"
+                    stroke="#D97706"
                     strokeWidth="3.8"
                     strokeLinecap="round"
                   />
@@ -230,30 +230,30 @@ export const Screen08HukumLenz: React.FC = () => {
                 })}
 
                 {/* Label penjelas panah arus di kawat depan */}
-                <text x="50" y="58" textAnchor="middle" fill="#10B981" fontSize="10" fontWeight="bold" fontFamily="JetBrains Mono">
+                <text x="50" y="58" textAnchor="middle" fill="#047857" fontSize="10" fontWeight="bold" fontFamily="JetBrains Mono">
                   ▲ Panah Arus (I) pada Kawat Depan ({isCCW ? 'Ke Atas / CCW' : 'Ke Bawah / CW'})
                 </text>
 
                 {/* Induced Pole Labels (placed neatly on coil shoulder so magnet slides cleanly inside) */}
-                <circle cx="-16" cy="-48" r="13" fill={facingInducedPole === 'N' ? '#EF4444' : '#3B82F6'} stroke="#0B1120" strokeWidth="2" />
+                <circle cx="-16" cy="-48" r="13" fill={facingInducedPole === 'N' ? '#DC2626' : '#2563EB'} stroke="#FFFFFF" strokeWidth="2" />
                 <text x="-16" y="-43" textAnchor="middle" fill="#fff" fontSize="12" fontWeight="bold" fontFamily="JetBrains Mono">
                   {facingInducedPole === 'N' ? 'U' : 'S'}
                 </text>
 
-                <circle cx="118" cy="-48" r="13" fill={facingInducedPole === 'N' ? '#3B82F6' : '#EF4444'} stroke="#0B1120" strokeWidth="2" />
+                <circle cx="118" cy="-48" r="13" fill={facingInducedPole === 'N' ? '#2563EB' : '#DC2626'} stroke="#FFFFFF" strokeWidth="2" />
                 <text x="118" y="-43" textAnchor="middle" fill="#fff" fontSize="12" fontWeight="bold" fontFamily="JetBrains Mono">
                   {facingInducedPole === 'N' ? 'S' : 'U'}
                 </text>
 
                 {/* Opposing Force / Induced B arrow */}
-                <line x1="25" y1="-72" x2="-35" y2="-72" stroke="#06B6D4" strokeWidth="2.5" strokeDasharray="4 3" />
-                <polygon points="-43,-72 -33,-77 -33,-67" fill="#06B6D4" />
-                <text x="15" y="-82" textAnchor="middle" fill="#06B6D4" fontSize="10" fontFamily="JetBrains Mono">
+                <line x1="25" y1="-72" x2="-35" y2="-72" stroke="#0891B2" strokeWidth="2.5" strokeDasharray="4 3" />
+                <polygon points="-43,-72 -33,-77 -33,-67" fill="#0891B2" />
+                <text x="15" y="-82" textAnchor="middle" fill="#0891B2" fontSize="10" fontFamily="JetBrains Mono">
                   B induksi (menentang ΔΦ)
                 </text>
               </g>
 
-              <text x="230" y="222" textAnchor="middle" fill="#FFFFFF" fontSize="11" fontWeight="bold">
+              <text x="230" y="222" textAnchor="middle" fill="#334155" fontSize="11" fontWeight="bold">
                 {state.lenzMotion === 'approach'
                   ? 'Kumparan menolak magnet yang mendekat (Kutub Sejenis)'
                   : 'Kumparan menarik magnet yang menjauh (Kutub Berlawanan)'}
@@ -264,8 +264,8 @@ export const Screen08HukumLenz: React.FC = () => {
         </div>
 
         {/* Question */}
-        <div className="p-6 rounded-2xl clay-card bg-emerald-50/40 dark:bg-slate-900 border-2 border-emerald-300 dark:border-emerald-500/30 space-y-3 shadow-sm">
-          <label htmlFor="lenz-question" className="block text-sm font-display font-bold text-slate-900 dark:text-white">
+        <div className="p-6 rounded-xl bg-slate-50 border border-slate-200 space-y-3">
+          <label htmlFor="lenz-question" className="block text-sm font-display font-bold text-slate-900">
             Pertanyaan: Ketika kutub magnet didekatkan atau dijauhkan terhadap kumparan, bagaimana arah arus induksi?
           </label>
           <textarea
@@ -274,7 +274,7 @@ export const Screen08HukumLenz: React.FC = () => {
             value={state.lenzAnswer}
             onChange={(e) => updateState('lenzAnswer', e.target.value)}
             placeholder="Jelaskan perubahan arah arus induksi saat kutub magnet didekatkan vs dijauhkan..."
-            className="clay-input w-full p-4 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500"
+            className="input w-full p-4 text-sm"
           />
         </div>
       </div>

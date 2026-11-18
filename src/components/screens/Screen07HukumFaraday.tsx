@@ -29,33 +29,33 @@ export const Screen07HukumFaraday: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      <div className="rounded-[32px] clay-card p-6 sm:p-8 space-y-6">
+      <div className="card p-6 sm:p-8 space-y-6">
         <div className="space-y-2">
-          <div className="clay-badge inline-flex items-center gap-2 px-3.5 py-1.5 bg-amber-100 text-amber-900 text-xs font-bold font-mono">
-            <Zap className="w-4 h-4 text-amber-600" />
+          <div className="badge inline-flex items-center gap-2 px-3.5 py-1.5 bg-brand-50 border-brand-200 text-brand-700 text-xs font-bold font-mono">
+            <Zap className="w-4 h-4 text-brand-600" />
             <span>EKSPLORASI KONSEP • HUKUM FARADAY</span>
           </div>
-          <h1 className="text-2xl sm:text-4xl font-display font-extrabold text-slate-900 dark:text-white">
+          <h1 className="text-2xl sm:text-4xl font-display font-bold text-slate-900">
             Hukum Faraday
           </h1>
-          <p className="text-sm font-medium text-slate-700 dark:text-slate-300 leading-relaxed max-w-3xl">
+          <p className="text-sm font-medium text-slate-700 leading-relaxed max-w-3xl">
             Hukum Faraday menjelaskan bahwa perubahan fluks magnetik yang menembus kumparan dapat menghasilkan{' '}
-            <strong className="text-amber-800 dark:text-amber-400 font-bold">Gaya Gerak Listrik (GGL) induksi</strong>. Semakin cepat perubahan fluks magnetik, semakin besar GGL induksi yang dihasilkan.
+            <strong className="text-brand-700 font-bold">Gaya Gerak Listrik (GGL) induksi</strong>. Semakin cepat perubahan fluks magnetik, semakin besar GGL induksi yang dihasilkan.
           </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* Equation & Controls ("Coba ubah!") */}
-          <div className="lg:col-span-5 rounded-3xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-5 space-y-5 shadow-sm">
+          <div className="lg:col-span-5 rounded-xl bg-slate-50 border border-slate-200 p-5 space-y-5">
             <div>
-              <div className="text-xs font-mono font-bold text-slate-600 dark:text-slate-400 mb-2">PERSAMAAN HUKUM FARADAY</div>
-              <div className="py-4 px-4 rounded-2xl bg-amber-50 dark:bg-slate-900 border-2 border-amber-300 dark:border-amber-500/30 text-center font-mono text-2xl font-extrabold text-amber-800 dark:text-amber-300 shadow-sm">
+              <div className="text-xs font-mono font-bold text-slate-600 mb-2">PERSAMAAN HUKUM FARADAY</div>
+              <div className="py-4 px-4 rounded-xl bg-white border border-slate-200 text-center font-mono text-2xl font-bold text-brand-700">
                 ε = -N · (ΔΦ / Δt)
               </div>
             </div>
 
             <div className="space-y-4">
-              <div className="flex items-center gap-2 text-xs font-mono font-bold uppercase tracking-wider text-cyan-700 dark:text-cyan-400">
+              <div className="flex items-center gap-2 text-xs font-mono font-bold uppercase tracking-wider text-brand-700">
                 <Sliders className="w-4 h-4" />
                 <span>Fitur “Coba Ubah!”</span>
               </div>
@@ -63,8 +63,8 @@ export const Screen07HukumFaraday: React.FC = () => {
               {/* N Slider */}
               <div className="space-y-1">
                 <div className="flex justify-between text-xs font-semibold">
-                  <span className="text-amber-800 dark:text-amber-300">Jumlah lilitan (N)</span>
-                  <span className="font-mono font-bold text-slate-900 dark:text-white">{state.faradayTurns} lilitan</span>
+                  <span className="text-slate-800">Jumlah lilitan (N)</span>
+                  <span className="font-mono font-bold text-slate-900">{state.faradayTurns} lilitan</span>
                 </div>
                 <input
                   type="range"
@@ -73,15 +73,15 @@ export const Screen07HukumFaraday: React.FC = () => {
                   step={50}
                   value={state.faradayTurns}
                   onChange={(e) => updateState('faradayTurns', Number(e.target.value))}
-                  className="w-full lab-slider slider-amber"
+                  className="w-full slider"
                 />
               </div>
 
               {/* Speed ΔΦ/Δt Slider */}
               <div className="space-y-1">
                 <div className="flex justify-between text-xs font-semibold">
-                  <span className="text-cyan-700 dark:text-cyan-300">Kecepatan gerak (ΔΦ/Δt)</span>
-                  <span className="font-mono font-bold text-slate-900 dark:text-white">Level {state.faradaySpeed} / 10</span>
+                  <span className="text-slate-800">Kecepatan gerak (ΔΦ/Δt)</span>
+                  <span className="font-mono font-bold text-slate-900">Level {state.faradaySpeed} / 10</span>
                 </div>
                 <input
                   type="range"
@@ -90,15 +90,15 @@ export const Screen07HukumFaraday: React.FC = () => {
                   step={1}
                   value={state.faradaySpeed}
                   onChange={(e) => updateState('faradaySpeed', Number(e.target.value))}
-                  className="w-full lab-slider"
+                  className="w-full slider"
                 />
               </div>
 
               {/* B Strength Slider */}
               <div className="space-y-1">
                 <div className="flex justify-between text-xs font-semibold">
-                  <span className="text-emerald-700 dark:text-emerald-300">Kekuatan magnet (B)</span>
-                  <span className="font-mono font-bold text-slate-900 dark:text-white">{state.faradayB.toFixed(1)} T</span>
+                  <span className="text-slate-800">Kekuatan magnet (B)</span>
+                  <span className="font-mono font-bold text-slate-900">{state.faradayB.toFixed(1)} T</span>
                 </div>
                 <input
                   type="range"
@@ -107,16 +107,16 @@ export const Screen07HukumFaraday: React.FC = () => {
                   step={0.2}
                   value={state.faradayB}
                   onChange={(e) => updateState('faradayB', Number(e.target.value))}
-                  className="w-full lab-slider slider-emerald"
+                  className="w-full slider"
                 />
               </div>
             </div>
 
-            <div className="p-4 rounded-2xl bg-amber-50/50 dark:bg-slate-900 border border-amber-200 dark:border-slate-800 text-xs text-slate-800 dark:text-slate-300 space-y-1.5 shadow-sm font-medium">
-              <div className="font-bold text-slate-900 dark:text-white">Kesimpulan Sistem Real-Time:</div>
+            <div className="p-4 rounded-xl bg-white border border-slate-200 text-xs text-slate-800 space-y-1.5 font-medium">
+              <div className="font-bold text-slate-900">Kesimpulan Sistem Real-Time:</div>
               <p>
                 Puncak GGL Induksi terukur:{' '}
-                <span className="font-mono font-bold text-amber-700 dark:text-amber-300">{peakEmf.toFixed(2)} Volt</span>.{' '}
+                <span className="font-mono font-bold text-brand-700">{peakEmf.toFixed(2)} Volt</span>.{' '}
                 {peakEmf >= 8
                   ? 'GGL induksi SANGAT BESAR (LED menyala sangat terang)!'
                   : peakEmf >= 3.5
@@ -127,21 +127,21 @@ export const Screen07HukumFaraday: React.FC = () => {
           </div>
 
           {/* Live Voltmeter + Magnet-Coil Animation */}
-          <div className="lg:col-span-7 rounded-3xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-5 space-y-4 shadow-sm">
+          <div className="lg:col-span-7 rounded-xl bg-slate-50 border border-slate-200 p-5 space-y-4">
             <div className="flex items-center justify-between flex-wrap gap-2">
-              <span className="flex items-center gap-2 text-xs font-mono font-bold text-amber-800 dark:text-amber-300">
-                <Gauge className="w-4 h-4 text-amber-600" />
+              <span className="flex items-center gap-2 text-xs font-mono font-bold text-brand-700">
+                <Gauge className="w-4 h-4 text-brand-600" />
                 <span>GALVANOMETER & SIMULASI GGL INDUKSI</span>
               </span>
-              <span className="font-mono text-sm font-bold text-cyan-800 dark:text-cyan-300 bg-white dark:bg-slate-900 px-3 py-1 rounded-xl border border-slate-300 dark:border-slate-700 shadow-xs">
+              <span className="font-mono text-sm font-bold text-brand-700 bg-white px-3 py-1 rounded-lg border border-slate-200">
                 ε(t) = {instantEmf >= 0 ? '+' : ''}{instantEmf.toFixed(2)} V
               </span>
             </div>
 
-            <div className="rounded-2xl p-2.5 bg-[#070B14] border-2 border-slate-800 shadow-inner">
-              <svg viewBox="0 0 480 250" className="w-full h-auto rounded-xl bg-[#070B14]">
+            <div className="sim-canvas p-2.5">
+              <svg viewBox="0 0 480 250" className="w-full h-auto">
               {/* Hollow Coil Bobbin & Back Windings */}
-              <rect x="200" y="110" width="110" height="76" rx="10" fill="#0F172A" fillOpacity="0.8" stroke="#334155" strokeWidth="1.2" />
+              <rect x="200" y="110" width="110" height="76" rx="10" fill="#F1F5F9" stroke="#CBD5E1" strokeWidth="1.2" />
               {Array.from({ length: Math.min(12, Math.max(3, Math.round(state.faradayTurns / 90))) }).map((_, i, arr) => {
                 const cx = 210 + (i * 90) / Math.max(1, arr.length - 1);
                 return (
@@ -149,7 +149,7 @@ export const Screen07HukumFaraday: React.FC = () => {
                     key={`back-${i}`}
                     d={`M ${cx} 110 A 7 38 0 0 0 ${cx} 186`}
                     fill="none"
-                    stroke="#92400E"
+                    stroke="#B45309"
                     strokeWidth="3"
                   />
                 );
@@ -157,8 +157,8 @@ export const Screen07HukumFaraday: React.FC = () => {
 
               {/* Moving Magnet (Slides INSIDE the coil!) */}
               <g transform={`translate(${magnetDisplacement}, 0)`}>
-                <rect x="52" y="131" width="52" height="34" rx="4" fill="#3B82F6" stroke="#93C5FD" strokeWidth="1" />
-                <rect x="104" y="131" width="52" height="34" rx="4" fill="#EF4444" stroke="#FCA5A5" strokeWidth="1" />
+                <rect x="52" y="131" width="52" height="34" rx="4" fill="#2563EB" stroke="#1D4ED8" strokeWidth="1" />
+                <rect x="104" y="131" width="52" height="34" rx="4" fill="#DC2626" stroke="#B91C1C" strokeWidth="1" />
                 <text x="78" y="153" textAnchor="middle" fill="#fff" fontSize="13" fontWeight="bold" fontFamily="JetBrains Mono">S</text>
                 <text x="130" y="153" textAnchor="middle" fill="#fff" fontSize="13" fontWeight="bold" fontFamily="JetBrains Mono">U</text>
               </g>
@@ -172,50 +172,50 @@ export const Screen07HukumFaraday: React.FC = () => {
                       key={`front-${i}`}
                       d={`M ${cx} 110 A 7 38 0 0 1 ${cx} 186`}
                       fill="none"
-                      stroke="#F59E0B"
+                      stroke="#D97706"
                       strokeWidth="3.2"
                       strokeLinecap="round"
                     />
                   );
                 })}
-                <text x="255" y="205" textAnchor="middle" fill="#FDE68A" fontSize="11" fontFamily="JetBrains Mono">
+                <text x="255" y="205" textAnchor="middle" fill="#475569" fontSize="11" fontFamily="JetBrains Mono">
                   N = {state.faradayTurns} Lilitan
                 </text>
               </g>
 
               {/* Analog Galvanometer / Voltmeter */}
               <g transform="translate(365, 65)">
-                <rect x="-65" y="-48" width="130" height="86" rx="10" fill="#0F172A" stroke="#334155" strokeWidth="2" />
-                <path d="M -48 16 A 48 48 0 0 1 48 16" fill="none" stroke="#475569" strokeWidth="2" />
-                <text x="-45" y="28" fill="#EF4444" fontSize="9" fontFamily="JetBrains Mono">-</text>
-                <text x="0" y="-26" textAnchor="middle" fill="#94A3B8" fontSize="9" fontFamily="JetBrains Mono">0V</text>
-                <text x="42" y="28" fill="#10B981" fontSize="9" fontFamily="JetBrains Mono">+</text>
+                <rect x="-65" y="-48" width="130" height="86" rx="10" fill="#FFFFFF" stroke="#CBD5E1" strokeWidth="2" />
+                <path d="M -48 16 A 48 48 0 0 1 48 16" fill="none" stroke="#94A3B8" strokeWidth="2" />
+                <text x="-45" y="28" fill="#DC2626" fontSize="9" fontFamily="JetBrains Mono">-</text>
+                <text x="0" y="-26" textAnchor="middle" fill="#475569" fontSize="9" fontFamily="JetBrains Mono">0V</text>
+                <text x="42" y="28" fill="#059669" fontSize="9" fontFamily="JetBrains Mono">+</text>
                 <g transform={`translate(0, 18) rotate(${needleAngle})`}>
-                  <line x1="0" y1="0" x2="0" y2="-45" stroke="#06B6D4" strokeWidth="2.5" strokeLinecap="round" />
+                  <line x1="0" y1="0" x2="0" y2="-45" stroke="#2563EB" strokeWidth="2.5" strokeLinecap="round" />
                 </g>
-                <circle cx="0" cy="18" r="4" fill="#F8FAFC" />
+                <circle cx="0" cy="18" r="4" fill="#0F172A" />
               </g>
 
               {/* LED Indicator */}
               <g transform="translate(365, 165)">
                 <circle cx="0" cy="0" r={22 + ledIntensity * 22} fill="#FBBF24" fillOpacity={(absInstant / Math.max(1, peakEmf)) * ledIntensity * 0.65} />
-                <circle cx="0" cy="0" r="14" fill="#F59E0B" fillOpacity={0.25 + ledIntensity * 0.75} stroke="#FDE68A" strokeWidth="2" />
-                <text x="0" y="34" textAnchor="middle" fill="#FDE68A" fontSize="10" fontFamily="JetBrains Mono">
+                <circle cx="0" cy="0" r="14" fill="#F59E0B" fillOpacity={0.25 + ledIntensity * 0.75} stroke="#D97706" strokeWidth="2" />
+                <text x="0" y="34" textAnchor="middle" fill="#475569" fontSize="10" fontFamily="JetBrains Mono">
                   LED ({Math.round(ledIntensity * 100)}%)
                 </text>
               </g>
 
               {/* Wires */}
-              <path d="M 210 186 L 210 228 L 350 228 L 350 180" fill="none" stroke="#64748B" strokeWidth="2" />
-              <path d="M 300 186 L 300 218 L 380 218 L 380 180" fill="none" stroke="#64748B" strokeWidth="2" />
+              <path d="M 210 186 L 210 228 L 350 228 L 350 180" fill="none" stroke="#94A3B8" strokeWidth="2" />
+              <path d="M 300 186 L 300 218 L 380 218 L 380 180" fill="none" stroke="#94A3B8" strokeWidth="2" />
             </svg>
             </div>
           </div>
         </div>
 
         {/* Analytical Question */}
-        <div className="p-6 rounded-2xl clay-card bg-amber-50/40 dark:bg-slate-900 border-2 border-amber-300 dark:border-amber-500/30 space-y-3 shadow-sm">
-          <label htmlFor="faraday-question" className="block text-sm font-display font-bold text-slate-900 dark:text-white">
+        <div className="p-6 rounded-xl bg-slate-50 border border-slate-200 space-y-3">
+          <label htmlFor="faraday-question" className="block text-sm font-display font-bold text-slate-900">
             Pertanyaan: Faktor apa yang paling berpengaruh terhadap besar GGL induksi? Berikan alasan berdasarkan hasil eksperimen virtual di atas!
           </label>
           <textarea
@@ -224,7 +224,7 @@ export const Screen07HukumFaraday: React.FC = () => {
             value={state.faradayFactorAnswer}
             onChange={(e) => updateState('faradayFactorAnswer', e.target.value)}
             placeholder="Tuliskan analisis hubungan antara N, ΔΦ/Δt, dan B terhadap GGL induksi..."
-            className="clay-input w-full p-4 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-amber-500"
+            className="input w-full p-4 text-sm"
           />
         </div>
       </div>

@@ -15,7 +15,7 @@ export const Screen12SketsaDesain: React.FC = () => {
     const rect = canvas.getBoundingClientRect();
     const x = ((e.clientX - rect.left) * canvas.width) / rect.width;
     const y = ((e.clientY - rect.top) * canvas.height) / rect.height;
-    ctx.strokeStyle = '#38BDF8';
+    ctx.strokeStyle = '#1D4ED8';
     ctx.lineWidth = 2.5;
     ctx.lineCap = 'round';
     ctx.beginPath();
@@ -71,16 +71,16 @@ export const Screen12SketsaDesain: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      <div className="rounded-[32px] clay-card p-6 sm:p-8 space-y-6">
-        <div className="space-y-1.5 border-b border-slate-200 dark:border-slate-800 pb-5">
-          <div className="clay-badge inline-flex items-center gap-2 px-3 py-1 bg-cyan-100 dark:bg-cyan-500/20 text-cyan-800 dark:text-cyan-300 text-xs font-mono font-bold">
-            <PencilRuler className="w-4 h-4 text-cyan-600 dark:text-cyan-400" />
+      <div className="card p-6 sm:p-8 space-y-6">
+        <div className="space-y-1.5 border-b border-slate-200 pb-5">
+          <div className="badge inline-flex items-center gap-2 px-3 py-1 bg-brand-50 border-brand-200 text-brand-700 text-xs font-mono font-bold">
+            <PencilRuler className="w-4 h-4 text-brand-600" />
             <span>EDP TAHAP PLAN • SKETSA DESAIN</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-display font-black text-slate-900 dark:text-white">
+          <h1 className="text-2xl sm:text-3xl font-display font-bold text-slate-900">
             Sketsa & Rancangan Desain Generator
           </h1>
-          <p className="text-sm font-medium text-slate-600 dark:text-slate-300">
+          <p className="text-sm font-medium text-slate-600">
             Lengkapi template rancangan teknis di bawah ini serta buat sketsa langsung atau unggah foto sketsa rancangan kelompokmu.
           </p>
         </div>
@@ -89,69 +89,69 @@ export const Screen12SketsaDesain: React.FC = () => {
           {/* Structured Design Template */}
           <div className="lg:col-span-6 space-y-4">
             <label className="block space-y-1.5">
-              <span className="text-xs font-bold text-slate-800 dark:text-slate-200">Nama Desain:</span>
+              <span className="text-xs font-bold text-slate-800">Nama Desain:</span>
               <input
                 type="text"
                 value={state.designName}
                 onChange={(e) => updateState('designName', e.target.value)}
                 placeholder="Contoh: Gen-Flux Duo Pulley V1"
-                className="clay-input w-full px-3.5 py-2.5 rounded-xl text-sm font-medium focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                className="input w-full px-3.5 py-2.5 text-sm"
               />
             </label>
 
             <label className="block space-y-1.5">
-              <span className="text-xs font-bold text-slate-800 dark:text-slate-200">Prinsip Fisika yang Digunakan:</span>
+              <span className="text-xs font-bold text-slate-800">Prinsip Fisika yang Digunakan:</span>
               <textarea
                 rows={2}
                 value={state.designPhysicsPrinciple}
                 onChange={(e) => updateState('designPhysicsPrinciple', e.target.value)}
                 placeholder="Jelaskan penerapan Hukum Faraday, fluks magnetik, atau Hukum Lenz pada rancangan..."
-                className="clay-input w-full p-3 rounded-xl text-sm font-medium focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                className="input w-full p-3 text-sm"
               />
             </label>
 
             <label className="block space-y-1.5">
-              <span className="text-xs font-bold text-slate-800 dark:text-slate-200">Bahan yang Diperlukan:</span>
+              <span className="text-xs font-bold text-slate-800">Bahan yang Diperlukan:</span>
               <textarea
                 rows={2}
                 value={state.designMaterials}
                 onChange={(e) => updateState('designMaterials', e.target.value)}
                 placeholder="Daftar magnet, kawat tembaga, CD bekas, kardus, LED, dll..."
-                className="clay-input w-full p-3 rounded-xl text-sm font-medium focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                className="input w-full p-3 text-sm"
               />
             </label>
 
             <label className="block space-y-1.5">
-              <span className="text-xs font-bold text-slate-800 dark:text-slate-200">Keunggulan Desain:</span>
+              <span className="text-xs font-bold text-slate-800">Keunggulan Desain:</span>
               <textarea
                 rows={2}
                 value={state.designAdvantages}
                 onChange={(e) => updateState('designAdvantages', e.target.value)}
                 placeholder="Mengapa rancangan ini lebih efektif atau stabil?"
-                className="clay-input w-full p-3 rounded-xl text-sm font-medium focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                className="input w-full p-3 text-sm"
               />
             </label>
 
             <label className="block space-y-1.5">
-              <span className="text-xs font-bold text-slate-800 dark:text-slate-200">Prediksi Hasil:</span>
+              <span className="text-xs font-bold text-slate-800">Prediksi Hasil:</span>
               <textarea
                 rows={2}
                 value={state.designPrediction}
                 onChange={(e) => updateState('designPrediction', e.target.value)}
                 placeholder="Perkiraan besar tegangan (Volt) dan kondisi nyala lampu LED..."
-                className="clay-input w-full p-3 rounded-xl text-sm font-medium focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                className="input w-full p-3 text-sm"
               />
             </label>
           </div>
 
           {/* Interactive Sketch Pad & Photo Upload */}
-          <div className="lg:col-span-6 rounded-2xl clay-card bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-5 space-y-4 shadow-sm">
+          <div className="lg:col-span-6 card p-5 space-y-4">
             <div className="flex items-center justify-between gap-2">
-              <span className="text-xs font-mono font-bold text-cyan-700 dark:text-cyan-400">KANVAS SKETSA DIGITAL / UNGGAH FOTO</span>
+              <span className="text-xs font-mono font-bold text-brand-700">KANVAS SKETSA DIGITAL / UNGGAH FOTO</span>
               <button
                 type="button"
                 onClick={clearCanvas}
-                className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-xs font-bold text-slate-700 dark:text-slate-200 transition"
+                className="btn btn-secondary px-3 py-1.5 min-h-0 h-9 text-xs"
               >
                 <Eraser className="w-3.5 h-3.5" />
                 <span>Bersihkan</span>
@@ -166,29 +166,29 @@ export const Screen12SketsaDesain: React.FC = () => {
               onPointerMove={moveDraw}
               onPointerUp={endDraw}
               onPointerLeave={endDraw}
-              className="w-full h-56 rounded-2xl bg-[#080D1A] border-2 border-slate-700/80 cursor-crosshair touch-none shadow-inner"
+              className="w-full h-56 rounded-xl bg-white border border-slate-300 cursor-crosshair touch-none"
             />
-            <p className="text-[11px] font-medium text-slate-600 dark:text-slate-400">
-              Goreskan sketsa desain langsung di kanvas gelap di atas, atau unggah foto sketsa kertas kelompokmu di bawah ini.
+            <p className="text-[11px] font-medium text-slate-600">
+              Goreskan sketsa desain langsung di kanvas putih di atas, atau unggah foto sketsa kertas kelompokmu di bawah ini.
             </p>
 
-            <div className="space-y-3 pt-2 border-t border-slate-200 dark:border-slate-800">
-              <label className="cursor-pointer w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-cyan-50 hover:bg-cyan-100 dark:bg-cyan-500/15 dark:hover:bg-cyan-500/25 border-2 border-cyan-400/60 text-xs font-bold text-cyan-800 dark:text-cyan-200 transition shadow-xs">
-                <Upload className="w-4 h-4 text-cyan-600" />
+            <div className="space-y-3 pt-2 border-t border-slate-200">
+              <label className="btn btn-secondary cursor-pointer w-full px-5 py-3 text-xs focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-brand-600">
+                <Upload className="w-4 h-4 text-brand-600" />
                 <span>Unggah Foto Desain (JPG / PNG)</span>
-                <input type="file" accept="image/*" onChange={handlePhotoUpload} className="hidden" />
+                <input type="file" accept="image/*" onChange={handlePhotoUpload} className="sr-only" />
               </label>
 
               {state.designSketchDataUrl && (
-                <div className="p-3 rounded-2xl bg-emerald-50 dark:bg-slate-900 border border-emerald-300 dark:border-emerald-500/30 space-y-2">
-                  <div className="flex items-center gap-1.5 text-xs text-emerald-800 dark:text-emerald-300 font-mono font-bold">
+                <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
+                  <div className="flex items-center gap-1.5 text-xs text-emerald-800 font-mono font-bold">
                     <CheckCircle2 className="w-4 h-4 text-emerald-600" />
                     <span>Terunggah: {state.designSketchFileName || 'sketsa-desain'}</span>
                   </div>
                   <img
                     src={state.designSketchDataUrl}
                     alt="Pratinjau Sketsa Desain Generator"
-                    className="w-full max-h-36 object-contain rounded-xl bg-[#070B14] border border-slate-700"
+                    className="w-full max-h-36 object-contain rounded-lg bg-white border border-slate-200"
                   />
                 </div>
               )}

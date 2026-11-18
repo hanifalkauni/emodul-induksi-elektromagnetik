@@ -40,98 +40,98 @@ export const Screen06FluksMagnetik: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      <div className="rounded-[32px] clay-card p-6 sm:p-8 space-y-6">
+      <div className="card p-6 sm:p-8 space-y-6">
         {/* Header & Concept */}
         <div className="space-y-2">
-          <div className="clay-badge inline-flex items-center gap-2 px-3.5 py-1.5 bg-cyan-100 text-cyan-800 text-xs font-bold font-mono">
-            <Atom className="w-4 h-4 text-cyan-600" />
+          <div className="badge inline-flex items-center gap-2 px-3.5 py-1.5 bg-brand-50 border-brand-200 text-brand-700 text-xs font-bold font-mono">
+            <Atom className="w-4 h-4 text-brand-600" />
             <span>EKSPLORASI KONSEP • BAGIAN A</span>
           </div>
-          <h1 className="text-2xl sm:text-4xl font-display font-extrabold text-slate-900 dark:text-white">
+          <h1 className="text-2xl sm:text-4xl font-display font-bold text-slate-900">
             A. Fluks Magnetik
           </h1>
-          <p className="text-sm font-medium text-slate-700 dark:text-slate-300 leading-relaxed max-w-3xl">
+          <p className="text-sm font-medium text-slate-700 leading-relaxed max-w-3xl">
             Fluks magnetik adalah ukuran banyaknya garis medan magnet yang menembus suatu bidang kumparan. Besarnya fluks dipengaruhi oleh{' '}
-            <strong className="text-cyan-700 dark:text-cyan-400 font-bold">kuat medan magnet (B)</strong>,{' '}
-            <strong className="text-amber-800 dark:text-amber-400 font-bold">luas bidang (A)</strong>, dan{' '}
-            <strong className="text-emerald-700 dark:text-emerald-400 font-bold">sudut kemiringan normal bidang (θ)</strong>.
+            <strong className="text-brand-700 font-bold">kuat medan magnet (B)</strong>,{' '}
+            <strong className="text-brand-700 font-bold">luas bidang (A)</strong>, dan{' '}
+            <strong className="text-brand-700 font-bold">sudut kemiringan normal bidang (θ)</strong>.
           </p>
         </div>
 
         {/* Equation & Interactive Variable Pills */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-          <div className="lg:col-span-5 rounded-3xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-5 space-y-4 shadow-sm">
-            <div className="text-xs font-mono font-bold text-slate-600 dark:text-slate-400">PERSAMAAN MATEMATIS FLUKS</div>
-            <div className="py-4 px-5 rounded-2xl bg-cyan-50 dark:bg-slate-900 border-2 border-cyan-300 dark:border-cyan-500/30 text-center font-mono text-2xl sm:text-3xl font-extrabold text-cyan-800 dark:text-cyan-300 shadow-sm">
+          <div className="lg:col-span-5 rounded-xl bg-slate-50 border border-slate-200 p-5 space-y-4">
+            <div className="text-xs font-mono font-bold text-slate-600">PERSAMAAN MATEMATIS FLUKS</div>
+            <div className="py-4 px-5 rounded-xl bg-white border border-slate-200 text-center font-mono text-2xl sm:text-3xl font-bold text-brand-700">
               Φ = B · A · cos θ
             </div>
 
-            <div className="space-y-2 text-xs font-medium text-slate-700 dark:text-slate-300">
-              <div>• <span className="font-mono text-cyan-700 dark:text-cyan-300 font-bold">Φ</span> = fluks magnetik (weber / Wb)</div>
-              <div>• <span className="font-mono text-cyan-700 dark:text-cyan-300 font-bold">B</span> = kuat medan magnet (tesla / T)</div>
-              <div>• <span className="font-mono text-amber-800 dark:text-amber-300 font-bold">A</span> = luas bidang penampang (m²)</div>
-              <div>• <span className="font-mono text-emerald-700 dark:text-emerald-300 font-bold">θ</span> = sudut antara medan magnet & garis normal bidang</div>
+            <div className="space-y-2 text-xs font-medium text-slate-700">
+              <div>• <span className="font-mono text-brand-700 font-bold">Φ</span> = fluks magnetik (weber / Wb)</div>
+              <div>• <span className="font-mono text-brand-700 font-bold">B</span> = kuat medan magnet (tesla / T)</div>
+              <div>• <span className="font-mono text-brand-700 font-bold">A</span> = luas bidang penampang (m²)</div>
+              <div>• <span className="font-mono text-brand-700 font-bold">θ</span> = sudut antara medan magnet & garis normal bidang</div>
             </div>
 
             {/* Clickable 3 Variables */}
-            <div className="pt-2 border-t border-slate-200 dark:border-slate-800 space-y-2">
-              <div className="text-xs font-bold text-slate-800 dark:text-slate-200">Klik variabel untuk melihat penjelasan:</div>
+            <div className="pt-2 border-t border-slate-200 space-y-2">
+              <div className="text-xs font-bold text-slate-800">Klik variabel untuk melihat penjelasan:</div>
               <div className="grid grid-cols-3 gap-2">
                 {(['B', 'A', 'theta'] as VarKey[]).map((key) => (
                   <button
                     key={key}
                     type="button"
                     onClick={() => setSelectedVar(key)}
-                    className={`py-2 px-3 rounded-xl font-mono text-sm font-bold border transition ${
+                    className={`py-2 px-3 rounded-lg font-mono text-sm font-bold border cursor-pointer transition-colors ${
                       selectedVar === key
-                        ? 'bg-cyan-600 text-white border-cyan-600 shadow-sm'
-                        : 'bg-white dark:bg-slate-900 border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:border-slate-500'
+                        ? 'bg-brand-600 text-white border-brand-600'
+                        : 'bg-white border-slate-300 text-slate-700 hover:border-brand-400'
                     }`}
                   >
                     {VAR_DETAILS[key].symbol}
                   </button>
                 ))}
               </div>
-              <div className="p-3.5 rounded-2xl bg-white dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 text-xs space-y-1 shadow-sm">
-                <div className="flex items-center gap-1.5 font-bold text-cyan-700 dark:text-cyan-300">
-                  <Info className="w-4 h-4 text-cyan-600" />
+              <div className="p-3.5 rounded-xl bg-white border border-slate-200 text-xs space-y-1">
+                <div className="flex items-center gap-1.5 font-bold text-brand-700">
+                  <Info className="w-4 h-4 text-brand-600" />
                   <span>
                     {VAR_DETAILS[selectedVar].symbol} → {VAR_DETAILS[selectedVar].title} ({VAR_DETAILS[selectedVar].unit})
                   </span>
                 </div>
-                <p className="text-slate-600 dark:text-slate-300 leading-relaxed font-medium">{VAR_DETAILS[selectedVar].desc}</p>
+                <p className="text-slate-600 leading-relaxed font-medium">{VAR_DETAILS[selectedVar].desc}</p>
               </div>
             </div>
 
             {/* Original Storyboard Visual Reference */}
             <div className="pt-2">
-              <div className="text-[11px] font-mono font-bold text-slate-600 dark:text-slate-400 mb-1.5">
+              <div className="text-[11px] font-mono font-bold text-slate-600 mb-1.5">
                 VISUALISASI STORYBOARD (MAGNET → MEDAN MAGNET → KUMPARAN)
               </div>
               <img
                 src="/media/image4.png"
                 alt="Visualisasi Fluks Magnetik dari Magnet ke Kumparan"
-                className="w-full rounded-2xl border border-slate-200 dark:border-slate-800 bg-white object-contain max-h-40 shadow-sm"
+                className="w-full rounded-xl border border-slate-200 bg-white object-contain max-h-40"
               />
             </div>
           </div>
 
           {/* Interactive Real-time Flux Simulator */}
-          <div className="lg:col-span-7 rounded-3xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-5 space-y-5 shadow-sm">
+          <div className="lg:col-span-7 rounded-xl bg-slate-50 border border-slate-200 p-5 space-y-5">
             <div className="flex items-center justify-between flex-wrap gap-2">
-              <div className="flex items-center gap-2 text-xs font-mono font-bold text-cyan-700 dark:text-cyan-400">
+              <div className="flex items-center gap-2 text-xs font-mono font-bold text-brand-700">
                 <Sliders className="w-4 h-4" />
                 <span>SIMULATOR INTERAKTIF FLUKS MAGNETIK</span>
               </div>
-              <div className="px-3.5 py-1.5 rounded-xl bg-white dark:bg-slate-900 border-2 border-cyan-300 dark:border-cyan-500/40 font-mono text-sm font-extrabold text-cyan-700 dark:text-cyan-300 shadow-sm">
+              <div className="px-3.5 py-1.5 rounded-lg bg-white border border-slate-200 font-mono text-sm font-bold text-brand-700">
                 Φ = {fluxValue.toFixed(4)} Wb
               </div>
             </div>
 
             {/* SVG Dynamic Field + Rotatable Area Loop */}
-            <svg viewBox="0 0 460 220" className="w-full h-auto rounded-2xl bg-[#0A0F1D] border-2 border-slate-700/60 shadow-md">
+            <svg viewBox="0 0 460 220" className="w-full h-auto sim-canvas">
               {/* Magnet Source on Left */}
-              <rect x="20" y="65" width="44" height="90" rx="6" fill="#EF4444" stroke="#FCA5A5" strokeWidth="1.5" />
+              <rect x="20" y="65" width="44" height="90" rx="6" fill="#DC2626" stroke="#B91C1C" strokeWidth="1.5" />
               <text x="42" y="116" textAnchor="middle" fill="#fff" fontSize="18" fontWeight="bold" fontFamily="JetBrains Mono">
                 U
               </text>
@@ -146,12 +146,12 @@ export const Screen06FluksMagnetik: React.FC = () => {
                       y1={y}
                       x2="420"
                       y2={y}
-                      stroke="#06B6D4"
+                      stroke="#0891B2"
                       strokeOpacity={0.35 + (state.fluxB / 2) * 0.55}
                       strokeWidth="1.6"
                       strokeDasharray="6 4"
                     />
-                    <polygon points={`420,${y} 412,${y - 3.5} 412,${y + 3.5}`} fill="#06B6D4" />
+                    <polygon points={`420,${y} 412,${y - 3.5} 412,${y + 3.5}`} fill="#0891B2" />
                   </g>
                 );
               })}
@@ -164,22 +164,22 @@ export const Screen06FluksMagnetik: React.FC = () => {
                   cy="0"
                   rx="18"
                   ry={loopHeight / 2}
-                  fill="#F59E0B"
-                  fillOpacity="0.16"
-                  stroke="#F59E0B"
+                  fill="#D97706"
+                  fillOpacity="0.14"
+                  stroke="#D97706"
                   strokeWidth="3.5"
                 />
                 {/* Normal Vector n */}
-                <line x1="0" y1="0" x2="72" y2="0" stroke="#10B981" strokeWidth="2.5" />
-                <polygon points="78,0 68,-5 68,5" fill="#10B981" />
-                <text x="82" y="4" fill="#10B981" fontSize="11" fontWeight="bold" fontFamily="JetBrains Mono">
+                <line x1="0" y1="0" x2="72" y2="0" stroke="#059669" strokeWidth="2.5" />
+                <polygon points="78,0 68,-5 68,5" fill="#059669" />
+                <text x="82" y="4" fill="#059669" fontSize="11" fontWeight="bold" fontFamily="JetBrains Mono">
                   n
                 </text>
               </g>
 
               {/* Reference horizontal vector for angle theta */}
               <line x1="275" y1="110" x2="355" y2="110" stroke="#94A3B8" strokeWidth="1.2" strokeDasharray="3 3" />
-              <text x="20" y="205" fill="#94A3B8" fontSize="11" fontFamily="JetBrains Mono">
+              <text x="20" y="205" fill="#475569" fontSize="11" fontFamily="JetBrains Mono">
                 B = {state.fluxB.toFixed(1)} T | A = {state.fluxA.toFixed(2)} m² | θ = {state.fluxTheta}°
               </text>
             </svg>
@@ -188,8 +188,8 @@ export const Screen06FluksMagnetik: React.FC = () => {
             <div className="space-y-4">
               <div className="space-y-1">
                 <div className="flex justify-between text-xs font-semibold">
-                  <span className="text-cyan-800 dark:text-cyan-300">B (Kuat Medan Magnet)</span>
-                  <span className="font-mono font-bold text-slate-900 dark:text-white">{state.fluxB.toFixed(1)} T</span>
+                  <span className="text-slate-800">B (Kuat Medan Magnet)</span>
+                  <span className="font-mono font-bold text-slate-900">{state.fluxB.toFixed(1)} T</span>
                 </div>
                 <input
                   type="range"
@@ -198,14 +198,14 @@ export const Screen06FluksMagnetik: React.FC = () => {
                   step={0.1}
                   value={state.fluxB}
                   onChange={(e) => updateState('fluxB', Number(e.target.value))}
-                  className="w-full lab-slider"
+                  className="w-full slider"
                 />
               </div>
 
               <div className="space-y-1">
                 <div className="flex justify-between text-xs font-semibold">
-                  <span className="text-amber-800 dark:text-amber-300">A (Luas Bidang Kumparan)</span>
-                  <span className="font-mono font-bold text-slate-900 dark:text-white">{state.fluxA.toFixed(2)} m²</span>
+                  <span className="text-slate-800">A (Luas Bidang Kumparan)</span>
+                  <span className="font-mono font-bold text-slate-900">{state.fluxA.toFixed(2)} m²</span>
                 </div>
                 <input
                   type="range"
@@ -214,14 +214,14 @@ export const Screen06FluksMagnetik: React.FC = () => {
                   step={0.05}
                   value={state.fluxA}
                   onChange={(e) => updateState('fluxA', Number(e.target.value))}
-                  className="w-full lab-slider slider-amber"
+                  className="w-full slider"
                 />
               </div>
 
               <div className="space-y-1">
                 <div className="flex justify-between text-xs font-semibold">
-                  <span className="text-emerald-800 dark:text-emerald-300">θ (Sudut terhadap Garis Normal)</span>
-                  <span className="font-mono font-bold text-slate-900 dark:text-white">{state.fluxTheta}° (cos θ = {Math.cos(rad).toFixed(2)})</span>
+                  <span className="text-slate-800">θ (Sudut terhadap Garis Normal)</span>
+                  <span className="font-mono font-bold text-slate-900">{state.fluxTheta}° (cos θ = {Math.cos(rad).toFixed(2)})</span>
                 </div>
                 <input
                   type="range"
@@ -230,16 +230,16 @@ export const Screen06FluksMagnetik: React.FC = () => {
                   step={5}
                   value={state.fluxTheta}
                   onChange={(e) => updateState('fluxTheta', Number(e.target.value))}
-                  className="w-full lab-slider slider-emerald"
+                  className="w-full slider"
                 />
               </div>
             </div>
 
             {/* Live Interpretation Pill */}
-            <div className="p-3.5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs text-slate-800 dark:text-slate-200 flex items-center justify-between gap-3 shadow-xs">
+            <div className="p-3.5 rounded-xl bg-white border border-slate-200 text-xs text-slate-800 flex items-center justify-between gap-3">
               <span>
                 Status Fluks:{' '}
-                <strong className="text-cyan-800 dark:text-cyan-300">
+                <strong className="text-brand-700">
                   {absFlux < 0.01
                     ? 'Nol (Bidang sejajar garis medan)'
                     : state.fluxTheta === 0 || state.fluxTheta === 180
@@ -247,7 +247,7 @@ export const Screen06FluksMagnetik: React.FC = () => {
                     : 'Parsial (Membentuk sudut θ)'}
                 </strong>
               </span>
-              <span className="font-mono text-emerald-700 dark:text-emerald-400 font-extrabold">
+              <span className="font-mono text-brand-700 font-bold">
                 |Φ| = {absFlux.toFixed(4)} Wb
               </span>
             </div>
@@ -255,8 +255,8 @@ export const Screen06FluksMagnetik: React.FC = () => {
         </div>
 
         {/* Reflection Input */}
-        <div className="p-6 rounded-2xl clay-card bg-cyan-50/40 dark:bg-slate-900 border-2 border-cyan-300 dark:border-cyan-500/30 space-y-3 shadow-sm">
-          <label htmlFor="flux-def" className="block text-sm font-display font-bold text-slate-900 dark:text-white">
+        <div className="p-6 rounded-xl bg-slate-50 border border-slate-200 space-y-3">
+          <label htmlFor="flux-def" className="block text-sm font-display font-bold text-slate-900">
             Berdasarkan visualisasi di atas, tuliskan pengertian fluks magnetik dengan bahasamu sendiri:
           </label>
           <textarea
@@ -265,7 +265,7 @@ export const Screen06FluksMagnetik: React.FC = () => {
             value={state.fluxDefinitionAnswer}
             onChange={(e) => updateState('fluxDefinitionAnswer', e.target.value)}
             placeholder="Menurut pengamatan simulasi di atas, fluks magnetik adalah..."
-            className="clay-input w-full p-4 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-cyan-500"
+            className="input w-full p-4 text-sm"
           />
         </div>
       </div>

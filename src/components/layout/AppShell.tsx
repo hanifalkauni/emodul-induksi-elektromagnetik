@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Home,
   PlayCircle,
@@ -16,8 +16,6 @@ import {
   RotateCcw,
   Zap,
   Map,
-  Sun,
-  Moon,
 } from 'lucide-react';
 import { SCREENS, useModul } from '../../context/ModulContext';
 import { NavPillar } from '../../types/emodul';
@@ -35,32 +33,6 @@ const PILLAR_NAV: { id: NavPillar; label: string; icon: React.ComponentType<{ cl
 export const AppShell: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { state, setScreen, nextScreen, prevScreen, loadDemoData, resetAllData, completionPercent } = useModul();
   const [sidebarOpen, setSidebarOpen] = useState(false);
-
-  // Theme state: default 'light' (cerah / putih)
-  const [theme, setTheme] = useState<'light' | 'dark'>(() => {
-    try {
-      const saved = localStorage.getItem('emodul_theme');
-      if (saved === 'dark' || saved === 'light') return saved;
-    } catch {}
-    return 'light';
-  });
-
-  useEffect(() => {
-    if (theme === 'light') {
-      document.documentElement.classList.remove('dark');
-      document.documentElement.classList.add('light');
-    } else {
-      document.documentElement.classList.remove('light');
-      document.documentElement.classList.add('dark');
-    }
-    try {
-      localStorage.setItem('emodul_theme', theme);
-    } catch {}
-  }, [theme]);
-
-  const toggleTheme = () => {
-    setTheme((prev) => (prev === 'light' ? 'dark' : 'light'));
-  };
 
   const isIdentityFilled =
     Boolean(state.identity.studentName?.trim()) &&
@@ -80,16 +52,17 @@ export const AppShell: React.FC<{ children: React.ReactNode }> = ({ children }) 
   const activeScreenMeta = SCREENS.find((s) => s.id === state.currentScreen) || SCREENS[0];
 
   return (
-    <div className="min-h-screen bg-lab-grid text-slate-900 dark:text-slate-100 flex flex-col font-sans transition-colors">
+    <div className="min-h-screen bg-white text-slate-900 flex flex-col font-sans">
       {/* Top Bar */}
-      <header className="sticky top-0 z-40 border-b border-slate-200/90 dark:border-slate-800/80 bg-white/95 dark:bg-[#0B1120]/95 backdrop-blur-md shadow-sm">
+      <header className="sticky top-0 z-40 border-b border-slate-200 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-3">
           <div className="flex items-center gap-3 min-w-0">
             <button
               type="button"
               onClick={() => setSidebarOpen((v) => !v)}
               aria-label="Buka Daftar Layar Modul"
-              className="lg:hidden p-2 rounded-xl bg-slate-100 dark:bg-slate-800/70 border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 focus-visible:ring-2 focus-visible:ring-cyan-500"
+              aria-expanded={sidebarOpen}
+              className="lg:hidden btn btn-secondary p-2 min-h-0 w-10 h-10"
             >
               {sidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
@@ -97,16 +70,16 @@ export const AppShell: React.FC<{ children: React.ReactNode }> = ({ children }) 
             <button
               type="button"
               onClick={() => setScreen(1)}
-              className="flex items-center gap-2.5 text-left group focus:outline-none"
+              className="flex items-center gap-2.5 text-left cursor-pointer rounded-lg"
             >
-              <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-cyan-500/20 to-blue-500/20 border border-cyan-500/40 flex items-center justify-center shadow-inner">
-                <Zap className="w-5 h-5 text-cyan-600 dark:text-cyan-400 group-hover:scale-110 transition-transform" />
+              <div className="w-10 h-10 rounded-lg bg-brand-600 flex items-center justify-center shrink-0">
+                <Zap className="w-5 h-5 text-white" aria-hidden="true" />
               </div>
               <div className="truncate">
-                <div className="text-[11px] font-mono uppercase tracking-wider font-bold text-cyan-700 dark:text-cyan-400">
+                <div className="text-[11px] font-mono uppercase tracking-wider font-semibold text-slate-500">
                   E-Modul Fisika STEM
                 </div>
-                <div className="text-sm font-display font-extrabold text-slate-900 dark:text-slate-100 truncate">
+                <div className="text-sm font-display font-bold text-slate-900 truncate">
                   Induksi Elektromagnetik
                 </div>
               </div>
@@ -114,7 +87,7 @@ export const AppShell: React.FC<{ children: React.ReactNode }> = ({ children }) 
           </div>
 
           {/* 7 Storyboard Pillar Navigation (Desktop) */}
-          <nav aria-label="Navigasi Pilar Utama" className="hidden xl:flex items-center gap-1.5 bg-slate-100 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 rounded-2xl p-1.5 shadow-inner">
+          <nav aria-label="Navigasi Pilar Utama" className="hidden 2xl:flex items-center gap-1">
             {PILLAR_NAV.map((pillar) => {
               const Icon = pillar.icon;
               const isActive = activeScreenMeta.pillar === pillar.id;
@@ -123,67 +96,44 @@ export const AppShell: React.FC<{ children: React.ReactNode }> = ({ children }) 
                   key={pillar.id}
                   type="button"
                   onClick={() => handleNavigateScreen(pillar.targetScreen)}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
+                  aria-current={isActive ? 'page' : undefined}
+                  className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-semibold cursor-pointer transition-colors ${
                     isActive
-                      ? 'bg-white dark:bg-cyan-500/20 text-cyan-700 dark:text-cyan-300 border border-cyan-300 dark:border-cyan-500/40 shadow-sm'
-                      : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200/70 dark:hover:bg-slate-800'
+                      ? 'bg-brand-50 text-brand-700'
+                      : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
                   }`}
                 >
-                  <Icon className="w-3.5 h-3.5" />
+                  <Icon className="w-4 h-4" aria-hidden="true" />
                   <span>{pillar.label}</span>
                 </button>
               );
             })}
           </nav>
 
-          {/* Right Student Telemetry & Quick Actions */}
+          {/* Right: progress & quick actions */}
           <div className="flex items-center gap-2">
-            {/* Theme Switcher Toggle (Default: Cerah / Putih) */}
-            <button
-              type="button"
-              onClick={toggleTheme}
-              title={theme === 'light' ? 'Beralih ke Mode Gelap' : 'Beralih ke Mode Cerah (Putih)'}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-bold transition ${
-                theme === 'light'
-                  ? 'bg-amber-100/80 border-amber-300 text-amber-900 hover:bg-amber-200'
-                  : 'bg-slate-800/80 border-slate-700 text-cyan-300 hover:bg-slate-700'
-              }`}
-            >
-              {theme === 'light' ? (
-                <>
-                  <Sun className="w-3.5 h-3.5 text-amber-600" />
-                  <span className="hidden sm:inline">Mode Cerah</span>
-                </>
-              ) : (
-                <>
-                  <Moon className="w-3.5 h-3.5 text-cyan-400" />
-                  <span className="hidden sm:inline">Mode Gelap</span>
-                </>
-              )}
-            </button>
-
             <button
               type="button"
               onClick={() => handleNavigateScreen(3)}
               title="Peta Perjalanan Belajar"
-              className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800/80 border border-slate-300 dark:border-slate-700 text-xs font-bold text-slate-800 dark:text-slate-200 hover:border-cyan-500 transition"
+              className="hidden sm:inline-flex btn btn-secondary px-3 py-1.5 min-h-0 h-9 text-xs"
             >
-              <Map className="w-3.5 h-3.5 text-cyan-600 dark:text-cyan-400" />
+              <Map className="w-4 h-4 text-brand-600" aria-hidden="true" />
               <span>Peta Belajar</span>
             </button>
 
-            <div className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs font-bold">
-              <span className="text-slate-600 dark:text-slate-400">Progres:</span>
-              <span className="font-mono text-emerald-600 dark:text-emerald-400">{completionPercent}%</span>
+            <div className="hidden md:flex items-center gap-2 px-3 h-9 rounded-lg border border-slate-200 bg-slate-50 text-xs font-semibold">
+              <span className="text-slate-600">Progres</span>
+              <span className="font-mono text-brand-700">{completionPercent}%</span>
             </div>
 
             <button
               type="button"
               onClick={loadDemoData}
               title="Isi contoh data lengkap untuk pratinjau"
-              className="hidden sm:inline-flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800/70 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-700 text-xs font-bold text-amber-800 dark:text-amber-300 transition"
+              className="hidden sm:inline-flex btn btn-secondary px-3 py-1.5 min-h-0 h-9 text-xs"
             >
-              <Database className="w-3.5 h-3.5" />
+              <Database className="w-4 h-4 text-slate-500" aria-hidden="true" />
               <span className="hidden md:inline">Contoh Data</span>
             </button>
 
@@ -195,16 +145,22 @@ export const AppShell: React.FC<{ children: React.ReactNode }> = ({ children }) 
                 }
               }}
               title="Reset semua isian"
-              className="p-2 rounded-xl bg-slate-100 dark:bg-slate-800/70 hover:bg-rose-100 dark:hover:bg-rose-950/60 border border-slate-300 dark:border-slate-700 hover:border-rose-400 text-slate-600 dark:text-slate-300 hover:text-rose-600 transition"
+              aria-label="Reset semua isian"
+              className="btn btn-secondary p-2 min-h-0 w-9 h-9 text-slate-600 hover:text-rose-600 hover:border-rose-300"
             >
-              <RotateCcw className="w-4 h-4" />
+              <RotateCcw className="w-4 h-4" aria-hidden="true" />
             </button>
           </div>
         </div>
 
-        {/* Tablet/Mobile 7-Icon Bar */}
-        <div className="xl:hidden border-t border-slate-200 dark:border-slate-800/80 bg-slate-50 dark:bg-slate-900/70 px-3 py-1.5 overflow-x-auto">
-          <div className="flex items-center gap-1.5 min-w-max mx-auto justify-center">
+        {/* Thin overall progress line */}
+        <div className="h-0.5 bg-slate-100" role="progressbar" aria-label="Progres modul" aria-valuenow={completionPercent} aria-valuemin={0} aria-valuemax={100}>
+          <div className="h-full bg-brand-600 transition-all duration-300" style={{ width: `${completionPercent}%` }} />
+        </div>
+
+        {/* Tablet/Mobile pillar bar */}
+        <div className="2xl:hidden border-t border-slate-200 bg-white px-3 py-1.5 overflow-x-auto">
+          <div className="flex items-center gap-1 min-w-max mx-auto justify-center">
             {PILLAR_NAV.map((pillar) => {
               const Icon = pillar.icon;
               const isActive = activeScreenMeta.pillar === pillar.id;
@@ -213,13 +169,12 @@ export const AppShell: React.FC<{ children: React.ReactNode }> = ({ children }) 
                   key={pillar.id}
                   type="button"
                   onClick={() => handleNavigateScreen(pillar.targetScreen)}
-                  className={`flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-bold whitespace-nowrap transition ${
-                    isActive
-                      ? 'bg-white dark:bg-cyan-500/20 text-cyan-700 dark:text-cyan-300 border border-cyan-300 dark:border-cyan-500/40 shadow-sm'
-                      : 'text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-800'
+                  aria-current={isActive ? 'page' : undefined}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap cursor-pointer transition-colors ${
+                    isActive ? 'bg-brand-50 text-brand-700' : 'text-slate-600 hover:bg-slate-100'
                   }`}
                 >
-                  <Icon className="w-3.5 h-3.5" />
+                  <Icon className="w-4 h-4" aria-hidden="true" />
                   <span>{pillar.label}</span>
                 </button>
               );
@@ -230,45 +185,49 @@ export const AppShell: React.FC<{ children: React.ReactNode }> = ({ children }) 
 
       {/* Main Content Area with Left Screen Index Sidebar */}
       <div className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-6 flex gap-6 relative">
-        {/* Desktop Sidebar */}
+        {/* Sidebar */}
         <aside
           className={`${
-            sidebarOpen ? 'fixed inset-y-0 left-0 z-50 w-72 bg-white dark:bg-[#0B1120] p-4 border-r border-slate-200 dark:border-slate-800 overflow-y-auto' : 'hidden'
+            sidebarOpen ? 'fixed inset-y-0 left-0 z-50 w-72 bg-white p-4 border-r border-slate-200 overflow-y-auto' : 'hidden'
           } lg:block lg:static lg:w-64 lg:shrink-0`}
         >
           <div className="lg:sticky lg:top-24 space-y-4">
             {sidebarOpen && (
-              <div className="flex items-center justify-between lg:hidden pb-2 border-b border-slate-200 dark:border-slate-800">
-                <span className="font-display font-bold text-sm text-cyan-600 dark:text-cyan-400">Daftar Screen (1–17)</span>
+              <div className="flex items-center justify-between lg:hidden pb-2 border-b border-slate-200">
+                <span className="font-display font-bold text-sm text-slate-900">Daftar Screen (1–17)</span>
                 <button
                   type="button"
                   onClick={() => setSidebarOpen(false)}
-                  className="p-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300"
+                  aria-label="Tutup daftar screen"
+                  className="btn btn-secondary p-1.5 min-h-0 w-8 h-8"
                 >
                   <X className="w-4 h-4" />
                 </button>
               </div>
             )}
 
-            {/* Student Identity Pill */}
-            <div className="p-4 rounded-2xl bg-white dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 shadow-sm space-y-1">
-              <div className="text-[11px] font-mono uppercase tracking-wider font-bold text-slate-500 dark:text-slate-400">
+            {/* Student Identity */}
+            <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+              <div className="text-[11px] font-mono uppercase tracking-wider font-semibold text-slate-500">
                 Profil Siswa Aktif
               </div>
-              <div className="text-sm font-bold text-slate-900 dark:text-slate-100 truncate">
+              <div className="text-sm font-semibold text-slate-900 truncate">
                 {state.identity.studentName || 'Belum diisi'}
               </div>
-              <div className="text-xs font-medium text-slate-600 dark:text-slate-400 truncate">
+              <div className="text-xs text-slate-600 truncate">
                 {state.identity.studentClass ? `${state.identity.studentClass} • ` : ''}
                 {state.identity.groupName || 'Kelompok belum dipilih'}
               </div>
             </div>
 
             {/* 17 Screen Stepper */}
-            <div className="p-3.5 rounded-2xl bg-white dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 shadow-sm max-h-[calc(100vh-220px)] overflow-y-auto space-y-1">
-              <div className="px-2 pb-2 text-[11px] font-mono uppercase tracking-wider font-bold text-slate-500 dark:text-slate-400 flex items-center justify-between">
+            <nav
+              aria-label="Navigasi 17 Screen"
+              className="p-2 rounded-xl bg-white border border-slate-200 max-h-[calc(100vh-220px)] overflow-y-auto space-y-0.5"
+            >
+              <div className="px-2.5 pt-1.5 pb-2 text-[11px] font-mono uppercase tracking-wider font-semibold text-slate-500 flex items-center justify-between">
                 <span>Navigasi 17 Screen</span>
-                <span className="text-cyan-600 dark:text-cyan-400 font-bold">{state.currentScreen}/17</span>
+                <span className="text-brand-700">{state.currentScreen}/17</span>
               </div>
               {SCREENS.map((scr) => {
                 const isCurrent = state.currentScreen === scr.id;
@@ -278,18 +237,17 @@ export const AppShell: React.FC<{ children: React.ReactNode }> = ({ children }) 
                     key={scr.id}
                     type="button"
                     onClick={() => handleNavigateScreen(scr.id)}
-                    className={`w-full flex items-center justify-between gap-2 px-2.5 py-2 rounded-xl text-left text-xs transition font-medium ${
+                    aria-current={isCurrent ? 'step' : undefined}
+                    className={`w-full flex items-center justify-between gap-2 px-2.5 py-2 rounded-lg text-left text-xs cursor-pointer transition-colors ${
                       isCurrent
-                        ? 'bg-cyan-50 dark:bg-cyan-500/20 text-cyan-800 dark:text-cyan-200 border border-cyan-300 dark:border-cyan-500/40 font-bold shadow-sm'
-                        : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/80 hover:text-slate-900 dark:hover:text-white border border-transparent'
+                        ? 'bg-brand-50 text-brand-800 font-semibold'
+                        : 'text-slate-700 hover:bg-slate-100 font-medium'
                     }`}
                   >
                     <div className="flex items-center gap-2 min-w-0">
                       <span
-                        className={`font-mono text-[10px] px-1.5 py-0.5 rounded-md font-bold ${
-                          isCurrent
-                            ? 'bg-cyan-600 text-white font-extrabold'
-                            : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700'
+                        className={`font-mono text-[10px] px-1.5 py-0.5 rounded-md font-semibold ${
+                          isCurrent ? 'bg-brand-600 text-white' : 'bg-slate-100 text-slate-600'
                         }`}
                       >
                         {scr.code}
@@ -297,12 +255,12 @@ export const AppShell: React.FC<{ children: React.ReactNode }> = ({ children }) 
                       <span className="truncate">{scr.shortTitle}</span>
                     </div>
                     {isVisited && !isCurrent && (
-                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0" />
+                      <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" aria-label="Sudah dikunjungi" />
                     )}
                   </button>
                 );
               })}
-            </div>
+            </nav>
           </div>
         </aside>
 
@@ -310,25 +268,25 @@ export const AppShell: React.FC<{ children: React.ReactNode }> = ({ children }) 
         {sidebarOpen && (
           <div
             onClick={() => setSidebarOpen(false)}
-            className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm lg:hidden"
+            className="fixed inset-0 z-40 bg-slate-900/30 lg:hidden"
           />
         )}
 
         {/* Active Screen Stage */}
         <main className="flex-1 min-w-0 flex flex-col">
           {/* Screen Phase Breadcrumb */}
-          <div className="mb-5 flex flex-wrap items-center justify-between gap-2 px-4 py-3 rounded-2xl bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 shadow-sm">
+          <div className="mb-5 flex flex-wrap items-center justify-between gap-2 px-4 py-3 rounded-xl bg-slate-50 border border-slate-200">
             <div className="flex items-center gap-2 text-xs">
-              <span className="font-mono font-bold px-2.5 py-1 rounded-lg bg-cyan-100 dark:bg-cyan-500/15 text-cyan-800 dark:text-cyan-300 border border-cyan-300 dark:border-cyan-500/30">
+              <span className="font-mono font-semibold px-2.5 py-1 rounded-md bg-brand-600 text-white">
                 SCREEN {activeScreenMeta.id} / 17
               </span>
               <span className="text-slate-400">•</span>
-              <span className="text-amber-700 dark:text-amber-300 font-bold">{activeScreenMeta.phase}</span>
+              <span className="text-slate-700 font-semibold">{activeScreenMeta.phase}</span>
               <span className="text-slate-400 hidden sm:inline">•</span>
-              <span className="text-slate-900 dark:text-slate-200 font-bold hidden sm:inline">{activeScreenMeta.title}</span>
+              <span className="text-slate-900 font-semibold hidden sm:inline">{activeScreenMeta.title}</span>
             </div>
-            <div className="flex items-center gap-2 text-[11px] font-mono text-emerald-600 dark:text-emerald-400 font-bold">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+            <div className="flex items-center gap-2 text-[11px] font-mono text-slate-600 font-medium">
+              <span className="w-2 h-2 rounded-full bg-emerald-500" />
               <span>Tersimpan otomatis</span>
             </div>
           </div>
@@ -337,12 +295,12 @@ export const AppShell: React.FC<{ children: React.ReactNode }> = ({ children }) 
           <div className="flex-1">{children}</div>
 
           {/* Bottom Screen Stepper Bar */}
-          <footer className="mt-8 pt-4 border-t border-slate-200 dark:border-slate-800">
+          <footer className="mt-8 pt-4 border-t border-slate-200">
             {state.currentScreen === 1 ? (
-              <div className="flex items-center justify-center p-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-center text-xs text-slate-600 dark:text-slate-400 shadow-sm">
+              <div className="flex items-center justify-center p-3 rounded-xl bg-slate-50 border border-slate-200 text-center text-xs text-slate-600">
                 <span>
                   Silakan isi identitas diri di atas, lalu klik tombol{' '}
-                  <strong className="text-cyan-700 dark:text-cyan-400 font-bold">"MULAI PEMBELAJARAN →"</strong> untuk masuk ke materi.
+                  <strong className="text-brand-700 font-semibold">"MULAI PEMBELAJARAN →"</strong> untuk masuk ke materi.
                 </span>
               </div>
             ) : (
@@ -351,9 +309,9 @@ export const AppShell: React.FC<{ children: React.ReactNode }> = ({ children }) 
                   type="button"
                   onClick={prevScreen}
                   disabled={state.currentScreen <= 1}
-                  className="inline-flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-sm font-semibold text-slate-700 dark:text-slate-200 shadow-sm hover:bg-slate-50 dark:hover:bg-slate-800 disabled:opacity-40 disabled:cursor-not-allowed transition"
+                  className="btn btn-secondary px-4 py-2.5 text-sm"
                 >
-                  <ChevronLeft className="w-4 h-4" />
+                  <ChevronLeft className="w-4 h-4" aria-hidden="true" />
                   <span>Screen Sebelumnya</span>
                 </button>
 
@@ -363,13 +321,14 @@ export const AppShell: React.FC<{ children: React.ReactNode }> = ({ children }) 
                       key={s.id}
                       type="button"
                       aria-label={`Ke Screen ${s.id}: ${s.shortTitle}`}
+                      aria-current={s.id === state.currentScreen ? 'step' : undefined}
                       onClick={() => handleNavigateScreen(s.id)}
-                      className={`h-2 rounded-full transition-all ${
+                      className={`h-2 rounded-full cursor-pointer transition-all ${
                         s.id === state.currentScreen
-                          ? 'w-6 bg-cyan-500 shadow-sm'
+                          ? 'w-6 bg-brand-600'
                           : state.visitedScreens.includes(s.id)
-                          ? 'w-2 bg-emerald-500/70 hover:bg-emerald-500'
-                          : 'w-2 bg-slate-300 dark:bg-slate-700 hover:bg-slate-400'
+                          ? 'w-2 bg-brand-300 hover:bg-brand-400'
+                          : 'w-2 bg-slate-200 hover:bg-slate-300'
                       }`}
                     />
                   ))}
@@ -379,18 +338,18 @@ export const AppShell: React.FC<{ children: React.ReactNode }> = ({ children }) 
                   <button
                     type="button"
                     onClick={nextScreen}
-                    className="clay-btn clay-btn-primary inline-flex items-center gap-2 px-6 py-3 rounded-2xl text-white font-bold text-sm tracking-wide shadow-md transition"
+                    className="btn btn-primary px-5 py-2.5 text-sm"
                   >
                     <span>Screen Selanjutnya</span>
-                    <ChevronRight className="w-4 h-4" />
+                    <ChevronRight className="w-4 h-4" aria-hidden="true" />
                   </button>
                 ) : (
                   <button
                     type="button"
                     onClick={() => handleNavigateScreen(3)}
-                    className="clay-btn clay-btn-emerald inline-flex items-center gap-2 px-6 py-3 rounded-2xl text-white font-bold text-sm tracking-wide shadow-md transition"
+                    className="btn btn-success px-5 py-2.5 text-sm"
                   >
-                    <Map className="w-4 h-4" />
+                    <Map className="w-4 h-4" aria-hidden="true" />
                     <span>Kembali ke Peta Belajar</span>
                   </button>
                 )}
@@ -402,4 +361,3 @@ export const AppShell: React.FC<{ children: React.ReactNode }> = ({ children }) 
     </div>
   );
 };
-

@@ -2,306 +2,242 @@
 @tailwind components;
 @tailwind utilities;
 
+/* =========================================================
+   E-MODUL DESIGN SYSTEM — "Clean Academic" (white base)
+   Style   : Minimalism & Swiss (ui-ux-pro-max)
+   Base    : #FFFFFF, teks slate-900, satu warna brand (blue-600)
+   Surface : putih + border 1px slate-200, radius 12px, tanpa gradient
+   Font    : Outfit (judul) / Work Sans (isi) / JetBrains Mono (angka & label)
+   Sumber kebenaran: design-system/e-modul/MASTER.md
+   ========================================================= */
+
 @layer base {
+  :root {
+    color-scheme: light;
+    --color-bg: #ffffff;
+    --color-surface: #ffffff;
+    --color-subtle: #f8fafc;
+    --color-border: #e2e8f0;
+    --color-border-strong: #cbd5e1;
+    --color-text: #0f172a;
+    --color-text-muted: #475569;
+    --color-brand: #2563eb;
+    --color-brand-hover: #1d4ed8;
+    --color-brand-soft: #eff6ff;
+    --color-success: #059669;
+    --color-warning: #d97706;
+    --color-danger: #dc2626;
+    --radius-card: 12px;
+    --radius-control: 10px;
+  }
+
   html {
-    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    font-family: 'Work Sans', system-ui, sans-serif;
     scroll-behavior: smooth;
+    background-color: #ffffff;
   }
 
-  h1, h2, h3, h4, .font-display {
-    font-family: 'Baloo 2', 'Space Grotesk', system-ui, sans-serif;
+  body {
+    background-color: #ffffff;
+    color: #0f172a;
   }
 
-  code, pre, .font-mono {
-    font-family: 'JetBrains Mono', monospace;
+  h1,
+  h2,
+  h3,
+  h4,
+  .font-display {
+    font-family: 'Outfit', system-ui, sans-serif;
+    letter-spacing: -0.01em;
+  }
+
+  code,
+  pre,
+  .font-mono {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+  }
+
+  :focus-visible {
+    outline: 2px solid #2563eb;
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  /* ---------- Surface ---------- */
+  .card {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    box-shadow: 0 1px 2px 0 rgba(15, 23, 42, 0.04);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  /* Tambahan untuk kartu yang bisa diklik / interaktif */
+  .card-hover {
+    cursor: pointer;
+  }
+
+  .card-hover:hover {
+    border-color: #93c5fd;
+    box-shadow: 0 4px 12px -2px rgba(15, 23, 42, 0.08);
+  }
+
+  .card-tint {
+    background-color: #f8fafc;
+    border-color: #e2e8f0;
+  }
+
+  /* ---------- Buttons ---------- */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 44px;
+    white-space: nowrap;
+    border-radius: 10px;
+    font-weight: 600;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease,
+      box-shadow 0.15s ease;
+  }
+
+  .btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .btn-primary {
+    background-color: #2563eb;
+    color: #ffffff;
+    border-color: #2563eb;
+  }
+
+  .btn-primary:hover:not(:disabled) {
+    background-color: #1d4ed8;
+    border-color: #1d4ed8;
+  }
+
+  .btn-success {
+    background-color: #059669;
+    color: #ffffff;
+    border-color: #059669;
+  }
+
+  .btn-success:hover:not(:disabled) {
+    background-color: #047857;
+    border-color: #047857;
+  }
+
+  .btn-secondary {
+    background-color: #ffffff;
+    color: #0f172a;
+    border-color: #cbd5e1;
+  }
+
+  .btn-secondary:hover:not(:disabled) {
+    background-color: #f8fafc;
+    border-color: #94a3b8;
+  }
+
+  /* ---------- Form ---------- */
+  .input {
+    border-radius: 10px;
+    background-color: #ffffff;
+    border: 1px solid #cbd5e1;
+    color: #0f172a;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .input::placeholder {
+    color: #94a3b8;
+  }
+
+  .input:hover {
+    border-color: #94a3b8;
+  }
+
+  .input:focus {
+    border-color: #2563eb;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.18);
+  }
+
+  /* ---------- Badge ---------- */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 9999px;
+    border: 1px solid #e2e8f0;
+  }
+
+  /* ---------- Simulation viewport (kanvas terang) ---------- */
+  .sim-canvas {
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+  }
+
+  /* ---------- Range slider ---------- */
+  input[type='range'].slider {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 6px;
+    border-radius: 9999px;
+    background: #e2e8f0;
+    outline: none;
+    cursor: pointer;
+  }
+
+  input[type='range'].slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #2563eb;
+    border: 3px solid #ffffff;
+    box-shadow: 0 0 0 1px #2563eb, 0 1px 3px rgba(15, 23, 42, 0.25);
+    cursor: pointer;
+    transition: box-shadow 0.15s ease;
+  }
+
+  input[type='range'].slider::-webkit-slider-thumb:hover {
+    box-shadow: 0 0 0 1px #1d4ed8, 0 0 0 5px rgba(37, 99, 235, 0.18);
+  }
+
+  input[type='range'].slider::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #2563eb;
+    border: 3px solid #ffffff;
+    box-shadow: 0 0 0 1px #2563eb, 0 1px 3px rgba(15, 23, 42, 0.25);
+    cursor: pointer;
+  }
+
+  input[type='range'].slider:focus-visible::-webkit-slider-thumb {
+    box-shadow: 0 0 0 1px #1d4ed8, 0 0 0 5px rgba(37, 99, 235, 0.3);
   }
 }
 
 /* =========================================================
-   GLOBAL THEME: LIGHT (DEFAULT CERAH & PLAYFUL) & DARK
-   ========================================================= */
-
-html.light {
-  color-scheme: light;
-}
-
-html.light body {
-  background-color: #F8FAFC;
-  color: #0F172A;
-}
-
-/* Background canvas edukasi cerah & modern */
-html.light .bg-lab-grid {
-  background-color: #F8FAFC;
-  background-image:
-    radial-gradient(at 0% 0%, rgba(13, 148, 136, 0.08) 0px, transparent 40%),
-    radial-gradient(at 100% 0%, rgba(234, 88, 12, 0.08) 0px, transparent 40%),
-    linear-gradient(to right, rgba(203, 213, 225, 0.35) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(203, 213, 225, 0.35) 1px, transparent 1px);
-  background-size: 100% 100%, 100% 100%, 32px 32px, 32px 32px;
-}
-
-html.dark body {
-  background-color: #0B1120;
-  color: #F8FAFC;
-}
-
-html.dark .bg-lab-grid {
-  background-color: #0B1120;
-  background-image:
-    linear-gradient(to right, rgba(51, 65, 85, 0.25) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(51, 65, 85, 0.25) 1px, transparent 1px);
-  background-size: 32px 32px;
-}
-
-/* =========================================================
-   CLAYMORPHISM PLAYFUL COMPONENTS (UI/UX PRO MAX)
-   ========================================================= */
-
-.clay-card {
-  background-color: #FFFFFF;
-  border-radius: 28px;
-  border: 2px solid #E2E8F0;
-  box-shadow: 
-    0 12px 24px -4px rgba(15, 23, 42, 0.07),
-    0 4px 8px -2px rgba(15, 23, 42, 0.04),
-    inset 0 2px 4px 0 rgba(255, 255, 255, 0.95),
-    inset 0 -2px 4px 0 rgba(148, 163, 184, 0.1);
-  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease;
-}
-
-html.dark .clay-card {
-  background-color: #111827;
-  border: 2px solid #1E293B;
-  box-shadow: 
-    0 12px 24px -4px rgba(0, 0, 0, 0.4),
-    inset 0 2px 4px 0 rgba(255, 255, 255, 0.05);
-}
-
-.clay-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 
-    0 20px 32px -6px rgba(15, 23, 42, 0.12),
-    0 8px 12px -3px rgba(15, 23, 42, 0.06),
-    inset 0 2px 4px 0 rgba(255, 255, 255, 0.95);
-}
-
-html.dark .clay-card:hover {
-  box-shadow: 0 20px 32px -6px rgba(0, 0, 0, 0.6);
-}
-
-.clay-card-cyan {
-  background: linear-gradient(135deg, #F0FDFA 0%, #E0F2FE 100%);
-  border: 2px solid #BAE6FD;
-}
-
-html.dark .clay-card-cyan {
-  background: linear-gradient(135deg, #082F49 0%, #0F172A 100%);
-  border: 2px solid #0369A1;
-}
-
-.clay-card-indigo {
-  background: linear-gradient(135deg, #EEF2FF 0%, #E0E7FF 100%);
-  border: 2px solid #C7D2FE;
-}
-
-html.dark .clay-card-indigo {
-  background: linear-gradient(135deg, #1E1B4B 0%, #0F172A 100%);
-  border: 2px solid #4338CA;
-}
-
-/* =========================================================
-   BUTTONS: GUARANTEED HIGH-CONTRAST PURE WHITE TEXT
-   ========================================================= */
-
-.clay-btn {
-  border-radius: 20px;
-  font-weight: 700;
-  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-}
-
-/* Primary Button: Vibrant STEM Cyan/Teal Gradient */
-.clay-btn-primary {
-  background: linear-gradient(135deg, #0284C7 0%, #0D9488 100%) !important;
-  color: #FFFFFF !important;
-  border: 2px solid rgba(255, 255, 255, 0.45);
-  box-shadow: 
-    0 8px 18px -2px rgba(2, 132, 199, 0.4),
-    inset 0 2px 4px 0 rgba(255, 255, 255, 0.65),
-    inset 0 -2px 4px 0 rgba(0, 0, 0, 0.2);
-  border-radius: 20px;
-  font-weight: 700;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.clay-btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 24px -3px rgba(2, 132, 199, 0.5);
-}
-
-.clay-btn-primary:active {
-  transform: translateY(2px) scale(0.98);
-}
-
-/* Accent Button: Energetic Achievement Orange (#EA580C) */
-.clay-btn-accent {
-  background: linear-gradient(135deg, #EA580C 0%, #F97316 100%) !important;
-  color: #FFFFFF !important;
-  border: 2px solid rgba(255, 255, 255, 0.45);
-  box-shadow: 
-    0 8px 18px -2px rgba(234, 88, 12, 0.45),
-    inset 0 2px 4px 0 rgba(255, 255, 255, 0.65),
-    inset 0 -2px 4px 0 rgba(0, 0, 0, 0.2);
-  border-radius: 20px;
-  font-weight: 700;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.clay-btn-accent:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 14px 26px -3px rgba(234, 88, 12, 0.55);
-}
-
-.clay-btn-accent:active {
-  transform: translateY(2px) scale(0.98);
-}
-
-/* Emerald Button: Lab Action Green */
-.clay-btn-emerald {
-  background: linear-gradient(135deg, #059669 0%, #10B981 100%) !important;
-  color: #FFFFFF !important;
-  border: 2px solid rgba(255, 255, 255, 0.45);
-  box-shadow: 
-    0 8px 18px -2px rgba(5, 150, 105, 0.4),
-    inset 0 2px 4px 0 rgba(255, 255, 255, 0.65),
-    inset 0 -2px 4px 0 rgba(0, 0, 0, 0.2);
-  border-radius: 20px;
-  font-weight: 700;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.clay-btn-emerald:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 24px -3px rgba(5, 150, 105, 0.5);
-}
-
-.clay-btn-emerald:active {
-  transform: translateY(2px) scale(0.98);
-}
-
-/* Form Inputs: Tactile Clay Style */
-.clay-input {
-  border-radius: 16px;
-  background-color: #FFFFFF;
-  border: 2px solid #CBD5E1;
-  color: #0F172A;
-  box-shadow: 
-    inset 0 2px 4px 0 rgba(148, 163, 184, 0.15),
-    0 1px 2px 0 rgba(255, 255, 255, 0.9);
-  transition: all 0.2s ease;
-}
-
-html.dark .clay-input {
-  background-color: #0F172A;
-  border: 2px solid #334155;
-  color: #F8FAFC;
-}
-
-.clay-input:focus {
-  border-color: #0284C7;
-  outline: none;
-  box-shadow: 
-    inset 0 2px 4px 0 rgba(2, 132, 199, 0.1),
-    0 0 0 3px rgba(2, 132, 199, 0.25);
-}
-
-/* Badges */
-.clay-badge {
-  border-radius: 9999px;
-  border: 1.5px solid rgba(255, 255, 255, 0.7);
-  box-shadow: 
-    0 3px 6px -1px rgba(15, 23, 42, 0.08),
-    inset 0 1px 2px 0 rgba(255, 255, 255, 0.8);
-}
-
-/* =========================================================
-   DARK OSCILLOSCOPE MONITOR (FOR SIMULATION SVG VIEWPORTS)
-   ========================================================= */
-
-.lab-monitor,
-svg.sim-viewport {
-  background-color: #070B14 !important;
-  border: 2px solid #1E293B !important;
-  border-radius: 20px;
-}
-
-/* Ensure SVG text inside simulations is ALWAYS crisp white and glowing */
-.lab-monitor text,
-svg.sim-viewport text {
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.95);
-}
-
-/* =========================================================
-   SLIDERS
-   ========================================================= */
-
-input[type='range'].lab-slider {
-  -webkit-appearance: none;
-  appearance: none;
-  height: 8px;
-  border-radius: 9999px;
-  background: #CBD5E1;
-  outline: none;
-}
-
-html.dark input[type='range'].lab-slider {
-  background: #1E293B;
-  border: 1px solid #334155;
-}
-
-input[type='range'].lab-slider::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  background: #0284C7;
-  border: 2px solid #FFFFFF;
-  box-shadow: 0 2px 8px rgba(2, 132, 199, 0.6);
-  cursor: pointer;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
-}
-
-input[type='range'].lab-slider::-webkit-slider-thumb:hover {
-  transform: scale(1.15);
-  box-shadow: 0 4px 12px rgba(2, 132, 199, 0.8);
-}
-
-input[type='range'].lab-slider.slider-amber::-webkit-slider-thumb {
-  background: #D97706;
-  box-shadow: 0 2px 8px rgba(217, 119, 6, 0.6);
-}
-
-input[type='range'].lab-slider.slider-emerald::-webkit-slider-thumb {
-  background: #059669;
-  box-shadow: 0 2px 8px rgba(5, 150, 105, 0.6);
-}
-
-/* =========================================================
-   SCROLLBAR & PRINT
+   SCROLLBAR, ANIMASI, PRINT
    ========================================================= */
 
 ::-webkit-scrollbar {
@@ -309,30 +245,22 @@ input[type='range'].lab-slider.slider-emerald::-webkit-slider-thumb {
   height: 8px;
 }
 
-html.light ::-webkit-scrollbar-track {
-  background: #F1F5F9;
-}
-html.light ::-webkit-scrollbar-thumb {
-  background: #CBD5E1;
-  border-radius: 4px;
-}
-html.light ::-webkit-scrollbar-thumb:hover {
-  background: #94A3B8;
+::-webkit-scrollbar-track {
+  background: #f8fafc;
 }
 
-html.dark ::-webkit-scrollbar-track {
-  background: #0B1120;
-}
-html.dark ::-webkit-scrollbar-thumb {
-  background: #334155;
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
   border-radius: 4px;
 }
-html.dark ::-webkit-scrollbar-thumb:hover {
-  background: #475569;
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
 }
 
 @keyframes pulse-flux {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 0.45;
   }
   50% {

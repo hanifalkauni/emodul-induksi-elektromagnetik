@@ -27,7 +27,7 @@ export function openPrintableLkpd(state: EModulState) {
       <style>
         body { font-family: Arial, sans-serif; color: #0f172a; padding: 32px; line-height: 1.5; }
         h1, h2 { color: #0f172a; margin-bottom: 6px; }
-        .header { border-bottom: 3px solid #0284c7; padding-bottom: 12px; margin-bottom: 20px; }
+        .header { border-bottom: 3px solid #2563eb; padding-bottom: 12px; margin-bottom: 20px; }
         .meta { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; background: #f8fafc; padding: 12px; border: 1px solid #cbd5e1; border-radius: 6px; margin-bottom: 20px; }
         table { width: 100%; border-collapse: collapse; margin: 12px 0 20px; }
         th { background: #e2e8f0; text-align: left; padding: 8px; border: 1px solid #cbd5e1; }
@@ -37,7 +37,7 @@ export function openPrintableLkpd(state: EModulState) {
     </head>
     <body>
       <div class="no-print" style="margin-bottom:16px;">
-        <button onclick="window.print()" style="padding:10px 18px;background:#0284c7;color:#fff;border:none;border-radius:6px;cursor:pointer;font-weight:bold;">
+        <button onclick="window.print()" style="padding:10px 18px;background:#2563eb;color:#fff;border:none;border-radius:6px;cursor:pointer;font-weight:bold;">
           Cetak / Simpan sebagai PDF
         </button>
       </div>
@@ -127,7 +127,7 @@ export function openPrintablePortfolio(state: EModulState) {
     </head>
     <body>
       <div class="no-print" style="margin-bottom:16px;">
-        <button onclick="window.print()" style="padding:10px 18px;background:#059669;color:#fff;border:none;border-radius:6px;cursor:pointer;font-weight:bold;">
+        <button onclick="window.print()" style="padding:10px 18px;background:#2563eb;color:#fff;border:none;border-radius:6px;cursor:pointer;font-weight:bold;">
           Cetak / Simpan Portofolio PDF
         </button>
       </div>

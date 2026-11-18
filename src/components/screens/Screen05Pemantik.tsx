@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { HelpCircle, Play, Pause, Sparkles, CheckCircle2, Image as ImageIcon } from 'lucide-react';
+import { HelpCircle, Play, Pause, Sparkles, CheckCircle2, Lightbulb, Image as ImageIcon } from 'lucide-react';
 import { useModul } from '../../context/ModulContext';
 
 const GUIDING_QUESTIONS = [
@@ -94,40 +94,40 @@ export const Screen05Pemantik: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Main Phenomenon Card */}
-      <div className="rounded-[32px] clay-card p-6 sm:p-8 space-y-6">
-        <div className="space-y-2 border-b border-slate-200 dark:border-slate-800 pb-5">
-          <div className="clay-badge inline-flex items-center gap-2 px-3.5 py-1.5 bg-amber-100 dark:bg-amber-500/20 text-amber-900 dark:text-amber-300 text-xs font-mono font-bold border border-amber-300">
-            <Sparkles className="w-4 h-4 text-amber-600 dark:text-amber-400" />
+      <div className="card p-6 sm:p-8 space-y-6">
+        <div className="space-y-2 border-b border-slate-200 pb-5">
+          <div className="badge inline-flex items-center gap-2 px-3.5 py-1.5 bg-brand-50 border-brand-200 text-brand-700 text-xs font-mono font-bold">
+            <Sparkles className="w-4 h-4 text-brand-600" />
             <span>FENOMENA PEMANTIK</span>
           </div>
-          <h1 className="text-2xl sm:text-4xl font-display font-black text-slate-900 dark:text-white">
+          <h1 className="text-2xl sm:text-4xl font-display font-bold text-slate-900">
             “Mengapa Lampu Bisa Menyala Tanpa Baterai?”
           </h1>
-          <p className="text-sm font-medium text-slate-700 dark:text-slate-300 leading-relaxed max-w-3xl">
-            <strong className="text-slate-900 dark:text-white">Situasi:</strong> Seorang siswa menggerakkan magnet keluar-masuk sebuah kumparan kawat tembaga. Tiba-tiba lampu LED yang terhubung pada kumparan menyala terang!
+          <p className="text-sm font-medium text-slate-700 leading-relaxed max-w-3xl">
+            <strong className="text-slate-900">Situasi:</strong> Seorang siswa menggerakkan magnet keluar-masuk sebuah kumparan kawat tembaga. Tiba-tiba lampu LED yang terhubung pada kumparan menyala terang!
           </p>
         </div>
 
         {/* Interactive Video-like Demonstration + Storyboard Visual Gallery */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-          <div className="lg:col-span-7 rounded-3xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-5 space-y-4 shadow-sm">
+          <div className="lg:col-span-7 rounded-xl bg-slate-50 border border-slate-200 p-5 space-y-4">
             <div className="flex items-center justify-between flex-wrap gap-2">
-              <span className="text-xs font-mono font-bold text-cyan-800 dark:text-cyan-400 uppercase tracking-wider">
+              <span className="text-xs font-mono font-bold text-brand-700 uppercase tracking-wider">
                 ANIMASI FENOMENA INTERAKTIF
               </span>
               <button
                 type="button"
                 onClick={() => setIsPlaying((p) => !p)}
-                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-white hover:bg-slate-100 dark:bg-slate-800 dark:hover:bg-slate-700 text-xs font-bold text-slate-800 dark:text-white border border-slate-300 dark:border-slate-700 shadow-xs transition"
+                className="btn btn-secondary px-3.5 py-1.5 min-h-0 h-9 text-xs"
               >
-                {isPlaying ? <Pause className="w-3.5 h-3.5 text-amber-600" /> : <Play className="w-3.5 h-3.5 text-emerald-600" />}
+                {isPlaying ? <Pause className="w-3.5 h-3.5 text-brand-600" /> : <Play className="w-3.5 h-3.5 text-brand-600" />}
                 <span>{isPlaying ? 'Jeda Gerakan' : 'Putar Animasi'}</span>
               </button>
             </div>
 
-            {/* Dark Oscilloscope Monitor Frame */}
-            <div className="rounded-2xl p-2.5 bg-[#070B14] border-2 border-slate-800 shadow-inner">
-              <svg viewBox="0 0 460 195" className="w-full h-auto rounded-xl bg-[#070B14]" role="img" aria-label="Simulasi fenomena kumparan dan magnet">
+            {/* Simulation canvas */}
+            <div className="sim-canvas p-2.5">
+              <svg viewBox="0 0 460 195" className="w-full h-auto" role="img" aria-label="Simulasi fenomena kumparan dan magnet">
                 <defs>
                   <radialGradient id="pemantikLedGlow" cx="50%" cy="50%" r="50%">
                     <stop offset="0%" stopColor="#FBBF24" stopOpacity={activeLed} />
@@ -143,9 +143,8 @@ export const Screen05Pemantik: React.FC = () => {
                   width="86"
                   height={COIL_RY * 2 - 4}
                   rx="8"
-                  fill="#0F172A"
-                  fillOpacity="0.85"
-                  stroke="#334155"
+                  fill="#F1F5F9"
+                  stroke="#CBD5E1"
                   strokeWidth="1"
                 />
 
@@ -155,7 +154,7 @@ export const Screen05Pemantik: React.FC = () => {
                     key={`back-${i}`}
                     d={`M ${cx} ${COIL_CY - COIL_RY} A ${COIL_RX} ${COIL_RY} 0 0 0 ${cx} ${COIL_CY + COIL_RY}`}
                     fill="none"
-                    stroke="#92400E"
+                    stroke="#B45309"
                     strokeWidth="3.5"
                   />
                 ))}
@@ -166,7 +165,7 @@ export const Screen05Pemantik: React.FC = () => {
                   <path
                     d="M 135 84 C 165 65, 190 65, 212 84"
                     fill="none"
-                    stroke="#06B6D4"
+                    stroke="#0891B2"
                     strokeOpacity={0.7}
                     strokeWidth="1.5"
                     strokeDasharray="4 3"
@@ -174,7 +173,7 @@ export const Screen05Pemantik: React.FC = () => {
                   <path
                     d="M 135 93 L 216 93"
                     fill="none"
-                    stroke="#06B6D4"
+                    stroke="#0891B2"
                     strokeOpacity={0.85}
                     strokeWidth="1.8"
                     strokeDasharray="5 3"
@@ -182,15 +181,15 @@ export const Screen05Pemantik: React.FC = () => {
                   <path
                     d="M 135 102 C 165 121, 190 121, 212 102"
                     fill="none"
-                    stroke="#06B6D4"
+                    stroke="#0891B2"
                     strokeOpacity={0.7}
                     strokeWidth="1.5"
                     strokeDasharray="4 3"
                   />
 
                   {/* Bar Magnet body */}
-                  <rect x="35" y="77" width="50" height="32" rx="4" fill="#2563EB" stroke="#93C5FD" strokeWidth="1.2" />
-                  <rect x="85" y="77" width="50" height="32" rx="4" fill="#DC2626" stroke="#FCA5A5" strokeWidth="1.2" />
+                  <rect x="35" y="77" width="50" height="32" rx="4" fill="#2563EB" stroke="#1D4ED8" strokeWidth="1.2" />
+                  <rect x="85" y="77" width="50" height="32" rx="4" fill="#DC2626" stroke="#B91C1C" strokeWidth="1.2" />
                   <text x="60" y="98" textAnchor="middle" fill="#FFFFFF" fontSize="13" fontWeight="bold" fontFamily="JetBrains Mono">S</text>
                   <text x="110" y="98" textAnchor="middle" fill="#FFFFFF" fontSize="13" fontWeight="bold" fontFamily="JetBrains Mono">U</text>
                 </g>
@@ -201,7 +200,7 @@ export const Screen05Pemantik: React.FC = () => {
                     key={`front-${i}`}
                     d={`M ${cx} ${COIL_CY - COIL_RY} A ${COIL_RX} ${COIL_RY} 0 0 1 ${cx} ${COIL_CY + COIL_RY}`}
                     fill="none"
-                    stroke="#F59E0B"
+                    stroke="#D97706"
                     strokeWidth="3.8"
                     strokeLinecap="round"
                   />
@@ -231,43 +230,43 @@ export const Screen05Pemantik: React.FC = () => {
 
                 {/* Label Indikator Panah Arus Induksi */}
                 <g transform="translate(255, 48)">
-                  <rect x="-75" y="-13" width="150" height="22" rx="11" fill="#064E3B" fillOpacity="0.9" stroke="#10B981" strokeWidth="1.2" />
-                  <text x="0" y="2" textAnchor="middle" fill="#A7F3D0" fontSize="9.5" fontWeight="bold" fontFamily="JetBrains Mono">
+                  <rect x="-75" y="-13" width="150" height="22" rx="11" fill="#ECFDF5" stroke="#059669" strokeWidth="1.2" />
+                  <text x="0" y="2" textAnchor="middle" fill="#047857" fontSize="9.5" fontWeight="bold" fontFamily="JetBrains Mono">
                     ▲ ARUS INDUKSI (I) {motionDir === 'in' ? '↑ NAIK' : '↓ TURUN'}
                   </text>
                 </g>
 
-                <text x="255" y="144" textAnchor="middle" fill="#FFFFFF" fontSize="10.5" fontWeight="bold">
+                <text x="255" y="144" textAnchor="middle" fill="#334155" fontSize="10.5" fontWeight="bold">
                   Kumparan Berongga
                 </text>
 
                 {/* Status Position Label */}
-                <text x="115" y="144" textAnchor="middle" fill={isInsideCoil ? '#38BDF8' : '#FFFFFF'} fontSize="11" fontWeight="bold" fontFamily="JetBrains Mono">
+                <text x="115" y="144" textAnchor="middle" fill={isInsideCoil ? '#1D4ED8' : '#334155'} fontSize="11" fontWeight="bold" fontFamily="JetBrains Mono">
                   {isInsideCoil ? 'Magnet di DALAM kumparan' : 'Magnet di LUAR kumparan'}
                 </text>
 
                 {/* Circuit Wires to LED */}
-                <path d="M 220 127 L 220 166 L 372 166 L 372 112" fill="none" stroke={isLit ? '#10B981' : '#64748B'} strokeWidth="2.5" />
-                <path d="M 290 127 L 290 152 L 392 152 L 392 112" fill="none" stroke={isLit ? '#10B981' : '#64748B'} strokeWidth="2.5" />
+                <path d="M 220 127 L 220 166 L 372 166 L 372 112" fill="none" stroke={isLit ? '#10B981' : '#94A3B8'} strokeWidth="2.5" />
+                <path d="M 290 127 L 290 152 L 392 152 L 392 112" fill="none" stroke={isLit ? '#10B981' : '#94A3B8'} strokeWidth="2.5" />
 
                 {/* Animated Current Arrows on Circuit Wires */}
-                <polygon points="300,166 291,161 291,171" fill={isLit ? '#10B981' : '#64748B'} stroke={isLit ? '#064E3B' : 'transparent'} strokeWidth="1" />
-                <polygon points="340,152 349,147 349,157" fill={isLit ? '#10B981' : '#64748B'} stroke={isLit ? '#064E3B' : 'transparent'} strokeWidth="1" />
+                <polygon points="300,166 291,161 291,171" fill={isLit ? '#10B981' : '#94A3B8'} stroke={isLit ? '#064E3B' : 'transparent'} strokeWidth="1" />
+                <polygon points="340,152 349,147 349,157" fill={isLit ? '#10B981' : '#94A3B8'} stroke={isLit ? '#064E3B' : 'transparent'} strokeWidth="1" />
 
                 {/* LED */}
                 <circle cx="382" cy="85" r="38" fill="url(#pemantikLedGlow)" />
                 <path
                   d="M 369 108 L 369 86 A 13 13 0 0 1 395 86 L 395 108 Z"
-                  fill={isLit ? '#FBBF24' : '#334155'}
+                  fill={isLit ? '#FBBF24' : '#E2E8F0'}
                   fillOpacity={isLit ? 0.35 + activeLed * 0.65 : 1}
                   stroke="#F59E0B"
                   strokeWidth="2"
                 />
-                <rect x="366" y="108" width="32" height="6" rx="2" fill="#64748B" />
-                <text x="382" y="40" textAnchor="middle" fill={isLit ? '#FDE68A' : '#94A3B8'} fontSize="12" fontWeight="bold" fontFamily="JetBrains Mono">
+                <rect x="366" y="108" width="32" height="6" rx="2" fill="#94A3B8" />
+                <text x="382" y="40" textAnchor="middle" fill={isLit ? '#B45309' : '#64748B'} fontSize="12" fontWeight="bold" fontFamily="JetBrains Mono">
                   {isLit ? 'LED MENYALA!' : 'LED PADAM'}
                 </text>
-                <text x="382" y="182" textAnchor="middle" fill="#FFFFFF" fontSize="10" fontWeight="bold">
+                <text x="382" y="182" textAnchor="middle" fill="#334155" fontSize="10" fontWeight="bold">
                   {isLit
                     ? 'Fluks berubah di kumparan!'
                     : !isInsideCoil
@@ -279,9 +278,9 @@ export const Screen05Pemantik: React.FC = () => {
 
             {/* Slider Controls */}
             <div className="space-y-2 pt-1">
-              <div className="flex items-center justify-between text-xs font-bold text-slate-800 dark:text-slate-200">
+              <div className="flex items-center justify-between text-xs font-bold text-slate-800">
                 <span>Geser manual magnet keluar-masuk ke dalam kumparan:</span>
-                <span className="font-mono font-bold text-cyan-700 dark:text-cyan-400 bg-cyan-50 dark:bg-cyan-500/10 px-2.5 py-0.5 rounded-lg border border-cyan-200 dark:border-cyan-500/20">
+                <span className="font-mono font-bold text-brand-700 bg-brand-50 px-2.5 py-0.5 rounded-lg border border-brand-200">
                   {magnetPos.toFixed(0)} mm ({isInsideCoil ? 'Masuk Kumparan' : 'Di Luar'})
                 </span>
               </div>
@@ -291,51 +290,51 @@ export const Screen05Pemantik: React.FC = () => {
                 max={160}
                 value={magnetPos}
                 onChange={(e) => handleManualSlide(Number(e.target.value))}
-                className="w-full lab-slider"
+                className="w-full slider"
               />
-              <p className="text-xs text-slate-600 dark:text-slate-400 font-medium">
-                💡 <strong>Tip Penyelidikan:</strong> Gerakkan slider bolak-balik keluar-masuk kumparan untuk melihat LED menyala. Jika magnet dibiarkan diam (walaupun berada di dalam kumparan), LED akan tetap padam!
+              <p className="text-xs text-slate-600 font-medium">
+                <Lightbulb className="inline w-3.5 h-3.5 text-brand-600 -mt-0.5 mr-1" aria-hidden="true" /><strong>Tip Penyelidikan:</strong> Gerakkan slider bolak-balik keluar-masuk kumparan untuk melihat LED menyala. Jika magnet dibiarkan diam (walaupun berada di dalam kumparan), LED akan tetap padam!
               </p>
             </div>
           </div>
 
           {/* Storyboard Visual References */}
           <div className="lg:col-span-5 space-y-3">
-            <div className="flex items-center gap-2 text-xs font-mono font-bold text-slate-700 dark:text-slate-300">
-              <ImageIcon className="w-4 h-4 text-cyan-600 dark:text-cyan-400" />
+            <div className="flex items-center gap-2 text-xs font-mono font-bold text-slate-700">
+              <ImageIcon className="w-4 h-4 text-brand-600" />
               <span>REFERENSI VISUAL STORYBOARD</span>
             </div>
             <div className="grid grid-cols-2 gap-2.5">
-              <div className="rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-1.5 shadow-xs">
-                <img src="/media/image1.jpeg" alt="Demonstrasi magnet dan kumparan 1" className="w-full h-28 object-cover rounded-xl" />
+              <div className="rounded-xl overflow-hidden border border-slate-200 bg-white p-1.5">
+                <img src="/media/image1.jpeg" alt="Demonstrasi magnet dan kumparan 1" className="w-full h-28 object-cover rounded-lg" />
               </div>
-              <div className="rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-1.5 shadow-xs">
-                <img src="/media/image2.png" alt="Demonstrasi magnet dan kumparan 2" className="w-full h-28 object-cover rounded-xl" />
+              <div className="rounded-xl overflow-hidden border border-slate-200 bg-white p-1.5">
+                <img src="/media/image2.png" alt="Demonstrasi magnet dan kumparan 2" className="w-full h-28 object-cover rounded-lg" />
               </div>
-              <div className="col-span-2 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-1.5 shadow-xs">
-                <img src="/media/image3.jpeg" alt="Demonstrasi LED menyala pada rangkaian kumparan" className="w-full h-32 object-cover rounded-xl" />
+              <div className="col-span-2 rounded-xl overflow-hidden border border-slate-200 bg-white p-1.5">
+                <img src="/media/image3.jpeg" alt="Demonstrasi LED menyala pada rangkaian kumparan" className="w-full h-32 object-cover rounded-lg" />
               </div>
             </div>
           </div>
         </div>
 
         {/* Big Question Banner */}
-        <div className="p-6 rounded-2xl bg-amber-50 dark:bg-amber-500/10 border-2 border-amber-300 dark:border-amber-500/30 text-center shadow-sm">
-          <p className="text-xl sm:text-2xl font-display font-black text-amber-950 dark:text-amber-300">
+        <div className="p-6 rounded-xl bg-brand-50 border border-brand-200 text-center">
+          <p className="text-xl sm:text-2xl font-display font-bold text-brand-900">
             “Dari mana energi listrik tersebut berasal?”
           </p>
         </div>
 
         {/* 5 Guiding Questions */}
         <div className="space-y-4">
-          <div className="flex items-center gap-2 text-sm font-display font-bold text-slate-900 dark:text-white">
-            <HelpCircle className="w-4 h-4 text-cyan-600 dark:text-cyan-400" />
+          <div className="flex items-center gap-2 text-sm font-display font-bold text-slate-900">
+            <HelpCircle className="w-4 h-4 text-brand-600" />
             <span>Pertanyaan Pemantik (Diskusikan & Catat Jawaban Awalmu):</span>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
             {GUIDING_QUESTIONS.map((q, idx) => (
-              <div key={idx} className="p-4 rounded-2xl clay-card bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-2.5 shadow-sm">
-                <p className="text-xs sm:text-sm font-bold text-slate-900 dark:text-white">
+              <div key={idx} className="p-4 card space-y-2.5">
+                <p className="text-xs sm:text-sm font-bold text-slate-900">
                   {idx + 1}. {q}
                 </p>
                 <input
@@ -345,7 +344,7 @@ export const Screen05Pemantik: React.FC = () => {
                     updateState('guidingAnswers', { ...state.guidingAnswers, [idx]: e.target.value })
                   }
                   placeholder="Tulis dugaan singkatmu..."
-                  className="clay-input w-full px-3.5 py-2 text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                  className="input w-full px-3.5 py-2 text-xs sm:text-sm"
                 />
               </div>
             ))}
@@ -353,13 +352,13 @@ export const Screen05Pemantik: React.FC = () => {
         </div>
 
         {/* Initial Hypothesis Editor */}
-        <div className="p-6 rounded-2xl clay-card bg-cyan-50/40 dark:bg-slate-900 border-2 border-cyan-300 dark:border-cyan-500/30 space-y-4 shadow-sm">
+        <div className="p-6 rounded-xl bg-slate-50 border border-slate-200 space-y-4">
           <div className="flex items-center justify-between flex-wrap gap-2">
-            <label htmlFor="hypothesis-input" className="text-sm font-display font-bold text-slate-900 dark:text-white">
+            <label htmlFor="hypothesis-input" className="text-sm font-display font-bold text-slate-900">
               Tuliskan Hipotesis Awalmu (Dugaan Sementara):
             </label>
             {savedNotice && (
-              <span className="inline-flex items-center gap-1 text-xs font-mono font-bold text-emerald-700 dark:text-emerald-400">
+              <span className="inline-flex items-center gap-1 text-xs font-mono font-bold text-emerald-700">
                 <CheckCircle2 className="w-3.5 h-3.5" />
                 Hipotesis tersimpan!
               </span>
@@ -371,20 +370,20 @@ export const Screen05Pemantik: React.FC = () => {
             value={state.initialHypothesis}
             onChange={(e) => updateState('initialHypothesis', e.target.value)}
             placeholder="Tuliskan hipotesis awalmu tentang mengapa lampu LED bisa menyala saat magnet digerakkan keluar-masuk kumparan..."
-            className="clay-input w-full p-4 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-cyan-500"
+            className="input w-full p-4 text-sm"
           />
           <div className="flex flex-wrap items-center justify-end gap-3">
             <button
               type="button"
               onClick={handleLockHypothesis}
-              className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-xl bg-white hover:bg-slate-100 dark:bg-slate-800 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-700 text-xs font-bold text-slate-800 dark:text-slate-200 transition shadow-xs"
+              className="btn btn-secondary px-5 py-2.5 text-xs"
             >
               Simpan Hipotesis Awal
             </button>
             <button
               type="button"
               onClick={nextScreen}
-              className="clay-btn-accent px-6 py-2.5 text-xs font-bold shadow-md"
+              className="btn btn-primary px-6 py-2.5 text-xs font-bold"
             >
               <span>Uji Hipotesis melalui Eksplorasi Konsep →</span>
             </button>

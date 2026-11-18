@@ -24,16 +24,16 @@ export const Screen13MembuatPrototipe: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      <div className="rounded-[32px] clay-card p-6 sm:p-8 space-y-6">
-        <div className="space-y-2 border-b border-slate-200 dark:border-slate-800 pb-5">
-          <div className="clay-badge inline-flex items-center gap-2 px-3 py-1 bg-amber-100 dark:bg-amber-500/20 text-amber-800 dark:text-amber-300 text-xs font-mono font-bold">
-            <Wrench className="w-4 h-4 text-amber-600 dark:text-amber-400" />
+      <div className="card p-6 sm:p-8 space-y-6">
+        <div className="space-y-2 border-b border-slate-200 pb-5">
+          <div className="badge inline-flex items-center gap-2 px-3 py-1 bg-brand-50 border-brand-200 text-brand-700 text-xs font-mono font-bold">
+            <Wrench className="w-4 h-4 text-brand-600" />
             <span>EDP TAHAP CREATE • MEMBUAT PROTOTIPE</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-display font-black text-slate-900 dark:text-white">
+          <h1 className="text-2xl sm:text-3xl font-display font-bold text-slate-900">
             “CREATE” — Wujudkan Prototipe Generator Mini
           </h1>
-          <p className="text-sm font-medium text-slate-600 dark:text-slate-300">
+          <p className="text-sm font-medium text-slate-600">
             Siswa membuat prototipe fisik berdasarkan sketsa desain yang telah disepakati, lalu mendokumentasikan proses hingga pengujian awal.
           </p>
         </div>
@@ -41,13 +41,13 @@ export const Screen13MembuatPrototipe: React.FC = () => {
         {/* 3 Required Documentation Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           {/* 1. Foto Proses */}
-          <div className="p-5 rounded-2xl clay-card bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex flex-col justify-between gap-4 shadow-sm">
+          <div className="p-5 card flex flex-col justify-between gap-4">
             <div className="space-y-2">
-              <div className="w-10 h-10 rounded-xl bg-cyan-100 dark:bg-cyan-500/15 border border-cyan-300 dark:border-cyan-500/30 flex items-center justify-center">
-                <Camera className="w-5 h-5 text-cyan-700 dark:text-cyan-400" />
+              <div className="w-10 h-10 rounded-lg bg-brand-50 border border-brand-200 flex items-center justify-center">
+                <Camera className="w-5 h-5 text-brand-700" />
               </div>
-              <h2 className="text-base font-display font-bold text-slate-900 dark:text-white">Foto Proses</h2>
-              <p className="text-xs text-slate-600 dark:text-slate-400 font-medium">
+              <h2 className="text-base font-display font-bold text-slate-900">Foto Proses</h2>
+              <p className="text-xs text-slate-600 font-medium">
                 Dokumentasi saat kelompok merakit kumparan, poros, dan magnet.
               </p>
             </div>
@@ -56,30 +56,30 @@ export const Screen13MembuatPrototipe: React.FC = () => {
               <img
                 src={state.processPhotoUrl}
                 alt="Foto proses perakitan prototipe"
-                className="w-full h-36 object-cover rounded-xl border border-slate-300 dark:border-slate-700"
+                className="w-full h-36 object-cover rounded-lg border border-slate-200"
               />
             )}
 
-            <label className="cursor-pointer inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-cyan-50 hover:bg-cyan-100 dark:bg-slate-800 dark:hover:bg-slate-700 border border-cyan-300 dark:border-slate-600 text-xs font-bold text-cyan-800 dark:text-cyan-200 transition">
-              <Upload className="w-4 h-4 text-cyan-600" />
+            <label className="btn btn-secondary cursor-pointer px-4 py-2.5 text-xs focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-brand-600">
+              <Upload className="w-4 h-4 text-brand-600" />
               <span className="truncate">{state.processPhotoName ? state.processPhotoName : 'Unggah Foto Proses'}</span>
               <input
                 type="file"
                 accept="image/*"
                 onChange={(e) => handleImageUpload(e, 'processPhotoUrl', 'processPhotoName')}
-                className="hidden"
+                className="sr-only"
               />
             </label>
           </div>
 
           {/* 2. Foto Prototype */}
-          <div className="p-5 rounded-2xl clay-card bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex flex-col justify-between gap-4 shadow-sm">
+          <div className="p-5 card flex flex-col justify-between gap-4">
             <div className="space-y-2">
-              <div className="w-10 h-10 rounded-xl bg-amber-100 dark:bg-amber-500/15 border border-amber-300 dark:border-amber-500/30 flex items-center justify-center">
-                <Camera className="w-5 h-5 text-amber-700 dark:text-amber-400" />
+              <div className="w-10 h-10 rounded-lg bg-brand-50 border border-brand-200 flex items-center justify-center">
+                <Camera className="w-5 h-5 text-brand-700" />
               </div>
-              <h2 className="text-base font-display font-bold text-slate-900 dark:text-white">Foto Prototype</h2>
-              <p className="text-xs text-slate-600 dark:text-slate-400 font-medium">
+              <h2 className="text-base font-display font-bold text-slate-900">Foto Prototype</h2>
+              <p className="text-xs text-slate-600 font-medium">
                 Tampilan keseluruhan generator mini yang sudah dirakit dan siap diuji.
               </p>
             </div>
@@ -88,30 +88,30 @@ export const Screen13MembuatPrototipe: React.FC = () => {
               <img
                 src={state.prototypePhotoUrl}
                 alt="Foto prototipe jadi"
-                className="w-full h-36 object-cover rounded-xl border border-slate-300 dark:border-slate-700"
+                className="w-full h-36 object-cover rounded-lg border border-slate-200"
               />
             )}
 
-            <label className="cursor-pointer inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-amber-50 hover:bg-amber-100 dark:bg-slate-800 dark:hover:bg-slate-700 border border-amber-300 dark:border-slate-600 text-xs font-bold text-amber-800 dark:text-amber-200 transition">
-              <Upload className="w-4 h-4 text-amber-600" />
+            <label className="btn btn-secondary cursor-pointer px-4 py-2.5 text-xs focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-brand-600">
+              <Upload className="w-4 h-4 text-brand-600" />
               <span className="truncate">{state.prototypePhotoName ? state.prototypePhotoName : 'Unggah Foto Prototype'}</span>
               <input
                 type="file"
                 accept="image/*"
                 onChange={(e) => handleImageUpload(e, 'prototypePhotoUrl', 'prototypePhotoName')}
-                className="hidden"
+                className="sr-only"
               />
             </label>
           </div>
 
           {/* 3. Video Pengujian */}
-          <div className="p-5 rounded-2xl clay-card bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex flex-col justify-between gap-4 shadow-sm">
+          <div className="p-5 card flex flex-col justify-between gap-4">
             <div className="space-y-2">
-              <div className="w-10 h-10 rounded-xl bg-emerald-100 dark:bg-emerald-500/15 border border-emerald-300 dark:border-emerald-500/30 flex items-center justify-center">
-                <Video className="w-5 h-5 text-emerald-700 dark:text-emerald-400" />
+              <div className="w-10 h-10 rounded-lg bg-brand-50 border border-brand-200 flex items-center justify-center">
+                <Video className="w-5 h-5 text-brand-700" />
               </div>
-              <h2 className="text-base font-display font-bold text-slate-900 dark:text-white">Video Pengujian</h2>
-              <p className="text-xs text-slate-600 dark:text-slate-400 font-medium">
+              <h2 className="text-base font-display font-bold text-slate-900">Video Pengujian</h2>
+              <p className="text-xs text-slate-600 font-medium">
                 Masukkan tautan video pengujian saat rotor diputar dan LED menyala.
               </p>
             </div>
@@ -122,10 +122,10 @@ export const Screen13MembuatPrototipe: React.FC = () => {
                 value={state.testVideoLink}
                 onChange={(e) => updateState('testVideoLink', e.target.value)}
                 placeholder="https://drive.google.com/..."
-                className="clay-input w-full px-3 py-2.5 rounded-xl text-xs font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                className="input w-full px-3 py-2.5 text-xs"
               />
               {state.testVideoLink && (
-                <div className="flex items-center gap-1.5 text-[11px] font-mono font-bold text-emerald-700 dark:text-emerald-400">
+                <div className="flex items-center gap-1.5 text-[11px] font-mono font-bold text-emerald-700">
                   <CheckCircle2 className="w-3.5 h-3.5" />
                   <span>Tautan video tersimpan</span>
                 </div>
@@ -135,12 +135,12 @@ export const Screen13MembuatPrototipe: React.FC = () => {
         </div>
 
         {/* Link Unggah E-Modul / LMS */}
-        <div className="p-5 rounded-2xl clay-card bg-sky-50/50 dark:bg-slate-900 border border-sky-200 dark:border-slate-800 space-y-2.5 shadow-sm">
-          <div className="flex items-center gap-2 text-sm font-display font-bold text-slate-900 dark:text-white">
-            <Link2 className="w-4 h-4 text-sky-600 dark:text-cyan-400" />
+        <div className="p-5 rounded-xl bg-slate-50 border border-slate-200 space-y-2.5">
+          <div className="flex items-center gap-2 text-sm font-display font-bold text-slate-900">
+            <Link2 className="w-4 h-4 text-brand-600" />
             <span>Link Unggah ke E-Modul / LMS Kelas</span>
           </div>
-          <p className="text-xs text-slate-600 dark:text-slate-400 font-medium">
+          <p className="text-xs text-slate-600 font-medium">
             Jika sekolah menggunakan Google Classroom, Moodle, atau Google Drive folder kelas, tempelkan tautan folder unggahan kelompokmu di sini.
           </p>
           <input
@@ -148,7 +148,7 @@ export const Screen13MembuatPrototipe: React.FC = () => {
             value={state.lmsUploadLink}
             onChange={(e) => updateState('lmsUploadLink', e.target.value)}
             placeholder="Tempel link folder LMS / Google Drive pengumpulan prototipe..."
-            className="clay-input w-full px-3.5 py-2.5 rounded-xl text-sm font-medium focus:outline-none focus:ring-2 focus:ring-cyan-500"
+            className="input w-full px-3.5 py-2.5 text-sm"
           />
         </div>
       </div>
