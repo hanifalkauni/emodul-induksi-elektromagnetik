@@ -130,16 +130,17 @@ export const Screen08HukumLenz: React.FC = () => {
           </div>
 
           {/* Interactive SVG Animation */}
-          <div className="lg:col-span-7 rounded-2xl bg-slate-950 border border-slate-800 p-5 flex flex-col justify-between space-y-4">
+          <div className="lg:col-span-7 rounded-3xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-5 flex flex-col justify-between space-y-4 shadow-sm">
             <div className="flex items-center justify-between text-xs font-mono">
-              <span className="text-emerald-400">SIMULASI VEKTOR HUKUM LENZ</span>
-              <span className="inline-flex items-center gap-1.5 text-slate-300">
-                {isCCW ? <RotateCcw className="w-3.5 h-3.5 text-emerald-400" /> : <RotateCw className="w-3.5 h-3.5 text-emerald-400" />}
+              <span className="text-emerald-700 dark:text-emerald-400 font-bold">SIMULASI VEKTOR HUKUM LENZ</span>
+              <span className="inline-flex items-center gap-1.5 text-slate-800 dark:text-slate-300 font-bold">
+                {isCCW ? <RotateCcw className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" /> : <RotateCw className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />}
                 <span>{isCCW ? 'Arus Berlawanan Jarum Jam' : 'Arus Searah Jarum Jam'}</span>
               </span>
             </div>
 
-            <svg viewBox="0 0 460 240" className="w-full h-auto rounded-xl bg-[#070B14] border border-slate-800">
+            <div className="rounded-2xl p-2.5 bg-[#070B14] border-2 border-slate-800 shadow-inner">
+              <svg viewBox="0 0 460 240" className="w-full h-auto rounded-xl bg-[#070B14]">
               {/* Coil Back Shell & Back Windings */}
               <g transform="translate(245, 117)">
                 <rect x="-12" y="-56" width="135" height="112" rx="14" fill="#1E293B" fillOpacity="0.45" stroke="#334155" />
@@ -252,18 +253,19 @@ export const Screen08HukumLenz: React.FC = () => {
                 </text>
               </g>
 
-              <text x="230" y="222" textAnchor="middle" fill="#94A3B8" fontSize="11">
+              <text x="230" y="222" textAnchor="middle" fill="#FFFFFF" fontSize="11" fontWeight="bold">
                 {state.lenzMotion === 'approach'
                   ? 'Kumparan menolak magnet yang mendekat (Kutub Sejenis)'
                   : 'Kumparan menarik magnet yang menjauh (Kutub Berlawanan)'}
               </text>
             </svg>
+            </div>
           </div>
         </div>
 
         {/* Question */}
-        <div className="p-5 rounded-2xl bg-slate-950/80 border border-slate-800 space-y-2.5">
-          <label htmlFor="lenz-question" className="block text-sm font-display font-bold text-white">
+        <div className="p-6 rounded-2xl clay-card bg-emerald-50/40 dark:bg-slate-900 border-2 border-emerald-300 dark:border-emerald-500/30 space-y-3 shadow-sm">
+          <label htmlFor="lenz-question" className="block text-sm font-display font-bold text-slate-900 dark:text-white">
             Pertanyaan: Ketika kutub magnet didekatkan atau dijauhkan terhadap kumparan, bagaimana arah arus induksi?
           </label>
           <textarea
@@ -272,7 +274,7 @@ export const Screen08HukumLenz: React.FC = () => {
             value={state.lenzAnswer}
             onChange={(e) => updateState('lenzAnswer', e.target.value)}
             placeholder="Jelaskan perubahan arah arus induksi saat kutub magnet didekatkan vs dijauhkan..."
-            className="w-full p-3.5 rounded-xl bg-slate-900 border border-slate-700 text-sm text-white placeholder:text-slate-500 focus:outline-none focus:border-emerald-400"
+            className="clay-input w-full p-4 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500"
           />
         </div>
       </div>

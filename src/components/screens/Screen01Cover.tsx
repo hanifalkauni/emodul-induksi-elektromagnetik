@@ -215,18 +215,19 @@ export const Screen01Cover: React.FC = () => {
 
           {/* Right Live SVG Physics Illustration in Claymorphic Frame */}
           <div className="lg:col-span-6">
-            <div className="rounded-[28px] p-5 clay-card bg-slate-900 text-slate-100 shadow-xl border-2 border-slate-700/60">
-              <div className="flex items-center justify-between text-xs font-mono text-slate-300 mb-3">
+            <div className="rounded-[32px] p-5 clay-card space-y-3">
+              <div className="flex items-center justify-between text-xs font-mono text-slate-700 dark:text-slate-300">
                 <div className="flex items-center gap-2">
-                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping" />
-                  <span className="font-bold text-cyan-400">SIMULASI GENERATOR MINI</span>
+                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping" />
+                  <span className="font-bold text-cyan-700 dark:text-cyan-400">SIMULASI GENERATOR MINI</span>
                 </div>
-                <span className="font-mono text-amber-300 font-bold bg-amber-500/20 px-2.5 py-1 rounded-lg border border-amber-500/30">
+                <span className="font-mono text-amber-700 dark:text-amber-300 font-bold bg-amber-500/15 px-2.5 py-1 rounded-lg border border-amber-500/30">
                   ε ≈ {(emfMagnitude * 3.2).toFixed(2)} V
                 </span>
               </div>
 
-              <svg viewBox="0 0 460 220" className="w-full h-auto rounded-2xl bg-[#080D1A] border border-slate-800" role="img" aria-label="Simulasi generator magnet bergerak">
+              <div className="rounded-2xl p-2.5 bg-[#070B14] border-2 border-slate-800 shadow-inner">
+                <svg viewBox="0 0 460 220" className="w-full h-auto rounded-xl bg-[#080D1A]" role="img" aria-label="Simulasi generator magnet bergerak">
                 <defs>
                   <radialGradient id="coverLedGlow" cx="50%" cy="50%" r="50%">
                     <stop offset="0%" stopColor="#FBBF24" stopOpacity={ledGlow} />
@@ -325,14 +326,15 @@ export const Screen01Cover: React.FC = () => {
                   LED {ledGlow > 0.2 ? 'MENYALA' : 'REDUP'}
                 </text>
               </svg>
+            </div>
 
-              <div className="mt-3 flex items-center justify-between text-[11px] text-slate-300 font-medium">
-                <span className="flex items-center gap-1.5">
-                  <Lightbulb className="w-3.5 h-3.5 text-amber-400" />
-                  <span>Magnet keluar-masuk memicu fluks dan arus listrik</span>
-                </span>
-                <span className="text-emerald-400 font-mono">▲ Panah Hijau: Arah Arus I</span>
-              </div>
+            <div className="flex items-center justify-between text-[11px] text-slate-600 dark:text-slate-400 font-medium px-1">
+              <span className="flex items-center gap-1.5">
+                <Lightbulb className="w-3.5 h-3.5 text-amber-500" />
+                <span>Magnet keluar-masuk memicu fluks dan arus listrik</span>
+              </span>
+              <span className="text-emerald-600 dark:text-emerald-400 font-mono font-bold">▲ Panah Hijau: Arah Arus I</span>
+            </div>
             </div>
           </div>
         </div>

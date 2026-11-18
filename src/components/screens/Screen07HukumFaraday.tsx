@@ -112,11 +112,11 @@ export const Screen07HukumFaraday: React.FC = () => {
               </div>
             </div>
 
-            <div className="p-3.5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs text-slate-700 dark:text-slate-300 space-y-1 shadow-sm font-medium">
-              <div className="font-semibold text-white">Kesimpulan Sistem Real-Time:</div>
+            <div className="p-4 rounded-2xl bg-amber-50/50 dark:bg-slate-900 border border-amber-200 dark:border-slate-800 text-xs text-slate-800 dark:text-slate-300 space-y-1.5 shadow-sm font-medium">
+              <div className="font-bold text-slate-900 dark:text-white">Kesimpulan Sistem Real-Time:</div>
               <p>
                 Puncak GGL Induksi terukur:{' '}
-                <span className="font-mono font-bold text-amber-300">{peakEmf.toFixed(2)} Volt</span>.{' '}
+                <span className="font-mono font-bold text-amber-700 dark:text-amber-300">{peakEmf.toFixed(2)} Volt</span>.{' '}
                 {peakEmf >= 8
                   ? 'GGL induksi SANGAT BESAR (LED menyala sangat terang)!'
                   : peakEmf >= 3.5
@@ -127,18 +127,19 @@ export const Screen07HukumFaraday: React.FC = () => {
           </div>
 
           {/* Live Voltmeter + Magnet-Coil Animation */}
-          <div className="lg:col-span-7 rounded-2xl bg-slate-950 border border-slate-800 p-5 space-y-4">
+          <div className="lg:col-span-7 rounded-3xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-5 space-y-4 shadow-sm">
             <div className="flex items-center justify-between flex-wrap gap-2">
-              <span className="flex items-center gap-2 text-xs font-mono text-amber-300">
-                <Gauge className="w-4 h-4" />
+              <span className="flex items-center gap-2 text-xs font-mono font-bold text-amber-800 dark:text-amber-300">
+                <Gauge className="w-4 h-4 text-amber-600" />
                 <span>GALVANOMETER & SIMULASI GGL INDUKSI</span>
               </span>
-              <span className="font-mono text-sm font-bold text-cyan-300 bg-slate-900 px-3 py-1 rounded-lg border border-slate-800">
+              <span className="font-mono text-sm font-bold text-cyan-800 dark:text-cyan-300 bg-white dark:bg-slate-900 px-3 py-1 rounded-xl border border-slate-300 dark:border-slate-700 shadow-xs">
                 ε(t) = {instantEmf >= 0 ? '+' : ''}{instantEmf.toFixed(2)} V
               </span>
             </div>
 
-            <svg viewBox="0 0 480 250" className="w-full h-auto rounded-xl bg-[#070B14] border border-slate-800">
+            <div className="rounded-2xl p-2.5 bg-[#070B14] border-2 border-slate-800 shadow-inner">
+              <svg viewBox="0 0 480 250" className="w-full h-auto rounded-xl bg-[#070B14]">
               {/* Hollow Coil Bobbin & Back Windings */}
               <rect x="200" y="110" width="110" height="76" rx="10" fill="#0F172A" fillOpacity="0.8" stroke="#334155" strokeWidth="1.2" />
               {Array.from({ length: Math.min(12, Math.max(3, Math.round(state.faradayTurns / 90))) }).map((_, i, arr) => {
@@ -208,12 +209,13 @@ export const Screen07HukumFaraday: React.FC = () => {
               <path d="M 210 186 L 210 228 L 350 228 L 350 180" fill="none" stroke="#64748B" strokeWidth="2" />
               <path d="M 300 186 L 300 218 L 380 218 L 380 180" fill="none" stroke="#64748B" strokeWidth="2" />
             </svg>
+            </div>
           </div>
         </div>
 
         {/* Analytical Question */}
-        <div className="p-5 rounded-2xl bg-slate-950/80 border border-slate-800 space-y-2.5">
-          <label htmlFor="faraday-question" className="block text-sm font-display font-bold text-white">
+        <div className="p-6 rounded-2xl clay-card bg-amber-50/40 dark:bg-slate-900 border-2 border-amber-300 dark:border-amber-500/30 space-y-3 shadow-sm">
+          <label htmlFor="faraday-question" className="block text-sm font-display font-bold text-slate-900 dark:text-white">
             Pertanyaan: Faktor apa yang paling berpengaruh terhadap besar GGL induksi? Berikan alasan berdasarkan hasil eksperimen virtual di atas!
           </label>
           <textarea
@@ -222,7 +224,7 @@ export const Screen07HukumFaraday: React.FC = () => {
             value={state.faradayFactorAnswer}
             onChange={(e) => updateState('faradayFactorAnswer', e.target.value)}
             placeholder="Tuliskan analisis hubungan antara N, ΔΦ/Δt, dan B terhadap GGL induksi..."
-            className="w-full p-3.5 rounded-xl bg-slate-900 border border-slate-700 text-sm text-white placeholder:text-slate-500 focus:outline-none focus:border-amber-400"
+            className="clay-input w-full p-4 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-amber-500"
           />
         </div>
       </div>

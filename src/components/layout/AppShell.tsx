@@ -337,12 +337,12 @@ export const AppShell: React.FC<{ children: React.ReactNode }> = ({ children }) 
           <div className="flex-1">{children}</div>
 
           {/* Bottom Screen Stepper Bar */}
-          <footer className="mt-8 pt-4 border-t border-slate-800">
+          <footer className="mt-8 pt-4 border-t border-slate-200 dark:border-slate-800">
             {state.currentScreen === 1 ? (
-              <div className="flex items-center justify-center p-3 rounded-xl bg-slate-900/60 border border-slate-800 text-center text-xs text-slate-400">
+              <div className="flex items-center justify-center p-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-center text-xs text-slate-600 dark:text-slate-400 shadow-sm">
                 <span>
                   Silakan isi identitas diri di atas, lalu klik tombol{' '}
-                  <strong className="text-cyan-400 font-semibold">"MULAI PEMBELAJARAN →"</strong> untuk masuk ke materi.
+                  <strong className="text-cyan-700 dark:text-cyan-400 font-bold">"MULAI PEMBELAJARAN →"</strong> untuk masuk ke materi.
                 </span>
               </div>
             ) : (
