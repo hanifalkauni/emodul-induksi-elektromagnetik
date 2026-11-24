@@ -12,6 +12,7 @@ import {
   RefreshCw,
   CheckCircle2,
   ArrowRight,
+  ArrowLeft,
 } from 'lucide-react';
 import { useModul } from '../../context/ModulContext';
 
@@ -98,6 +99,22 @@ const JOURNEY_STEPS = [
   },
 ];
 
+type JourneyStep = (typeof JOURNEY_STEPS)[number];
+
+const StepTile: React.FC<{ item: JourneyStep; visited: boolean; onOpen: (screen: number) => void }> = ({ item, visited, onOpen }) => (
+  <button
+    type="button"
+    onClick={() => onOpen(item.targetScreen)}
+    className={`w-full h-full min-h-[76px] p-3.5 rounded-xl border ${item.accent} text-left cursor-pointer transition-colors`}
+  >
+    <div className="flex items-center justify-between gap-2 text-[11px] font-mono font-bold mb-1">
+      <span>TAHAP {item.step < 10 ? `0${item.step}` : item.step}</span>
+      {visited && <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" aria-label="Sudah dikunjungi" />}
+    </div>
+    <div className="font-display font-bold text-xs text-slate-900 break-words">{item.label}</div>
+  </button>
+);
+
 export const Screen03PetaPerjalanan: React.FC = () => {
   const { state, setScreen } = useModul();
 
@@ -116,54 +133,39 @@ export const Screen03PetaPerjalanan: React.FC = () => {
           </p>
         </div>
 
-        {/* Visual S-Curve Journey Ribbon Overview */}
-        <div className="p-5 rounded-xl bg-slate-50 border border-slate-200 overflow-x-auto">
-          <div className="min-w-[680px] space-y-4">
-            {/* Row 1: Left -> Right */}
-            <div className="grid grid-cols-5 gap-3">
-              {JOURNEY_STEPS.slice(0, 5).map((item, idx) => {
-                const visited = state.visitedScreens.includes(item.targetScreen);
-                return (
-                  <button
-                    key={item.step}
-                    type="button"
-                    onClick={() => setScreen(item.targetScreen)}
-                    className={`relative p-3.5 rounded-xl border ${item.accent} text-left cursor-pointer transition-colors`}
-                  >
-                    <div className="flex items-center justify-between text-[11px] font-mono font-bold mb-1">
-                      <span>TAHAP 0{item.step}</span>
-                      {visited && <CheckCircle2 className="w-4 h-4 text-emerald-600" />}
-                    </div>
-                    <div className="font-display font-bold text-xs text-slate-900">{item.label}</div>
-                    {idx < 4 && (
-                      <ArrowRight className="hidden md:block w-4 h-4 text-slate-400 absolute -right-3.5 top-1/2 -translate-y-1/2 z-10" />
-                    )}
-                  </button>
-                );
-              })}
+        {/* Ringkasan alur 10 tahap: pola S (5 kolom) bila ruang cukup, kartu berurutan bila sempit */}
+        <div className="p-5 rounded-xl bg-slate-50 border border-slate-200">
+          {/* Layar lebar: baris 1 kiri ke kanan, baris 2 kanan ke kiri */}
+          <div className="hidden xl:block space-y-4">
+            <div className="grid grid-cols-5 gap-4">
+              {JOURNEY_STEPS.slice(0, 5).map((item, idx) => (
+                <div key={item.step} className="relative">
+                  <StepTile item={item} visited={state.visitedScreens.includes(item.targetScreen)} onOpen={setScreen} />
+                  {idx < 4 && (
+                    <ArrowRight className="w-4 h-4 text-slate-400 absolute -right-[14px] top-1/2 -translate-y-1/2" aria-hidden="true" />
+                  )}
+                </div>
+              ))}
             </div>
-
-            {/* Row 2: Right -> Left serpentine flow visual */}
-            <div className="grid grid-cols-5 gap-3">
-              {[...JOURNEY_STEPS.slice(5, 10)].reverse().map((item) => {
-                const visited = state.visitedScreens.includes(item.targetScreen);
-                return (
-                  <button
-                    key={item.step}
-                    type="button"
-                    onClick={() => setScreen(item.targetScreen)}
-                    className={`relative p-3.5 rounded-xl border ${item.accent} text-left cursor-pointer transition-colors`}
-                  >
-                    <div className="flex items-center justify-between text-[11px] font-mono font-bold mb-1">
-                      <span>TAHAP {item.step < 10 ? `0${item.step}` : item.step}</span>
-                      {visited && <CheckCircle2 className="w-4 h-4 text-emerald-600" />}
-                    </div>
-                    <div className="font-display font-bold text-xs text-slate-900">{item.label}</div>
-                  </button>
-                );
-              })}
+            <div className="grid grid-cols-5 gap-4">
+              {[...JOURNEY_STEPS.slice(5, 10)].reverse().map((item, idx) => (
+                <div key={item.step} className="relative">
+                  <StepTile item={item} visited={state.visitedScreens.includes(item.targetScreen)} onOpen={setScreen} />
+                  {idx > 0 && (
+                    <ArrowLeft className="w-4 h-4 text-slate-400 absolute -left-[14px] top-1/2 -translate-y-1/2" aria-hidden="true" />
+                  )}
+                </div>
+              ))}
             </div>
           </div>
+          {/* Layar sempit: urutan 1 sampai 10 */}
+          <ol className="xl:hidden grid grid-cols-2 md:grid-cols-3 gap-3">
+            {JOURNEY_STEPS.map((item) => (
+              <li key={item.step}>
+                <StepTile item={item} visited={state.visitedScreens.includes(item.targetScreen)} onOpen={setScreen} />
+              </li>
+            ))}
+          </ol>
         </div>
 
         {/* Detailed Interactive Journey Cards */}

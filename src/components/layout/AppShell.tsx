@@ -96,13 +96,13 @@ export const AppShell: React.FC<{ children: React.ReactNode }> = ({ children }) 
             <button
               type="button"
               onClick={() => setScreen(1)}
-              className="flex items-center gap-2.5 text-left cursor-pointer rounded-lg"
+              className="flex items-center gap-2.5 min-w-0 text-left cursor-pointer rounded-lg"
             >
               <div className="w-10 h-10 rounded-lg bg-brand-600 flex items-center justify-center shrink-0">
                 <Zap className="w-5 h-5 text-white" aria-hidden="true" />
               </div>
-              <div className="truncate">
-                <div className="text-[11px] font-mono uppercase tracking-wider font-semibold text-slate-500">
+              <div className="min-w-0">
+                <div className="text-[11px] font-mono uppercase tracking-wider font-semibold text-slate-500 truncate">
                   E-Modul Fisika STEM
                 </div>
                 <div className="text-sm font-display font-bold text-slate-900 truncate">
@@ -112,32 +112,8 @@ export const AppShell: React.FC<{ children: React.ReactNode }> = ({ children }) 
             </button>
           </div>
 
-          {/* 7 Storyboard Pillar Navigation (Desktop) */}
-          <nav aria-label="Navigasi Pilar Utama" className="hidden 2xl:flex items-center gap-1">
-            {PILLAR_NAV.map((pillar) => {
-              const Icon = pillar.icon;
-              const isActive = activeScreenMeta.pillar === pillar.id;
-              return (
-                <button
-                  key={pillar.id}
-                  type="button"
-                  onClick={() => handleNavigateScreen(pillar.targetScreen)}
-                  aria-current={isActive ? 'page' : undefined}
-                  className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-semibold cursor-pointer transition-colors ${
-                    isActive
-                      ? 'bg-brand-50 text-brand-700'
-                      : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
-                  }`}
-                >
-                  <Icon className="w-4 h-4" aria-hidden="true" />
-                  <span>{pillar.label}</span>
-                </button>
-              );
-            })}
-          </nav>
-
           {/* Right: progress & quick actions */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 shrink-0">
             <button
               type="button"
               onClick={() => setTheme((t) => (t === 'dark' ? 'light' : 'dark'))}
@@ -156,10 +132,11 @@ export const AppShell: React.FC<{ children: React.ReactNode }> = ({ children }) 
               type="button"
               onClick={() => handleNavigateScreen(3)}
               title="Peta Perjalanan Belajar"
-              className="hidden sm:inline-flex btn btn-secondary px-3 py-1.5 min-h-0 h-9 text-xs"
+              aria-label="Peta Perjalanan Belajar"
+              className="hidden sm:inline-flex btn btn-secondary px-2.5 lg:px-3 py-1.5 min-h-0 h-9 text-xs"
             >
               <Map className="w-4 h-4 text-brand-700" aria-hidden="true" />
-              <span>Peta Belajar</span>
+              <span className="hidden lg:inline">Peta Belajar</span>
             </button>
 
             <div className="hidden md:flex items-center gap-2 px-3 h-9 rounded-lg border border-slate-200 bg-slate-50 text-xs font-semibold">
@@ -172,10 +149,11 @@ export const AppShell: React.FC<{ children: React.ReactNode }> = ({ children }) 
               type="button"
               onClick={loadDemoData}
               title="Isi contoh data lengkap untuk pratinjau"
-              className="hidden sm:inline-flex btn btn-secondary px-3 py-1.5 min-h-0 h-9 text-xs"
+              aria-label="Isi contoh data"
+              className="hidden sm:inline-flex btn btn-secondary px-2.5 lg:px-3 py-1.5 min-h-0 h-9 text-xs"
             >
               <Database className="w-4 h-4 text-slate-500" aria-hidden="true" />
-              <span className="hidden md:inline">Contoh Data</span>
+              <span className="hidden lg:inline">Contoh Data</span>
             </button>
             )}
 
@@ -202,8 +180,8 @@ export const AppShell: React.FC<{ children: React.ReactNode }> = ({ children }) 
           <div className="h-full bg-brand-600 transition-all duration-300" style={{ width: `${completionPercent}%` }} />
         </div>
 
-        {/* Tablet/Mobile pillar bar */}
-        <div className="2xl:hidden border-t border-slate-200 bg-white px-3 py-1.5 overflow-x-auto">
+        {/* Navigasi 7 pilar (semua ukuran layar) */}
+        <nav aria-label="Navigasi Pilar Utama" className="relative border-t border-slate-200 bg-white px-3 py-1.5 overflow-x-auto">
           <div className="flex items-center gap-1 min-w-max mx-auto justify-center">
             {PILLAR_NAV.map((pillar) => {
               const Icon = pillar.icon;
@@ -224,7 +202,7 @@ export const AppShell: React.FC<{ children: React.ReactNode }> = ({ children }) 
               );
             })}
           </div>
-        </div>
+        </nav>
       </header>
 
       {/* Main Content Area with Left Screen Index Sidebar */}
@@ -356,15 +334,15 @@ export const AppShell: React.FC<{ children: React.ReactNode }> = ({ children }) 
                 </span>
               </div>
             ) : (
-              <div className="flex items-center justify-between gap-4">
+              <div className="flex items-center justify-between gap-3">
                 <button
                   type="button"
                   onClick={prevScreen}
                   disabled={state.currentScreen <= 1}
-                  className="btn btn-secondary px-4 py-2.5 text-sm"
+                  className="btn btn-secondary px-3 sm:px-4 py-2.5 text-sm"
                 >
                   <ChevronLeft className="w-4 h-4" aria-hidden="true" />
-                  <span>Screen Sebelumnya</span>
+                  <span><span className="hidden sm:inline">Screen </span>Sebelumnya</span>
                 </button>
 
                 <div className="hidden sm:flex items-center gap-1.5">
@@ -390,19 +368,20 @@ export const AppShell: React.FC<{ children: React.ReactNode }> = ({ children }) 
                   <button
                     type="button"
                     onClick={nextScreen}
-                    className="btn btn-primary px-5 py-2.5 text-sm"
+                    className="btn btn-primary px-3 sm:px-5 py-2.5 text-sm"
                   >
-                    <span>Screen Selanjutnya</span>
+                    <span><span className="hidden sm:inline">Screen </span>Selanjutnya</span>
                     <ChevronRight className="w-4 h-4" aria-hidden="true" />
                   </button>
                 ) : (
                   <button
                     type="button"
                     onClick={() => handleNavigateScreen(3)}
-                    className="btn btn-success px-5 py-2.5 text-sm"
+                    className="btn btn-success px-3 sm:px-5 py-2.5 text-sm"
                   >
                     <Map className="w-4 h-4" aria-hidden="true" />
-                    <span>Kembali ke Peta Belajar</span>
+                    <span className="sm:hidden">Peta Belajar</span>
+                    <span className="hidden sm:inline">Kembali ke Peta Belajar</span>
                   </button>
                 )}
               </div>

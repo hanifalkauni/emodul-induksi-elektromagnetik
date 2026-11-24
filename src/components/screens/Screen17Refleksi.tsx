@@ -94,31 +94,31 @@ export const Screen17Refleksi: React.FC = () => {
             </span>
           </div>
 
-          <div className="overflow-x-auto rounded-xl border border-slate-200 bg-white">
+          <div className="relative overflow-x-auto rounded-xl border border-slate-200 bg-white">
             <table className="w-full text-left border-collapse">
               <thead>
                 <tr className="border-b border-slate-200 bg-slate-50 text-xs font-mono font-semibold text-slate-700">
-                  <th className="py-3 px-4">Pernyataan</th>
-                  <th className="py-3 px-3 text-center w-14">1</th>
-                  <th className="py-3 px-3 text-center w-14">2</th>
-                  <th className="py-3 px-3 text-center w-14">3</th>
-                  <th className="py-3 px-3 text-center w-14">4</th>
+                  <th className="py-3 px-3 sm:px-4">Pernyataan</th>
+                  <th className="py-3 px-1 sm:px-3 text-center w-10 sm:w-14">1</th>
+                  <th className="py-3 px-1 sm:px-3 text-center w-10 sm:w-14">2</th>
+                  <th className="py-3 px-1 sm:px-3 text-center w-10 sm:w-14">3</th>
+                  <th className="py-3 px-1 sm:px-3 text-center w-10 sm:w-14">4</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-200 text-sm">
                 {CREATIVITY_ITEMS.map((item) => (
                   <tr key={item.key} className="hover:bg-slate-50">
-                    <td className="py-3 px-4 text-slate-800">{item.label}</td>
+                    <td className="py-3 px-3 sm:px-4 text-slate-800 text-xs sm:text-sm">{item.label}</td>
                     {[1, 2, 3, 4].map((val) => {
                       const selected = state.creativityScores[item.key] === val;
                       return (
-                        <td key={val} className="py-2 px-2 text-center">
+                        <td key={val} className="py-2 px-0.5 sm:px-2 text-center">
                           <button
                             type="button"
                             onClick={() => setCreativity(item.key, val)}
                             aria-pressed={selected}
                             aria-label={`${item.label}: skor ${val}`}
-                            className={`w-9 h-9 rounded-lg font-mono text-xs font-bold border cursor-pointer transition-colors ${
+                            className={`w-8 h-8 sm:w-9 sm:h-9 rounded-lg font-mono text-xs font-bold border cursor-pointer transition-colors ${
                               selected
                                 ? 'bg-brand-600 text-white border-brand-600'
                                 : 'bg-white text-slate-600 border-slate-300 hover:border-brand-400'
@@ -145,31 +145,31 @@ export const Screen17Refleksi: React.FC = () => {
             </span>
           </div>
 
-          <div className="overflow-x-auto rounded-xl border border-slate-200 bg-white">
+          <div className="relative overflow-x-auto rounded-xl border border-slate-200 bg-white">
             <table className="w-full text-left border-collapse">
               <thead>
                 <tr className="border-b border-slate-200 bg-slate-50 text-xs font-mono font-semibold text-slate-700">
-                  <th className="py-3 px-4">Pernyataan</th>
-                  <th className="py-3 px-3 text-center w-14">1</th>
-                  <th className="py-3 px-3 text-center w-14">2</th>
-                  <th className="py-3 px-3 text-center w-14">3</th>
-                  <th className="py-3 px-3 text-center w-14">4</th>
+                  <th className="py-3 px-3 sm:px-4">Pernyataan</th>
+                  <th className="py-3 px-1 sm:px-3 text-center w-10 sm:w-14">1</th>
+                  <th className="py-3 px-1 sm:px-3 text-center w-10 sm:w-14">2</th>
+                  <th className="py-3 px-1 sm:px-3 text-center w-10 sm:w-14">3</th>
+                  <th className="py-3 px-1 sm:px-3 text-center w-10 sm:w-14">4</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-200 text-sm">
                 {COLLABORATION_ITEMS.map((item) => (
                   <tr key={item.key} className="hover:bg-slate-50">
-                    <td className="py-3 px-4 text-slate-800">{item.label}</td>
+                    <td className="py-3 px-3 sm:px-4 text-slate-800 text-xs sm:text-sm">{item.label}</td>
                     {[1, 2, 3, 4].map((val) => {
                       const selected = state.collaborationScores[item.key] === val;
                       return (
-                        <td key={val} className="py-2 px-2 text-center">
+                        <td key={val} className="py-2 px-0.5 sm:px-2 text-center">
                           <button
                             type="button"
                             onClick={() => setCollaboration(item.key, val)}
                             aria-pressed={selected}
                             aria-label={`${item.label}: skor ${val}`}
-                            className={`w-9 h-9 rounded-lg font-mono text-xs font-bold border cursor-pointer transition-colors ${
+                            className={`w-8 h-8 sm:w-9 sm:h-9 rounded-lg font-mono text-xs font-bold border cursor-pointer transition-colors ${
                               selected
                                 ? 'bg-brand-600 text-white border-brand-600'
                                 : 'bg-white text-slate-600 border-slate-300 hover:border-brand-400'

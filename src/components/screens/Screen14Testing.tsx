@@ -61,23 +61,24 @@ export const Screen14Testing: React.FC = () => {
         </div>
 
         {/* Interactive Testing Table */}
-        <div className="overflow-x-auto rounded-xl border border-slate-200 bg-white">
-          <table className="w-full text-left border-collapse min-w-[720px]">
+        <p className="sm:hidden -mb-3 text-[11px] text-slate-500">Geser tabel ke samping untuk melihat semua kolom.</p>
+        <div className="relative overflow-x-auto rounded-xl border border-slate-200 bg-white">
+          <table className="w-full text-left border-collapse min-w-[580px]">
             <thead>
               <tr className="border-b border-slate-200 bg-slate-50 text-xs font-mono font-semibold text-slate-700">
-                <th className="py-3 px-3">Percobaan</th>
-                <th className="py-3 px-3">Tegangan (V)</th>
-                <th className="py-3 px-3">Jumlah Lilitan</th>
-                <th className="py-3 px-3">Kecepatan Putaran</th>
-                <th className="py-3 px-3">Kondisi Magnet</th>
-                <th className="py-3 px-3">LED Menyala</th>
-                <th className="py-3 px-3 text-center">Aksi</th>
+                <th className="py-3 px-2">Percobaan</th>
+                <th className="py-3 px-2">Tegangan (V)</th>
+                <th className="py-3 px-2">Lilitan</th>
+                <th className="py-3 px-2">Kecepatan</th>
+                <th className="py-3 px-2">Kondisi Magnet</th>
+                <th className="py-3 px-2">LED Menyala</th>
+                <th className="py-3 px-2 text-center"><span className="sr-only">Aksi</span></th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-200 text-xs sm:text-sm">
               {state.testingRows.map((row) => (
                 <tr key={row.id} className="hover:bg-slate-50">
-                  <td className="p-2.5">
+                  <td className="p-1.5">
                     <input
                       type="text"
                       value={row.trialLabel}
@@ -85,7 +86,7 @@ export const Screen14Testing: React.FC = () => {
                       className="input w-full px-2.5 py-1.5 text-xs font-semibold"
                     />
                   </td>
-                  <td className="p-2.5">
+                  <td className="p-1.5">
                     <input
                       type="text"
                       value={row.voltage}
@@ -94,7 +95,7 @@ export const Screen14Testing: React.FC = () => {
                       className="input w-full px-2.5 py-1.5 font-mono text-xs"
                     />
                   </td>
-                  <td className="p-2.5">
+                  <td className="p-1.5">
                     <input
                       type="text"
                       value={row.turns}
@@ -103,7 +104,7 @@ export const Screen14Testing: React.FC = () => {
                       className="input w-full px-2.5 py-1.5 font-mono text-xs"
                     />
                   </td>
-                  <td className="p-2.5">
+                  <td className="p-1.5">
                     <select
                       value={row.speed}
                       onChange={(e) => updateRow(row.id, { speed: e.target.value })}
@@ -114,7 +115,7 @@ export const Screen14Testing: React.FC = () => {
                       <option value="Cepat">Cepat</option>
                     </select>
                   </td>
-                  <td className="p-2.5">
+                  <td className="p-1.5">
                     <input
                       type="text"
                       value={row.magnetCondition}
@@ -123,11 +124,11 @@ export const Screen14Testing: React.FC = () => {
                       className="input w-full px-2.5 py-1.5 text-xs"
                     />
                   </td>
-                  <td className="p-2.5">
+                  <td className="p-1.5">
                     <select
                       value={row.ledLit}
                       onChange={(e) => updateRow(row.id, { ledLit: e.target.value as 'Ya' | 'Tidak' })}
-                      className={`input w-full min-w-[84px] px-2.5 py-1.5 text-xs font-bold ${
+                      className={`input w-full min-w-[72px] px-2 py-1.5 text-xs font-bold ${
                         row.ledLit === 'Ya'
                           ? '!bg-emerald-50 !border-emerald-300 text-emerald-800'
                           : 'text-slate-700'
@@ -137,7 +138,7 @@ export const Screen14Testing: React.FC = () => {
                       <option value="Tidak">Tidak</option>
                     </select>
                   </td>
-                  <td className="p-2.5 text-center">
+                  <td className="p-1.5 text-center">
                     <button
                       type="button"
                       onClick={() => removeRow(row.id)}

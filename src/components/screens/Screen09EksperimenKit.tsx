@@ -131,31 +131,32 @@ export const Screen09EksperimenKit: React.FC = () => {
             </button>
           </div>
 
-          <div className="overflow-x-auto rounded-xl bg-white border border-slate-200">
+          <div className="relative overflow-x-auto rounded-xl bg-white border border-slate-200">
             <table className="w-full text-left border-collapse">
               <thead>
                 <tr className="border-b border-slate-200 text-xs font-mono font-bold text-slate-700 bg-slate-100">
-                  <th className="py-3 px-4">Peran</th>
-                  <th className="py-3 px-4">Tugas</th>
-                  <th className="py-3 px-4">Nama Anggota Kelompok</th>
+                  <th className="py-3 px-3 sm:px-4">Peran</th>
+                  <th className="hidden sm:table-cell py-3 px-4">Tugas</th>
+                  <th className="py-3 px-3 sm:px-4">Nama Anggota</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-200 text-sm">
                 {state.roles.map((item, idx) => (
                   <tr key={item.role}>
-                    <td className="py-3 px-4 font-display font-bold text-brand-700 whitespace-nowrap">
-                      {item.role}
+                    <td className="py-3 px-3 sm:px-4 align-top">
+                      <div className="font-display font-bold text-brand-700 whitespace-nowrap">{item.role}</div>
+                      <div className="sm:hidden mt-0.5 text-[11px] text-slate-600">{item.taskDescription}</div>
                     </td>
-                    <td className="py-3 px-4 text-slate-700 text-xs sm:text-sm font-medium">
+                    <td className="hidden sm:table-cell py-3 px-4 text-slate-700 text-sm font-medium">
                       {item.taskDescription}
                     </td>
-                    <td className="py-3 px-4">
+                    <td className="py-3 px-3 sm:px-4">
                       <input
                         type="text"
                         value={item.memberName}
                         onChange={(e) => updateRoleMember(idx, e.target.value)}
                         placeholder={`Nama ${item.role}...`}
-                        className="input w-full min-w-[160px] px-3 py-1.5 text-xs"
+                        className="input w-full min-w-0 sm:min-w-[160px] px-3 py-1.5 text-xs"
                       />
                     </td>
                   </tr>
