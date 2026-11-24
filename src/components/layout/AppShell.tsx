@@ -18,7 +18,15 @@ import {
   Map,
   Sun,
   Moon,
+  LogOut,
+  Cloud,
+  CloudOff,
+  Loader2,
+  HardDrive,
 } from 'lucide-react';
+import { useStudentSession } from '../../context/StudentSessionContext';
+import { confirmSignOut } from '../auth/signOut';
+import type { SyncStatus } from '../../context/ModulContext';
 import { SCREENS, useModul } from '../../context/ModulContext';
 import { NavPillar } from '../../types/emodul';
 
@@ -33,7 +41,9 @@ const PILLAR_NAV: { id: NavPillar; label: string; icon: React.ComponentType<{ cl
 ];
 
 export const AppShell: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { state, setScreen, nextScreen, prevScreen, loadDemoData, resetAllData, completionPercent } = useModul();
+  const { state, setScreen, nextScreen, prevScreen, loadDemoData, resetAllData, completionPercent, syncStatus, signOutAndClear, hasLocalOnlyImages } = useModul();
+  const session = useStudentSession();
+  const online = session.status === 'signedIn';
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   // Tema: terang (default) atau gelap. Disimpan di localStorage dan diterapkan sebagai class .dark pada <html>.
@@ -157,6 +167,7 @@ export const AppShell: React.FC<{ children: React.ReactNode }> = ({ children }) 
               <span className="font-mono text-brand-700">{completionPercent}%</span>
             </div>
 
+            {!online && (
             <button
               type="button"
               onClick={loadDemoData}
@@ -166,11 +177,14 @@ export const AppShell: React.FC<{ children: React.ReactNode }> = ({ children }) 
               <Database className="w-4 h-4 text-slate-500" aria-hidden="true" />
               <span className="hidden md:inline">Contoh Data</span>
             </button>
+            )}
 
             <button
               type="button"
               onClick={() => {
-                if (window.confirm('Reset seluruh jawaban dan kembali ke Screen 1?')) {
+                if (window.confirm(online
+                  ? 'Reset seluruh jawaban di akun ini? Jawaban di server juga akan terhapus.'
+                  : 'Reset seluruh jawaban dan kembali ke Screen 1?')) {
                   resetAllData();
                 }
               }}
@@ -248,6 +262,17 @@ export const AppShell: React.FC<{ children: React.ReactNode }> = ({ children }) 
                 {state.identity.studentClass ? `${state.identity.studentClass} • ` : ''}
                 {state.identity.groupName || 'Kelompok belum dipilih'}
               </div>
+              {online ? (
+                <button
+                  type="button"
+                  onClick={() => confirmSignOut(hasLocalOnlyImages) && void signOutAndClear()}
+                  className="mt-2 inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 hover:text-rose-700 cursor-pointer"
+                >
+                  <LogOut className="w-3.5 h-3.5" aria-hidden="true" /> Keluar dari akun
+                </button>
+              ) : (
+                <div className="mt-2 text-[11px] text-slate-500">Mode latihan (tanpa akun)</div>
+              )}
             </div>
 
             {/* 17 Screen Stepper */}
@@ -315,10 +340,7 @@ export const AppShell: React.FC<{ children: React.ReactNode }> = ({ children }) 
               <span className="text-slate-400 hidden sm:inline">•</span>
               <span className="text-slate-900 font-semibold hidden sm:inline">{activeScreenMeta.title}</span>
             </div>
-            <div className="flex items-center gap-2 text-[11px] font-mono text-slate-600 font-medium">
-              <span className="w-2 h-2 rounded-full bg-emerald-500" />
-              <span>Tersimpan otomatis</span>
-            </div>
+            <SyncBadge status={syncStatus} />
           </div>
 
           {/* Screen Body */}
@@ -388,6 +410,26 @@ export const AppShell: React.FC<{ children: React.ReactNode }> = ({ children }) 
           </footer>
         </main>
       </div>
+    </div>
+  );
+};
+
+const SYNC_LABEL: Record<SyncStatus, { text: string; icon: React.ComponentType<{ className?: string }>; tone: string }> = {
+  local: { text: 'Tersimpan di perangkat', icon: HardDrive, tone: 'text-slate-600' },
+  syncing: { text: 'Memuat data akun...', icon: Loader2, tone: 'text-slate-600' },
+  saving: { text: 'Menyimpan...', icon: Loader2, tone: 'text-slate-600' },
+  saved: { text: 'Tersinkron ke akun', icon: Cloud, tone: 'text-emerald-700' },
+  offline: { text: 'Offline, disimpan di perangkat', icon: CloudOff, tone: 'text-amber-700' },
+  error: { text: 'Belum tersinkron, mencoba lagi', icon: CloudOff, tone: 'text-rose-700' },
+};
+
+const SyncBadge: React.FC<{ status: SyncStatus }> = ({ status }) => {
+  const { text, icon: Icon, tone } = SYNC_LABEL[status];
+  const spinning = status === 'saving' || status === 'syncing';
+  return (
+    <div role="status" aria-live="polite" className={`flex items-center gap-2 text-[11px] font-mono font-medium ${tone}`}>
+      <Icon className={`w-3.5 h-3.5 ${spinning ? 'animate-spin' : ''}`} aria-hidden="true" />
+      <span>{text}</span>
     </div>
   );
 };

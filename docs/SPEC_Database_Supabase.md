@@ -1,6 +1,6 @@
 # SPEC: Database & Sinkronisasi E-Modul (Supabase)
 
-Status: **v12. Fase 0 selesai (2026-11-18): 6 migrasi diterapkan, 61/61 uji RLS dan sesi lulus.** Semua keputusan sudah diambil dan tidak ada pertanyaan terbuka. Siap untuk Fase 0. (belum ada kode). Diperbarui: 2026-11-18.
+Status: **v13. Fase 0 dan Fase 1 selesai (2026-11-18).** Fase 1: login siswa NIS + PIN dan sinkron data; uji auth 38/38, uji browser 22/22, uji RLS 61/61. Semua keputusan sudah diambil dan tidak ada pertanyaan terbuka. Siap untuk Fase 0. (belum ada kode). Diperbarui: 2026-11-18.
 Cakupan: menyimpan data e-modul "Induksi Elektromagnetik" (17 screen) ke Supabase agar guru dapat memantau siswa dan kelompok, dan data tidak hilang saat browser dibersihkan.
 
 ## Log keputusan
@@ -29,6 +29,9 @@ Cakupan: menyimpan data e-modul "Induksi Elektromagnetik" (17 screen) ke Supabas
 | D21 | **Tanpa MFA** untuk admin pada tahap ini (dapat ditambah nanti). | Keputusan |
 | D22 | **Ikatan email pada kode aktivasi bersifat opsional** agar admin tidak perlu mengumpulkan email guru. | Keputusan |
 | D25 | Rahasia PIN disimpan di tabel terpisah **`student_secrets`** (hanya `service_role`), bukan kolom di `students`. Lebih sederhana dan lebih aman daripada mencabut hak per kolom. | Implementasi Fase 0 |
+| D26 | **Sementara (Fase 1-2): semua isian non-identitas, termasuk isian kelompok Screen 9-16, disimpan di `student_state.data` per siswa**, agar tidak hilang saat keluar atau ganti perangkat. Gambar base64 tetap hanya di perangkat sampai Fase 4. Di Fase 3 isian kelompok dipindah ke `group_state`. | Implementasi Fase 1 |
+| D27 | **Satu Vercel Function** (`api/index.js`) untuk semua endpoint, dengan router internal. `vercel.json` menulis ulang `/api/<rute>` ke `/api?route=<rute>`. Sesuai saran Vercel dan batas jumlah fungsi di Hobby. | Implementasi Fase 1 |
+| D28 | Batas laju memakai tabel `rate_limits` di database (fungsi serverless tidak berbagi memori). Kunci di-hash HMAC dengan `PEPPER`, IP tidak disimpan mentah. Batas bisa dinaikkan lewat env `RL_*`. | Implementasi Fase 1 |
 | D24 | **Satu project Supabase (`emodul`) dipakai untuk dev dan production** pada tahap pilot, supaya setup sederhana. Konsekuensi dan aturannya ada di 10.1. **Wajib dipisah menjadi `emodul-prod` sebelum siswa sungguhan memakai.** | Keputusan |
 | D23 | Kode aktivasi **bisa dipakai berkali-kali sampai kedaluwarsa** (satu kode untuk banyak guru satu sekolah). Pengaman: batas jumlah pemakaian `max_uses` yang dapat diatur (default 30), log setiap penebusan, dan admin dapat mencabut kode serta menonaktifkan guru. | Keputusan |
 | D19 | Login dipisah per **rute**: `/` (siswa), `/guru`, `/admin`. Otorisasi tetap diperiksa server dan RLS, bukan oleh rute (3.8). | Keputusan |
@@ -326,7 +329,7 @@ Hak akses ditulis eksplisit (auto-grant tabel baru dimatikan di project): mulai 
 
 **Storage**: bucket privat `emodul-uploads`, path `{school_id}/{class_id}/{group_id}/{kind}-{uuid}.jpg`. Akses hanya anggota kelompok, guru sekolah itu, dan admin. Tampilkan lewat signed URL berumur pendek. Maks. 2 MB per berkas; hanya `image/*` dan `application/pdf`.
 
-Kunci `anon` dan URL project boleh ada di frontend. **`service_role` dan `PEPPER` hanya di environment variable Vercel**, tidak di repo.
+Kunci publik (`sb_publishable_...`) dan URL project boleh ada di frontend. **`service_role` dan `PEPPER` hanya di environment variable Vercel**, tidak di repo.
 
 Privasi: data anak sekolah (NIS, nama, jawaban). Simpan seminimal mungkin, tanpa email siswa. Sediakan prosedur hapus data per siswa/sekolah dan pemberitahuan penggunaan data (UU PDP). Pengarsipan per tahun ajaran ditunda (D13).
 Pengguna tanpa baris `profiles` aktif (misalnya akun Google yang belum menebus kode, atau guru yang dinonaktifkan) tidak lolos `is_teacher_of_school` / `is_teacher_of_class`, sehingga tidak bisa membaca data siswa (D18). Tabel `teacher_invites` hanya dapat diakses `service_role`.
@@ -482,33 +485,60 @@ Tugas:
 **Belum dikerjakan (pindah ke fase berikutnya):**
 - Akun admin Anda belum dibuat di project (3.7). Diperlukan di Fase 2.
 - Google OAuth belum diaktifkan. Diperlukan di Fase 2.
-### Fase 1: Siswa daftar, login, dan data tersimpan
+### Fase 1: Siswa daftar, login, dan data tersimpan (SELESAI 2026-11-18)
 
 **Tujuan:** siswa bisa mendaftar, login dari perangkat mana pun, dan jawabannya tersimpan.
 
 Tugas:
-- [ ] Vercel Functions di folder `api/`: `auth/register`, `auth/login`, `auth/change-pin` (bagian 3.3).
-- [ ] Hash PIN: `scrypt(HMAC-SHA256(PEPPER, school_id:nis:pin), salt)`; aturan PIN (tolak PIN mudah); normalisasi NIS dan nama kelompok.
-- [ ] Login NIS + PIN dengan pencarian kandidat lintas sekolah, batas 5 kandidat, penanganan bentrok (minta Kode Sekolah), pesan galat seragam, hash palsu untuk akun tak ada.
-- [ ] Kunci akun 5 kali salah / 15 menit, pencatatan `auth_events`.
-- [ ] CAPTCHA Turnstile (kunci uji di preview) dan batas laju per IP.
-- [ ] Penerbitan sesi sesuai D8 (atau Opsi C bila Fase 0 menyimpulkan demikian).
-- [ ] `vercel.json`: kecualikan `/api/*` dari rewrite ke `index.html`; atur environment variable (`PEPPER`, `service_role`, kunci CAPTCHA) hanya di Vercel.
-- [ ] Frontend: `src/lib/supabase.ts`, `authApi.ts`, `sync.ts`; layar daftar/login di rute `/` (mode lokal tetap ada); layar ganti PIN (`must_change_pin`).
-- [ ] Sinkron `student_state` dengan debounce 1,5 detik, antrean dan backoff saat gagal jaringan.
-- [ ] Aturan gabung 6.1: cap `ownerId`, `dirty` dan `lastServerUpdatedAt`, `backup_before_merge` 7 hari, buang data lokal saat logout.
-- [ ] Indikator sinkron di `AppShell` ("Tersinkron" / "Belum tersinkron").
-- [ ] Sekolah dan kelas uji dibuat lewat seed (guru belum ada di fase ini).
+- [x] Endpoint `auth/register`, `auth/login`, `auth/change-pin` dalam satu fungsi `api/index.js` (D27).
+- [x] Hash PIN `scrypt(HMAC-SHA256(PEPPER, school_id:nis:pin), salt)`; aturan PIN; normalisasi NIS dan nama kelompok.
+- [x] Login NIS + PIN lintas sekolah: batas 5 kandidat, bentrok meminta Kode Sekolah, pesan galat seragam, hash palsu untuk NIS tak dikenal.
+- [x] Kunci akun 5 kali salah / 15 menit lewat RPC atomik `record_login_failure` dan `record_login_success` (migrasi 0007); `auth_events` dicatat.
+- [x] CAPTCHA Turnstile di server dan widget di klien; batas laju per IP dan per NIS (D28).
+- [x] Sesi D8, dengan header `Sb-Forwarded-For` berisi IP siswa.
+- [x] `vercel.json`: rewrite `/api/*` ke fungsi; SPA fallback tidak menangkap `/api`.
+- [x] Frontend: `src/lib/supabase.ts`, `authApi.ts`, `studentSync.ts`; `StudentSessionContext`; panel Masuk/Daftar di Screen 1 (mode latihan tetap ada); dialog ganti PIN dan wajib ganti PIN.
+- [x] Sinkron `student_state` (debounce 1,5 detik, antrean, coba ulang dengan backoff, kirim ulang saat online).
+- [x] Aturan gabung 6.1: `ownerId`, `dirty`, `lastServerUpdatedAt`, cadangan 7 hari, hapus data lokal saat keluar, tawaran impor dari mode latihan.
+- [x] Indikator sinkron di `AppShell`; tombol "Keluar dari akun"; "Contoh Data" disembunyikan di mode online; reset menjaga identitas akun.
+- [x] Dev lokal tanpa Vercel CLI: plugin Vite menjalankan `api/index.js` di `npm run dev`.
 
-**Kriteria selesai:**
-- Siswa mendaftar dengan kode kelas seed, login di dua perangkat, dan jawabannya sama di keduanya.
-- Akun terkunci setelah 5 kali PIN salah dan terbuka sendiri setelah 15 menit.
-- Dua siswa memakai komputer yang sama bergantian tanpa data tercampur.
-- NIS yang sama di dua sekolah tidak saling mengganggu.
-- Aplikasi tetap bisa dipakai saat server tidak tersedia, dan tersinkron setelah pulih.
+**Hasil uji:**
 
-**Risiko:** salah tangani kandidat lintas sekolah (peluang tebakan PIN), kebocoran PIN di log.
+| Uji | Perintah | Hasil |
+|---|---|---|
+| Endpoint auth (daftar, aturan PIN, login, kunci, NIS ganda, ganti PIN, batas laju) | `npm run test:auth` | 38/38 |
+| Browser Edge (daftar lewat UI, sinkron, perangkat kedua, offline, keluar, komputer lab, impor mode latihan, wajib ganti PIN, mode gelap) | `npm run test:e2e` | 22/22 |
+| RLS dan sesi (ulang setelah migrasi 0007) | `npm run test:rls` | 61/61 |
+| `/api` lewat dev server | `npm run test:api-dev` | 4/4 |
 
+Bug yang ditemukan uji browser dan sudah diperbaiki: setelah PIN baru berhasil dibuat dalam mode wajib ganti PIN, dialog langsung tertutup sehingga pesan sukses tidak terlihat. Sekarang pesan tampil sampai siswa menekan "Lanjutkan".
+
+**Berkas utama:**
+
+| Berkas | Isi |
+|---|---|
+| `api/index.js` | Router satu fungsi |
+| `api/_lib/auth-routes.js` | Daftar, masuk, ganti PIN |
+| `api/_lib/pin.js`, `guards.js`, `supabase.js`, `http.js`, `env.js` | Hash PIN, CAPTCHA, batas laju, sesi, pembantu HTTP |
+| `supabase/migrations/20261118000007_auth_rate_limits.sql` | `rate_limits`, `rate_limit_hit`, `record_login_failure/success` |
+| `src/context/StudentSessionContext.tsx` | Sesi siswa |
+| `src/context/ModulContext.tsx` | Sinkron dan penggabungan |
+| `src/lib/studentSync.ts` | Aturan gabung (fungsi murni) |
+| `src/components/auth/*` | Panel masuk/daftar, kartu akun, dialog PIN, Turnstile |
+| `scripts/test-auth.mjs`, `scripts/e2e-student.mjs`, `scripts/test-api-dev.mjs` | Uji |
+
+**Wajib dilakukan sebelum dipakai di kelas (di luar kode):**
+1. **Supabase > Authentication > Rate Limits:**
+   - Aktifkan **IP Address Forwarding**, supaya batas laju Auth dihitung per siswa, bukan per IP server Vercel.
+   - Naikkan **Verification requests** dari bawaan 30 per 5 menit per IP menjadi sekitar **300 per 5 menit**. Satu kelas yang login bersamaan dari jaringan sekolah (satu IP) bisa melewati 30. Server kita sudah memasang CAPTCHA, batas laju sendiri, dan kunci akun.
+2. **Vercel > Project Settings > Environment Variables:** isi `VITE_SUPABASE_URL`, `VITE_SUPABASE_PUBLISHABLE_KEY`, `VITE_TURNSTILE_SITE_KEY`, `SUPABASE_URL`, `SUPABASE_SECRET_KEY`, `TURNSTILE_SECRET_KEY`, `PEPPER`, `CRON_SECRET`. `PEPPER` harus sama dengan yang tersimpan di password manager. Bila variabel `VITE_*` kosong saat build, aplikasi otomatis berjalan dalam mode latihan saja.
+3. **Cloudflare Turnstile:** buat widget untuk hostname `<project>.vercel.app` dan ganti kunci uji dengan kunci asli sebelum siswa sungguhan memakai.
+
+**Catatan:**
+- Bundel JavaScript sekarang di atas 500 KB karena `@supabase/supabase-js`. Belum masalah untuk pilot; bisa dipecah (lazy-load) nanti.
+- Foto dan sketsa belum ke server (Fase 4). Saat keluar, siswa diperingatkan bahwa foto/sketsa ikut terhapus dari perangkat.
+- Saat siswa masuk, aplikasi melompat ke layar terakhir yang tersimpan di akun.
 ### Fase 2: Guru dan admin
 
 **Tujuan:** guru terverifikasi lewat kode dari admin dan dapat memulihkan akun siswa.

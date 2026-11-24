@@ -13,7 +13,10 @@
     "db:check": "node --env-file=.env.local scripts/check-project.mjs",
     "db:seed": "node --env-file=.env.local scripts/seed-test.mjs",
     "db:purge-test": "node --env-file=.env.local scripts/purge-test-data.mjs",
-    "test:rls": "node --env-file=.env.local scripts/test-rls.mjs"
+    "test:rls": "node --env-file=.env.local scripts/test-rls.mjs",
+    "test:auth": "node --env-file=.env.local scripts/test-auth.mjs",
+    "test:api-dev": "node scripts/test-api-dev.mjs",
+    "test:e2e": "node --env-file=.env.local scripts/e2e-student.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.119.2",

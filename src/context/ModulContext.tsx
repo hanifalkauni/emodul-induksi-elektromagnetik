@@ -1,4 +1,19 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
+import { studentClient } from '../lib/supabase';
+import { useStudentSession } from './StudentSessionContext';
+import {
+  LOCAL_IMAGE_KEYS,
+  applyServerState,
+  cleanVisited,
+  clearMeta,
+  decideMerge,
+  pruneExpiredBackup,
+  readMeta,
+  saveBackup,
+  toServerData,
+  writeMeta,
+  type ServerStudentState,
+} from '../lib/studentSync';
 import {
   EModulState,
   IdeaNote,
@@ -176,7 +191,18 @@ interface ModulContextValue {
   loadDemoData: () => void;
   resetAllData: () => void;
   completionPercent: number;
+  /** Status sinkron ke server: 'local' bila tidak masuk akun. */
+  syncStatus: SyncStatus;
+  /** Keluar akun: hapus data lokal milik siswa ini lalu akhiri sesi (spec 6.1 no. 1). */
+  signOutAndClear: () => Promise<void>;
+  /** true bila ada foto/sketsa yang hanya tersimpan di perangkat ini (belum ke server sampai Fase 4). */
+  hasLocalOnlyImages: boolean;
 }
+
+export type SyncStatus = 'local' | 'syncing' | 'saving' | 'saved' | 'offline' | 'error';
+
+const PUSH_DEBOUNCE_MS = 1500;
+const MAX_RETRY_MS = 60_000;
 
 const ModulContext = createContext<ModulContextValue | undefined>(undefined);
 
@@ -208,6 +234,209 @@ export const ModulProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       // Ignore quota errors on very large image previews
     }
   }, [state]);
+
+  // ---------------------------------------------------------------------------
+  // Sinkron ke Supabase (Fase 1): student_state milik siswa yang masuk.
+  // ---------------------------------------------------------------------------
+  const session = useStudentSession();
+  const userId = session.userId;
+  const profile = session.profile;
+  const [syncStatus, setSyncStatus] = useState<SyncStatus>('local');
+
+  const stateRef = useRef(state);
+  stateRef.current = state;
+  const readyForUser = useRef<string | null>(null); // penggabungan awal sudah selesai untuk user ini
+  const applyingRemote = useRef(false);
+  const pushTimer = useRef<number | null>(null);
+  const retryDelay = useRef(2000);
+  const inFlight = useRef(false);
+  const pushAgain = useRef(false);
+
+  const clearPushTimer = () => {
+    if (pushTimer.current !== null) {
+      window.clearTimeout(pushTimer.current);
+      pushTimer.current = null;
+    }
+  };
+
+  const pushNow = useCallback(async () => {
+    const client = studentClient;
+    const uid = readyForUser.current;
+    if (!client || !uid) return;
+    if (inFlight.current) {
+      pushAgain.current = true;
+      return;
+    }
+    inFlight.current = true;
+    setSyncStatus('saving');
+    const startedAt = readMeta().localUpdatedAt;
+    const s = stateRef.current;
+    const payload = {
+      current_screen: s.currentScreen,
+      visited_screens: cleanVisited(s.visitedScreens),
+      completion_percent: Math.round((cleanVisited(s.visitedScreens).length / SCREENS.length) * 100),
+      data: toServerData(s),
+    };
+    try {
+      let { data, error } = await client
+        .from('student_state').update(payload).eq('student_id', uid).select('updated_at').maybeSingle();
+      if (!error && !data) {
+        ({ data, error } = await client
+          .from('student_state').insert({ student_id: uid, ...payload }).select('updated_at').single());
+      }
+      if (error || !data) throw error ?? new Error('Tidak ada respons');
+      const meta = readMeta();
+      if (meta.ownerId === uid) {
+        if (meta.localUpdatedAt === startedAt) meta.dirty = false;
+        meta.lastServerUpdatedAt = data.updated_at;
+        writeMeta(meta);
+      }
+      retryDelay.current = 2000;
+      setSyncStatus(meta.dirty ? 'saving' : 'saved');
+    } catch (err) {
+      console.warn('Sinkron gagal, akan dicoba lagi:', (err as Error)?.message);
+      setSyncStatus(navigator.onLine ? 'error' : 'offline');
+      clearPushTimer();
+      pushTimer.current = window.setTimeout(() => void pushNow(), retryDelay.current);
+      retryDelay.current = Math.min(MAX_RETRY_MS, retryDelay.current * 2);
+    } finally {
+      inFlight.current = false;
+      if (pushAgain.current) {
+        pushAgain.current = false;
+        clearPushTimer();
+        pushTimer.current = window.setTimeout(() => void pushNow(), 300);
+      }
+    }
+  }, []);
+
+  const schedulePush = useCallback(() => {
+    clearPushTimer();
+    pushTimer.current = window.setTimeout(() => void pushNow(), PUSH_DEBOUNCE_MS);
+  }, [pushNow]);
+
+  // Penggabungan awal setiap kali siswa (berbeda) masuk
+  useEffect(() => {
+    const client = studentClient;
+    if (!client || !userId) {
+      readyForUser.current = null;
+      setSyncStatus('local');
+      return;
+    }
+    if (readyForUser.current === userId) return;
+    let cancelled = false;
+    setSyncStatus('syncing');
+    pruneExpiredBackup();
+
+    (async () => {
+      const { data: server, error } = await client
+        .from('student_state')
+        .select('current_screen, visited_screens, completion_percent, data, updated_at')
+        .eq('student_id', userId)
+        .maybeSingle<ServerStudentState>();
+      if (cancelled) return;
+      if (error) {
+        setSyncStatus(navigator.onLine ? 'error' : 'offline');
+        return; // dicoba lagi saat efek berjalan ulang (mis. koneksi kembali)
+      }
+
+      const meta = readMeta();
+      const local = stateRef.current;
+      let decision = decideMerge({ userId, meta, local, server: server ?? null });
+
+      if (decision.kind === 'ask-import') {
+        const ok = window.confirm(
+          'Ada jawaban yang tersimpan di perangkat ini dari mode tanpa akun.\n\n' +
+            'Pindahkan jawaban tersebut ke akun Anda?\n(Pilih "Batal" untuk memakai data akun dan membuang jawaban lokal.)',
+        );
+        decision = ok ? { kind: 'push-local' } : server ? { kind: 'take-server', backupLocal: true } : { kind: 'fresh' };
+      }
+
+      const ownerChanged = Boolean(meta.ownerId && meta.ownerId !== userId);
+      const base = ownerChanged ? INITIAL_STATE : local;
+
+      applyingRemote.current = true;
+      if (decision.kind === 'take-server' && server) {
+        if (decision.backupLocal) saveBackup(userId, local, 'konflik saat masuk');
+        setState(applyServerState(base, server));
+      } else if (decision.kind === 'fresh') {
+        setState(ownerChanged ? INITIAL_STATE : base);
+      } else {
+        // push-local: data lokal dipertahankan dan dikirim
+        applyingRemote.current = false;
+      }
+
+      writeMeta({
+        ownerId: userId,
+        dirty: decision.kind === 'push-local',
+        localUpdatedAt: decision.kind === 'push-local' ? new Date().toISOString() : null,
+        lastServerUpdatedAt: server?.updated_at ?? null,
+      });
+      readyForUser.current = userId;
+      if (decision.kind === 'push-local') void pushNow();
+      else setSyncStatus('saved');
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [userId, pushNow]);
+
+  // Identitas di mode online berasal dari akun (tidak bisa diubah siswa)
+  useEffect(() => {
+    if (!profile) return;
+    setState((prev) => {
+      const identity = {
+        studentName: profile.name,
+        studentClass: profile.className,
+        groupName: profile.groupName,
+        schoolName: profile.schoolName,
+      };
+      const same = Object.entries(identity).every(([k, v]) => prev.identity[k as keyof typeof identity] === v);
+      return same ? prev : { ...prev, identity };
+    });
+  }, [profile]);
+
+  // Tandai perubahan lokal lalu jadwalkan pengiriman
+  useEffect(() => {
+    if (applyingRemote.current) {
+      applyingRemote.current = false;
+      return;
+    }
+    const uid = readyForUser.current;
+    if (!uid || !userId || uid !== userId) return;
+    const meta = readMeta();
+    writeMeta({ ...meta, ownerId: uid, dirty: true, localUpdatedAt: new Date().toISOString() });
+    setSyncStatus('saving');
+    schedulePush();
+  }, [state, userId, schedulePush]);
+
+  // Coba kirim lagi saat koneksi kembali
+  useEffect(() => {
+    const onOnline = () => {
+      if (readyForUser.current && readMeta().dirty) void pushNow();
+    };
+    window.addEventListener('online', onOnline);
+    return () => window.removeEventListener('online', onOnline);
+  }, [pushNow]);
+
+  useEffect(() => () => clearPushTimer(), []);
+
+  const signOutAndClear = useCallback(async () => {
+    clearPushTimer();
+    readyForUser.current = null;
+    try {
+      localStorage.removeItem(STORAGE_KEY);
+    } catch {
+      // abaikan
+    }
+    clearMeta();
+    applyingRemote.current = true;
+    setState(INITIAL_STATE);
+    setSyncStatus('local');
+    await session.signOut();
+  }, [session]);
+
+  const hasLocalOnlyImages = LOCAL_IMAGE_KEYS.some((k) => Boolean(state[k]));
 
   const setScreen = (screenNumber: number) => {
     const clamped = Math.max(1, Math.min(17, screenNumber));
@@ -292,12 +521,15 @@ export const ModulProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const loadDemoData = () => {
     setState((prev) => ({
       ...prev,
-      identity: {
-        studentName: 'Alya Putri Pratama',
-        studentClass: 'XII MIPA 2',
-        groupName: 'Kelompok 3 (Faraday Squad)',
-        schoolName: 'SMA Negeri 1 Nusantara',
-      },
+      // Di mode online identitas berasal dari akun dan tidak ditimpa data contoh
+      identity: profile
+        ? prev.identity
+        : {
+            studentName: 'Alya Putri Pratama',
+            studentClass: 'XII MIPA 2',
+            groupName: 'Kelompok 3 (Faraday Squad)',
+            schoolName: 'SMA Negeri 1 Nusantara',
+          },
       checkedObjectives: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
       initialHypothesis:
         'Gerakan magnet keluar-masuk kumparan menyebabkan perubahan medan magnet di dalam kumparan sehingga memicu munculnya arus listrik yang menyalakan LED.',
@@ -348,6 +580,11 @@ export const ModulProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   };
 
   const resetAllData = () => {
+    if (profile) {
+      // Mode online: kosongkan jawaban tetapi pertahankan identitas akun (perubahan ikut tersinkron)
+      setState((prev) => ({ ...INITIAL_STATE, identity: prev.identity, lastSavedAt: new Date().toISOString() }));
+      return;
+    }
     localStorage.removeItem(STORAGE_KEY);
     setState(INITIAL_STATE);
   };
@@ -370,6 +607,9 @@ export const ModulProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         loadDemoData,
         resetAllData,
         completionPercent,
+        syncStatus,
+        signOutAndClear,
+        hasLocalOnlyImages,
       }}
     >
       {children}

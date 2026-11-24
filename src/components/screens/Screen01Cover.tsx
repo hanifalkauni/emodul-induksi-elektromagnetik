@@ -22,6 +22,9 @@ import {
   Wrench,
 } from 'lucide-react';
 import { useModul } from '../../context/ModulContext';
+import { useStudentSession } from '../../context/StudentSessionContext';
+import { StudentAuthPanel } from '../auth/StudentAuthPanel';
+import { SignedInCard } from '../auth/SignedInCard';
 
 const COURSE_CATALOG = [
   {
@@ -117,6 +120,9 @@ const TESTIMONIALS = [
 
 export const Screen01Cover: React.FC = () => {
   const { state, updateIdentity, setScreen } = useModul();
+  const session = useStudentSession();
+  const signedIn = session.status === 'signedIn' && Boolean(session.profile);
+  const showAuth = session.configured && session.mode === 'online' && !signedIn;
   const [magnetPhase, setMagnetPhase] = useState(0);
   const [errorMsg, setErrorMsg] = useState('');
 
@@ -342,17 +348,28 @@ export const Screen01Cover: React.FC = () => {
               <span>LANGKAH 1 DARI 17</span>
             </div>
             <h2 className="text-2xl font-display font-bold text-slate-900">
-              Identitas Peserta Didik & Kelompok
+              {signedIn ? `Halo, ${session.profile?.name}` : showAuth ? 'Masuk ke Akun Siswa' : 'Identitas Peserta Didik & Kelompok'}
             </h2>
             <p className="text-sm text-slate-600">
-              Lengkapi identitas sebelum mengakses modul. Data akan tercantum otomatis di laporan LKPD dan Portofolio akhir.
+              {signedIn
+                ? 'Jawabanmu tersimpan otomatis ke akun dan bisa dilanjutkan dari perangkat lain.'
+                : showAuth
+                ? 'Masuk dengan NIS dan PIN. Belum punya akun? Pilih "Daftar Baru" dan gunakan kode kelas dari guru.'
+                : 'Lengkapi identitas sebelum mengakses modul. Data akan tercantum otomatis di laporan LKPD dan Portofolio akhir.'}
             </p>
           </div>
           <span className="badge self-start px-3.5 py-1.5 bg-slate-50 text-slate-700 text-xs font-bold font-mono">
-            Wajib Dilengkapi
+            {signedIn ? 'Akun Aktif' : showAuth ? 'Akun Siswa' : 'Mode Latihan'}
           </span>
         </div>
 
+        {session.status === 'loading' && session.configured ? (
+          <p role="status" className="text-sm text-slate-600">Memeriksa sesi...</p>
+        ) : signedIn ? (
+          <SignedInCard onStart={() => setScreen(2)} />
+        ) : showAuth ? (
+          <StudentAuthPanel onUseLocal={() => session.chooseMode('local')} />
+        ) : (
         <form onSubmit={handleStart} className="space-y-6">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
             <label className="block space-y-1.5">
@@ -416,9 +433,17 @@ export const Screen01Cover: React.FC = () => {
           )}
 
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-3">
-            <div className="flex items-center gap-2 text-xs text-slate-500">
-              <ShieldCheck className="w-4 h-4 text-emerald-500 shrink-0" />
-              <span>Data tersimpan otomatis di browser lokal (aman & offline-ready).</span>
+            <div className="flex flex-col gap-1 text-xs text-slate-500">
+              <span className="flex items-center gap-2">
+                <ShieldCheck className="w-4 h-4 text-emerald-500 shrink-0" />
+                <span>Mode latihan: jawaban hanya tersimpan di browser perangkat ini.</span>
+              </span>
+              {session.configured && (
+                <button type="button" onClick={() => session.chooseMode('online')}
+                  className="self-start font-semibold text-brand-700 underline cursor-pointer">
+                  Masuk dengan akun siswa (NIS + PIN)
+                </button>
+              )}
             </div>
 
             <button
@@ -430,6 +455,7 @@ export const Screen01Cover: React.FC = () => {
             </button>
           </div>
         </form>
+        )}
       </section>
 
       {/* =========================================================

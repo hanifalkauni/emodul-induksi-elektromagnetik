@@ -1,5 +1,7 @@
 import React from 'react';
 import { ModulProvider, useModul } from './context/ModulContext';
+import { StudentSessionProvider, useStudentSession } from './context/StudentSessionContext';
+import { ChangePinDialog } from './components/auth/ChangePinDialog';
 import { AppShell } from './components/layout/AppShell';
 import { Screen01Cover } from './components/screens/Screen01Cover';
 import { Screen02Petunjuk } from './components/screens/Screen02Petunjuk';
@@ -62,13 +64,22 @@ const ScreenRouter: React.FC = () => {
   }
 };
 
+/** Setelah guru mereset PIN, siswa wajib membuat PIN baru sebelum memakai modul. */
+const ForcePinChange: React.FC = () => {
+  const { profile } = useStudentSession();
+  return profile?.mustChangePin ? <ChangePinDialog forced /> : null;
+};
+
 export function App() {
   return (
-    <ModulProvider>
-      <AppShell>
-        <ScreenRouter />
-      </AppShell>
-    </ModulProvider>
+    <StudentSessionProvider>
+      <ModulProvider>
+        <AppShell>
+          <ScreenRouter />
+        </AppShell>
+        <ForcePinChange />
+      </ModulProvider>
+    </StudentSessionProvider>
   );
 }
 
