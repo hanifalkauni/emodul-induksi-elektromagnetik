@@ -17,7 +17,10 @@
     "test:auth": "node --env-file=.env.local scripts/test-auth.mjs",
     "test:api-dev": "node scripts/test-api-dev.mjs",
     "test:e2e": "node --env-file=.env.local scripts/e2e-student.mjs",
-    "check:deploy": "node --env-file=.env.local scripts/check-deploy.mjs"
+    "check:deploy": "node --env-file=.env.local scripts/check-deploy.mjs",
+    "test:staff": "node --env-file=.env.local scripts/test-staff.mjs",
+    "test:e2e-staff": "node --env-file=.env.local scripts/e2e-staff.mjs",
+    "admin:make": "node --env-file=.env.local scripts/make-admin.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.119.2",

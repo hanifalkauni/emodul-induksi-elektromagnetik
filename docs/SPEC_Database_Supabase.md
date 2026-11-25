@@ -1,6 +1,6 @@
 # SPEC: Database & Sinkronisasi E-Modul (Supabase)
 
-Status: **v13. Fase 0 dan Fase 1 selesai (2026-11-18).** Fase 1: login siswa NIS + PIN dan sinkron data; uji auth 38/38, uji browser 22/22, uji RLS 61/61. Semua keputusan sudah diambil dan tidak ada pertanyaan terbuka. Siap untuk Fase 0. (belum ada kode). Diperbarui: 2026-11-18.
+Status: **v14. Fase 0, 1, dan 2 selesai (2026-11-18).** Fase 2: panel admin, halaman guru, kode aktivasi; uji staf 58/58, uji browser staf 18/18. Tersisa keputusan pendaftaran akun Google (lihat Fase 2).
 Cakupan: menyimpan data e-modul "Induksi Elektromagnetik" (17 screen) ke Supabase agar guru dapat memantau siswa dan kelompok, dan data tidak hilang saat browser dibersihkan.
 
 ## Log keputusan
@@ -539,28 +539,39 @@ Bug yang ditemukan uji browser dan sudah diperbaiki: setelah PIN baru berhasil d
 - Bundel JavaScript sekarang di atas 500 KB karena `@supabase/supabase-js`. Belum masalah untuk pilot; bisa dipecah (lazy-load) nanti.
 - Foto dan sketsa belum ke server (Fase 4). Saat keluar, siswa diperingatkan bahwa foto/sketsa ikut terhapus dari perangkat.
 - Saat siswa masuk, aplikasi melompat ke layar terakhir yang tersimpan di akun.
-### Fase 2: Guru dan admin
+### Fase 2: Guru dan admin (SELESAI 2026-11-18, menunggu 1 keputusan pengaturan Auth)
 
 **Tujuan:** guru terverifikasi lewat kode dari admin dan dapat memulihkan akun siswa.
 
 Tugas:
-- [ ] Routing berbasis path `/`, `/guru`, `/admin`; bundel guru/admin dimuat terpisah (lazy-load); `storageKey` Supabase terpisah per area (3.8).
-- [ ] Login admin (email + password, CAPTCHA, batas laju); admin produksi dibuat manual (3.7).
-- [ ] Panel admin minimal (7.1): terbitkan kode aktivasi (sekolah ada/baru, email opsional, masa berlaku 3-90 hari default 14, `max_uses` default 30), lihat status dan daftar penebus, tandai guru baru, cabut dan perpanjang kode, nonaktifkan guru, kelola/gabung sekolah, ganti Kode Sekolah.
-- [ ] Endpoint `admin/*` dan `teacher/activate` dengan semua pemeriksaan 3.5 (hash, kedaluwarsa, dicabut, `max_uses`, email terikat, satu guru satu sekolah, batas percobaan salah).
-- [ ] Layar `/guru`: login Google, layar tebus kode, buat kelas dan kode kelas, ganti kode kelas.
-- [ ] Aksi guru: buka kunci, reset PIN (PIN sementara tampil sekali), pindahkan siswa, nonaktifkan/hapus pendaftar, koreksi NIS (otomatis reset PIN).
-- [ ] Semua endpoint staf memverifikasi token dan peran di server; semua tindakan tercatat di `auth_events`.
-- [ ] Antarmuka guru sederhana: satu layar, tombol besar, teks jelas.
+- [x] Routing berbasis path `/`, `/guru`, `/admin` di `src/main.tsx`; halaman guru dan admin dimuat terpisah (10 KB dan 18 KB); klien Supabase staf memakai `storageKey` `emodul-staff-auth`.
+- [x] Admin pertama: `zechnider@gmail.com` (dibuat di dashboard, peran diberikan lewat `npm run admin:make -- <email>`).
+- [x] Panel admin: terbitkan kode (sekolah ada/baru, email opsional, 3–90 hari, batas pemakaian), daftar penebus, cabut, perpanjang +14 hari, peringatan kode tanpa email; daftar guru dengan tanda "Baru", nonaktifkan/aktifkan; tambah/ubah sekolah, ganti Kode Sekolah; cari siswa lintas sekolah berdasarkan NIS.
+- [x] Penebusan kode atomik lewat RPC `redeem_teacher_invite` (migrasi 0008): baris undangan dikunci, sekolah baru dibuat saat tebusan pertama, tebusan ulang oleh guru yang sama tidak menambah hitungan, satu guru satu sekolah, akun siswa dan admin ditolak.
+- [x] Halaman guru: login Google, layar aktivasi, Kode Sekolah, daftar kelas, buat kelas, kode kelas (salin/ganti), daftar siswa per kelas dan cari NIS.
+- [x] Tindakan pada siswa: buka kunci, reset PIN (PIN sementara tampil sekali), ubah nama/NIS (NIS berubah = PIN direset), pindah kelas/kelompok, nonaktifkan/aktifkan, hapus (konfirmasi dengan mengetik NIS).
+- [x] Akun yang dinonaktifkan juga di-ban di Supabase Auth, sehingga refresh token tidak bisa dipakai lagi.
+- [x] Semua tindakan staf dicatat di `auth_events`.
 
-**Kriteria selesai:**
-- Alur penuh berjalan: admin menerbitkan kode, guru login Google dan menebus, guru membuat kelas, siswa mendaftar dengan kode kelas itu, siswa terkunci, guru membukanya dan mereset PIN.
-- Akun Google tanpa kode tidak melihat data apa pun.
-- Guru sekolah lain tidak bisa membuka kunci siswa.
-- Guru yang membuka `/admin` ditolak server (403).
-- Kode kedaluwarsa, dicabut, atau melebihi `max_uses` ditolak.
+**Hasil uji:**
 
-**Risiko:** kode aktivasi bocor (D23), salah RLS pada peran guru.
+| Uji | Perintah | Hasil |
+|---|---|---|
+| Endpoint guru/admin (kode aktivasi, batas sekolah, kunci, reset PIN, pindah, koreksi NIS, nonaktif, hapus, ganti kode, admin) | `npm run test:staff` | 58/58 |
+| Browser Edge: panel admin dan halaman guru (termasuk tombol Google sampai halaman Google terbuka) | `npm run test:e2e-staff` | 18/18 |
+| Regresi | `npm run test:rls`, `npm run test:auth` | 61/61, 38/38 |
+
+**Perbedaan dari rencana:**
+- **Login admin tanpa CAPTCHA kita.** Admin masuk langsung ke Supabase Auth (email + password), jadi dilindungi batas laju bawaan Supabase, bukan Turnstile. Bisa ditambah lewat fitur CAPTCHA Supabase Auth bila perlu.
+- **Gabung sekolah ganda belum dibuat.** Hash PIN terikat `school_id`, jadi memindah siswa ke sekolah lain berarti semua PIN siswa itu harus direset. Ditunda sampai benar-benar dibutuhkan; untuk sekarang admin cukup tidak menerbitkan kode baru ke sekolah duplikat.
+- **Peringatan lonjakan pendaftaran** (lebih dari 30 per jam) dipindah ke Fase 5 bersama dashboard progres.
+
+**Belum selesai: pendaftaran akun Google guru baru.**
+Di project, "Allow new users to sign up" dimatikan (D24, aman untuk siswa karena akun siswa dibuat server). Pengaturan ini kemungkinan besar juga menolak guru yang login Google untuk pertama kali. Halaman `/guru` sudah menampilkan pesan yang jelas bila itu terjadi. Pilihan:
+1. **Disarankan:** nyalakan lagi pendaftaran, lalu aktifkan hook **Before User Created** (Authentication > Hooks, tipe Postgres, fungsi `public.hook_before_user_created`, sudah ada di migrasi 0008). Hook hanya mengizinkan akun Google, user internal siswa (`@siswa.emodul.invalid`), dan akun uji (`@emodul.test`).
+2. Nyalakan pendaftaran tanpa hook. Akun tanpa kode aktivasi tetap tidak melihat data apa pun (terbukti di uji RLS), tetapi siapa pun bisa membuat akun email kosong.
+
+Setelah salah satu dipilih, uji dengan akun Google guru sungguhan: login di `/guru`, tebus kode dari panel admin.
 
 ### Fase 3: Data kelompok dan kolaborasi
 

@@ -208,6 +208,9 @@ export const StudentAuthPanel: React.FC<{ onUseLocal: () => void }> = ({ onUseLo
         <button type="button" onClick={onUseLocal} className="text-sm font-semibold text-slate-600 hover:text-slate-900 underline cursor-pointer">
           Lanjut tanpa akun (mode latihan, jawaban hanya tersimpan di perangkat ini)
         </button>
+        <p className="mt-3 text-xs text-slate-500">
+          Anda guru? <a href="/guru" className="font-semibold text-brand-700 underline">Masuk ke halaman guru</a>
+        </p>
       </div>
     </div>
   );

@@ -1,7 +1,7 @@
 // Normalisasi NIS, aturan PIN, dan hash PIN (spec 3.2, 3.6).
 // pin_hash = scrypt(HMAC-SHA256(PEPPER, school_id:nis:pin), salt). PEPPER tidak pernah disimpan di database.
 
-import { createHmac, randomBytes, scrypt as scryptCb, timingSafeEqual } from 'node:crypto';
+import { createHmac, randomBytes, randomInt, scrypt as scryptCb, timingSafeEqual } from 'node:crypto';
 import { env } from './env.js';
 
 const SCRYPT = { N: 16384, r: 8, p: 1, keylen: 32, maxmem: 64 * 1024 * 1024 };
@@ -72,6 +72,41 @@ export async function verifyPin(schoolId, nis, pin, stored) {
 export async function dummyVerify() {
   await scrypt(randomBytes(32), randomBytes(16), SCRYPT.keylen, SCRYPT);
   return false;
+}
+
+const CODE_ALPHABET = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // 32 simbol, tanpa 0/O/1/I (D15)
+
+/** Kode acak dari 32 simbol (randomInt tanpa bias). */
+export function genCode(length) {
+  let out = '';
+  for (let i = 0; i < length; i++) out += CODE_ALPHABET[randomInt(CODE_ALPHABET.length)];
+  return out;
+}
+
+/** PIN sementara 6 angka yang lolos aturan PIN (dipakai saat guru mereset PIN). */
+export function genTempPin(nis) {
+  for (;;) {
+    const pin = String(randomInt(1_000_000)).padStart(6, '0');
+    if (!pinPolicyError(pin, nis)) return pin;
+  }
+}
+
+/** Kode aktivasi guru: 10 karakter (sekitar 50 bit), ditampilkan sebagai XXXXX-XXXXX. */
+export function normalizeInviteCode(raw) {
+  return String(raw ?? '').replace(/[^a-zA-Z0-9]/g, '').toUpperCase();
+}
+
+export function isValidInviteCode(code) {
+  return /^[A-HJ-NP-Z2-9]{10}$/.test(code);
+}
+
+export function formatInviteCode(code) {
+  return `${code.slice(0, 5)}-${code.slice(5)}`;
+}
+
+/** Hanya hash kode yang disimpan di database. */
+export function inviteHash(code) {
+  return createHmac('sha256', env('PEPPER')).update(`invite:${code}`).digest('hex');
 }
 
 /** Hash HMAC untuk IP/kunci laju, agar IP tidak tersimpan mentah. */

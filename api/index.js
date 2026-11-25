@@ -4,10 +4,14 @@
 // Berkas di api/_lib/ diawali garis bawah sehingga tidak menjadi fungsi terpisah.
 
 import { authRoutes } from './_lib/auth-routes.js';
+import { teacherRoutes } from './_lib/teacher-routes.js';
+import { adminRoutes } from './_lib/admin-routes.js';
 import { HttpError, errorResponse } from './_lib/http.js';
 
 const ROUTES = {
   ...authRoutes,
+  ...teacherRoutes,
+  ...adminRoutes,
 };
 
 function routeOf(request) {
