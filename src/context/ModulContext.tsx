@@ -2,6 +2,8 @@ import React, { createContext, useCallback, useContext, useEffect, useRef, useSt
 import { studentClient } from '../lib/supabase';
 import { useStudentSession } from './StudentSessionContext';
 import { useGroupSync, type GroupStatus } from './useGroupSync';
+import { useGroupFiles, type UploadStatus } from './useGroupFiles';
+import { clearPending, forgetSignedUrls, type ImageKind } from '../lib/media';
 import { clearGroupStore, keepGroupFields } from '../lib/groupSync';
 import {
   LOCAL_IMAGE_KEYS,
@@ -102,6 +104,7 @@ export const INITIAL_STATE: EModulState = {
   roles: DEFAULT_ROLES,
   labReportFileName: '',
   labReportLink: '',
+  labReportFile: null,
 
   checkedConstraints: [],
 
@@ -127,11 +130,14 @@ export const INITIAL_STATE: EModulState = {
   designPrediction: '',
   designSketchDataUrl: '',
   designSketchFileName: '',
+  designSketchFile: null,
 
   processPhotoUrl: '',
   processPhotoName: '',
   prototypePhotoUrl: '',
   prototypePhotoName: '',
+  processPhotoFile: null,
+  prototypePhotoFile: null,
   testVideoLink: '',
   lmsUploadLink: '',
 
@@ -197,12 +203,20 @@ interface ModulContextValue {
   syncStatus: SyncStatus;
   /** Keluar akun: hapus data lokal milik siswa ini lalu akhiri sesi (spec 6.1 no. 1). */
   signOutAndClear: () => Promise<void>;
-  /** true bila ada foto/sketsa yang hanya tersimpan di perangkat ini (belum ke server sampai Fase 4). */
+  /** true bila ada foto/sketsa yang hanya tersimpan di perangkat ini (mode lokal, atau belum terunggah). */
   hasLocalOnlyImages: boolean;
   /** Isian kelompok tersinkron dengan anggota lain (mode online dengan kelompok). */
   groupShared: boolean;
   /** Pembaruan kelompok tersambung langsung (Realtime); false = diperbarui berkala. */
   groupLive: boolean;
+  /** Fase 4: simpan gambar (dikompres; di mode kelompok diunggah ke Storage). Mengembalikan pesan galat atau null. */
+  setImage: (kind: ImageKind, source: Blob, name: string) => Promise<string | null>;
+  clearImage: (kind: ImageKind) => void;
+  uploadLabReport: (file: File) => Promise<string | null>;
+  clearLabReport: () => void;
+  uploadStatus: UploadStatus;
+  /** Berkas disimpan di Storage kelompok (mode online dengan kelompok). */
+  filesShared: boolean;
 }
 
 export type SyncStatus = 'local' | 'syncing' | 'saving' | 'saved' | 'offline' | 'error';
@@ -457,6 +471,8 @@ export const ModulProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     }
     clearMeta();
     clearGroupStore();
+    clearPending();
+    forgetSignedUrls();
     setStudentReadyFor(null);
     applyingRemote.current = true;
     setState(INITIAL_STATE);
@@ -478,6 +494,18 @@ export const ModulProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     initialState: INITIAL_STATE,
   });
   const groupShared = groupSync.status !== 'off';
+
+  // Fase 4: foto, sketsa, dan laporan kelompok di Storage
+  const groupFiles = useGroupFiles({
+    enabled: Boolean(userId && groupId && profile?.schoolId && profile?.classId),
+    ready: groupSync.ready,
+    userId,
+    groupId,
+    schoolId: profile?.schoolId ?? null,
+    classId: profile?.classId ?? null,
+    state,
+    setState,
+  });
   const combinedStatus = combineStatus(syncStatus, groupSync.status);
 
   const setScreen = (screenNumber: number) => {
@@ -664,6 +692,12 @@ export const ModulProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         hasLocalOnlyImages,
         groupShared,
         groupLive: groupSync.live,
+        setImage: groupFiles.setImage,
+        clearImage: groupFiles.clearImage,
+        uploadLabReport: groupFiles.uploadLabReport,
+        clearLabReport: groupFiles.clearLabReport,
+        uploadStatus: groupFiles.status,
+        filesShared: Boolean(userId && groupId && profile?.schoolId && profile?.classId),
       }}
     >
       {children}

@@ -11,6 +11,7 @@ import {
 } from 'lucide-react';
 import { useModul } from '../../context/ModulContext';
 import { openPrintableLkpd } from '../../utils/exportLkpd';
+import { UploadStatusLine, useSignedUrl } from '../media/StoredImage';
 
 const LAB_TOOLS = [
   'Magnet',
@@ -22,7 +23,7 @@ const LAB_TOOLS = [
 ];
 
 export const Screen09EksperimenKit: React.FC = () => {
-  const { state, updateState, rotateRoles } = useModul();
+  const { state, updateState, rotateRoles, uploadLabReport, clearLabReport, uploadStatus } = useModul();
 
   const toggleTool = (tool: string) => {
     const exists = state.checkedTools.includes(tool);
@@ -37,11 +38,11 @@ export const Screen09EksperimenKit: React.FC = () => {
     updateState('roles', next);
   };
 
+  const reportSigned = useSignedUrl(state.labReportFile?.path, state.labReportFile?.name || 'laporan-praktikum');
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) {
-      updateState('labReportFileName', file.name);
-    }
+    e.target.value = '';
+    if (file) void uploadLabReport(file);
   };
 
   return (
@@ -200,8 +201,23 @@ export const Screen09EksperimenKit: React.FC = () => {
                     ? `Berkas dipilih: ${state.labReportFileName}`
                     : 'Pilih Berkas Laporan (PDF / Foto)'}
                 </span>
-                <input type="file" accept=".pdf,image/*" onChange={handleFileSelect} className="sr-only" />
+                <input type="file" accept=".pdf,application/pdf,image/*" aria-label="Pilih berkas laporan praktikum" onChange={handleFileSelect} disabled={uploadStatus.lab_report.phase === 'uploading'} className="sr-only" />
               </label>
+              <UploadStatusLine kind="lab_report" hasRef={Boolean(state.labReportFile)} hasLocal={false} />
+              {state.labReportFile && (
+                <div className="flex items-center justify-between gap-2 text-xs">
+                  {reportSigned.url ? (
+                    <a href={reportSigned.url} target="_blank" rel="noopener noreferrer" className="font-semibold text-brand-700 underline underline-offset-2 truncate">
+                      Buka berkas laporan
+                    </a>
+                  ) : (
+                    <span className="text-slate-500">{reportSigned.failed ? 'Berkas tidak dapat dibuka.' : 'Menyiapkan tautan...'}</span>
+                  )}
+                  <button type="button" onClick={clearLabReport} className="text-slate-500 hover:text-rose-700 font-semibold cursor-pointer">
+                    Hapus berkas
+                  </button>
+                </div>
+              )}
               <div className="flex items-center gap-2">
                 <Link2 className="w-4 h-4 text-slate-500 shrink-0" />
                 <input

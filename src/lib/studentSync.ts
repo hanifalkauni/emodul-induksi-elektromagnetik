@@ -1,7 +1,8 @@
 // Aturan sinkron data siswa (spec 6, 6.1). Fungsi murni + penyimpanan metadata lokal.
 //
-// Fase 1: semua isian non-identitas disimpan di student_state.data (termasuk isian kelompok sementara,
-// lihat keputusan D26), KECUALI gambar base64 yang tetap hanya di perangkat sampai Fase 4.
+// Isian non-identitas disimpan di student_state.data; isian kelompok di tabel kelompok (Fase 3, D26).
+// Gambar base64 tidak pernah dikirim: di mode kelompok gambar diunggah ke Storage (Fase 4, src/lib/media.ts)
+// dan base64 hanya menjadi antrean lokal sampai terunggah.
 
 import type { EModulState } from '../types/emodul';
 import { GROUP_STATE_KEYS } from './groupSync';

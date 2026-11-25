@@ -71,6 +71,8 @@ async function fetchProfile(client: SupabaseClient, uid: string): Promise<Studen
     className: (klass.data as { name?: string } | null)?.name ?? '',
     groupName: (group.data as { name?: string } | null)?.name ?? '',
     groupId: s.group_id ?? null,
+    schoolId: s.school_id,
+    classId: s.class_id ?? null,
   };
 }
 

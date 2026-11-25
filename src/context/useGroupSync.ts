@@ -27,6 +27,8 @@ interface Args {
 export function useGroupSync({ enabled, userId, groupId, state, setState, initialState }: Args) {
   const [status, setStatus] = useState<GroupStatus>('off');
   const [live, setLive] = useState(false);
+  /** Kunci `userId:groupId` yang muat awalnya sudah selesai (dipakai antrean unggah Fase 4). */
+  const [readyKey, setReadyKey] = useState<string | null>(null);
   const liveRef = useRef(false);
 
   const stateRef = useRef(state);
@@ -191,6 +193,7 @@ export function useGroupSync({ enabled, userId, groupId, state, setState, initia
     const c = studentClient;
     if (!key || !c || !userId || !groupId) {
       readyRef.current = null;
+      setReadyKey(null);
       setStatus('off');
       setLive(false);
       return;
@@ -206,6 +209,7 @@ export function useGroupSync({ enabled, userId, groupId, state, setState, initia
       const ok = await applyServer();
       if (cancelled || !ok) return;
       readyRef.current = key;
+      setReadyKey(key);
       prevRef.current = null;
       // perubahan lokal yang tertunda (mis. dari offline / data lama) langsung dikirim
       pushTimer.current = window.setTimeout(() => void flush(), 50);
@@ -229,7 +233,10 @@ export function useGroupSync({ enabled, userId, groupId, state, setState, initia
     const poll = window.setInterval(() => {
       if (!readyRef.current) {
         void applyServer().then((ok) => {
-          if (ok && !cancelled) readyRef.current = key;
+          if (ok && !cancelled) {
+            readyRef.current = key;
+            setReadyKey(key);
+          }
         });
         return;
       }
@@ -246,6 +253,7 @@ export function useGroupSync({ enabled, userId, groupId, state, setState, initia
     return () => {
       cancelled = true;
       readyRef.current = null;
+      setReadyKey(null);
       window.clearInterval(poll);
       document.removeEventListener('visibilitychange', onVisible);
       window.removeEventListener('online', onOnline);
@@ -304,5 +312,5 @@ export function useGroupSync({ enabled, userId, groupId, state, setState, initia
     }
   }, [setState, userId]);
 
-  return { status, live, toggleVote };
+  return { status, live, toggleVote, ready: Boolean(key) && readyKey === key };
 }

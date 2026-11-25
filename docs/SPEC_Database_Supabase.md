@@ -1,6 +1,6 @@
 # SPEC: Database & Sinkronisasi E-Modul (Supabase)
 
-Status: **v15. Fase 0, 1, 2, dan 3 selesai (2026-11-18).** Fase 3: isian Screen 9-16 dibagikan per kelompok dengan Realtime dan polling cadangan 10 detik; uji gabung 24/24, uji database 15/15, uji dua browser 17/17.
+Status: **v16. Fase 0 sampai 4 selesai (2026-11-18).** Fase 4: foto, sketsa, dan laporan praktikum kelompok disimpan di Storage (dikompres <= 300 KB), state hanya menyimpan referensi; uji Storage 23/23, uji browser 17/17.
 Cakupan: menyimpan data e-modul "Induksi Elektromagnetik" (17 screen) ke Supabase agar guru dapat memantau siswa dan kelompok, dan data tidak hilang saat browser dibersihkan.
 
 ## Log keputusan
@@ -281,7 +281,7 @@ Tambahan dari implementasi:
 | `checkedTools`, `experimentStrategy`, `labReportLink`, `checkedConstraints`, `finalSelectedIdea`, `driveSyncRecorded`, `design*` (teks), `testVideoLink`, `lmsUploadLink`, `designSuccessStatus`, `failureCauseAnalysis`, `improve*`, `presentationPoints`, `presentationSlideLink` | `group_state.data` |
 | `ideas` | `ideas` + `idea_votes` |
 | `testingRows` | `test_trials` |
-| `designSketchDataUrl`, `processPhotoUrl`, `prototypePhotoUrl`, `labReportFileName` | `files` + Storage (bukan base64) |
+| `designSketchDataUrl`, `processPhotoUrl`, `prototypePhotoUrl`, `labReportFileName` | `files` + Storage (bukan base64). **Pelaksanaan Fase 4:** referensi berkas (`designSketchFile`, `processPhotoFile`, `prototypePhotoFile`, `labReportFile`: path, nama, ukuran, waktu) disimpan sebagai kunci `group_state.data`; kolom base64 hanya antrean lokal yang belum terunggah |
 | `lastSavedAt` | `updated_at` |
 
 Bagian "Identitas" di Screen 1 berubah: dari form bebas menjadi **layar daftar/login** (kode kelas, NIS, PIN). Mode lokal tetap memakai form lama.
@@ -474,6 +474,7 @@ Tugas:
 | `supabase/migrations/20261118000004_rpc_triggers_realtime.sql` | Trigger, `patch_group_state`, `ping`, Realtime |
 | `supabase/migrations/20261118000005_access_control.sql` | Fungsi bantu RLS, GRANT, policy, `v_group_members` |
 | `supabase/migrations/20261118000006_storage.sql` | Bucket dan policy Storage |
+| `supabase/migrations/20261118000010_files.sql` | Fase 4: policy `files_insert` mewajibkan path di folder sekolah/kelas/kelompok yang sama dan nama berkas diawali jenisnya; policy unggah Storage juga memeriksa segmen kelas |
 | `supabase/migrations/20261118000009_group_collab.sql` | Fase 3: hak `insert(id)` untuk `ideas` dan `test_trials`, trigger 5 peran + 1 baris uji untuk kelompok baru (dan isi untuk kelompok lama), Realtime `group_roles` dan `test_trials` |
 | `scripts/db.mjs` | Pembungkus CLI (`npm run db:dry`, `db:push`, `db:list`) |
 | `scripts/test-rls.mjs` | Uji sesi + RLS; membuat lalu menghapus data uji (`npm run test:rls`) |
@@ -609,17 +610,32 @@ Tugas:
 
 **Risiko:** batas koneksi Realtime di Free, bentrok edit pada kolom yang sama (diterima: terakhir menang).
 
-### Fase 4: Foto dan sketsa ke Storage
+### Fase 4: Foto dan sketsa ke Storage (SELESAI 2026-11-18)
 
 **Tujuan:** tidak ada lagi base64 di state; kuota terjaga.
 
 Tugas:
-- [ ] Kompresi di browser (sisi maks. 1280 px, kualitas sekitar 0,8, target 300 KB atau kurang).
-- [ ] Unggah ke bucket `emodul-uploads` dengan path `{school_id}/{class_id}/{group_id}/{kind}-{uuid}.jpg`; simpan di `files`; tampilkan lewat signed URL berumur pendek.
-- [ ] Screen 12 (sketsa kanvas dan foto desain) dan Screen 13 (foto proses, foto prototipe) memakai Storage; `lab_report` di Screen 9.
-- [ ] Hapus `*DataUrl` dan `*PhotoUrl` base64 dari state yang disinkron.
-- [ ] Migrasi data lama: base64 di localStorage dikonversi dan diunggah saat login pertama (dengan konfirmasi), lalu dibuang.
-- [ ] Ekspor LKPD/portofolio tetap menampilkan gambar (mengambil dari signed URL).
+- [x] Kompresi di browser (sisi maks. 1280 px, JPEG 0,8 lalu turun bertahap sampai 300 KB atau kurang; latar transparan diisi putih). Foto PNG 3,4 MB menjadi sekitar 235 KB.
+- [x] Unggah ke bucket `emodul-uploads` dengan path `{school_id}/{class_id}/{group_id}/{kind}-{uuid}.jpg`; simpan di `files`; tampilkan lewat signed URL berumur 1 jam (diperbarui otomatis).
+- [x] Screen 12 (sketsa kanvas dan foto desain) dan Screen 13 (foto proses, foto prototipe) memakai Storage; `lab_report` (PDF atau foto, maks. 2 MB) di Screen 9 dengan tautan "Buka berkas laporan".
+- [x] Base64 tidak ikut sinkron. Di mode kelompok, base64 hanya antrean lokal (`emodul_pending_uploads_v1` menandai milik siswa + kelompok mana), dicoba ulang saat online, lalu dikosongkan setelah terunggah. Mode lokal tanpa akun tetap menyimpan base64 (sekarang terkompresi).
+- [x] Migrasi data lama: base64 di perangkat yang belum ada di antrean ditawarkan untuk diunggah dengan konfirmasi saat kelompok pertama kali tersambung; bila dibatalkan, gambar tetap di perangkat dan ditanyakan lagi saat aplikasi dibuka. Antrean milik kelompok lama (siswa dipindah) dibuang.
+- [x] Ganti atau hapus gambar menghapus berkas lama (Storage + `files`).
+- [ ] Ekspor LKPD/portofolio: ekspor saat ini memang tidak memuat gambar, jadi tidak ada yang perlu dipertahankan. Menambahkan gambar ke ekspor adalah fitur baru, belum dikerjakan.
+
+**Hasil uji:**
+
+| Uji | Perintah | Hasil |
+|---|---|---|
+| Storage + RLS: unggah ke folder sendiri, segmen sekolah/kelas tidak bisa dipalsukan, tidak bisa menimpa, > 2 MB dan jenis tidak diizinkan ditolak, akses kelompok lain dan guru sekolah lain ditolak, guru sekolah itu bisa membuka, metadata path palsu ditolak, hapus oleh anggota | `npm run test:files-db` | 23/23 |
+| Browser Edge (4 perangkat): kompresi, foto tampil di teman lewat signed URL, kelompok lain tidak melihat, ganti foto menghapus berkas lama, format salah ditolak, offline lalu online, sketsa kanvas, bersihkan kanvas, PDF > 2 MB ditolak, PDF terunggah dan bisa dibuka teman, hapus foto, migrasi foto dari mode lokal | `npm run test:e2e-files` | 17/17 |
+| Regresi | `test:rls`, `test:auth`, `test:staff`, `test:group-merge`, `test:group-db`, `test:e2e`, `test:e2e-staff`, `test:e2e-group` | 61, 38, 58, 24, 15, 22, 18, 17 (semua lulus) |
+
+**Catatan dari pelaksanaan:**
+- **Referensi berkas lewat `group_state`.** Perubahan foto sampai ke teman memakai Realtime dan aturan gabung Fase 3; tidak perlu langganan tambahan untuk `files`.
+- **Berkas yatim.** Bila dua anggota mengganti foto yang sama hampir bersamaan, hanya satu referensi yang menang; berkas yang kalah tetap di Storage. Hapus yang gagal karena jaringan juga menyisakan berkas. Pembersih berkas yang tidak dirujuk `group_state` bisa ditambah di Fase 6 (cron).
+- **Laporan praktikum tidak diantrekan.** PDF bisa sampai 2 MB, terlalu besar untuk localStorage, jadi unggah butuh koneksi saat memilih berkas (ada pesan bila offline).
+- Profil siswa dari server sekarang memuat `schoolId` dan `classId` untuk menyusun path unggah.
 
 **Kriteria selesai:**
 - Foto tersimpan di Storage dan tampil di perangkat lain.

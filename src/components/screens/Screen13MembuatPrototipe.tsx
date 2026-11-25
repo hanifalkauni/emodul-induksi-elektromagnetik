@@ -1,26 +1,31 @@
 import React from 'react';
-import { Wrench, Camera, Video, Upload, CheckCircle2, Link2 } from 'lucide-react';
+import { Wrench, Camera, Video, Upload, CheckCircle2, Link2, Trash2 } from 'lucide-react';
 import { useModul } from '../../context/ModulContext';
+import { imageSource, type ImageKind } from '../../lib/media';
+import { StoredImage, UploadStatusLine } from '../media/StoredImage';
 
 export const Screen13MembuatPrototipe: React.FC = () => {
-  const { state, updateState } = useModul();
+  const { state, updateState, setImage, clearImage } = useModul();
+  const process = imageSource(state, 'process_photo');
+  const prototype = imageSource(state, 'prototype_photo');
 
-  const handleImageUpload = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    urlKey: 'processPhotoUrl' | 'prototypePhotoUrl',
-    nameKey: 'processPhotoName' | 'prototypePhotoName'
-  ) => {
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>, kind: ImageKind) => {
     const file = e.target.files?.[0];
+    e.target.value = ''; // pilih berkas yang sama lagi tetap memicu onChange
     if (!file) return;
-    const reader = new FileReader();
-    reader.onload = () => {
-      if (typeof reader.result === 'string') {
-        updateState(urlKey, reader.result);
-        updateState(nameKey, file.name);
-      }
-    };
-    reader.readAsDataURL(file);
+    void setImage(kind, file, file.name);
   };
+
+  const removeButton = (kind: ImageKind, label: string) => (
+    <button
+      type="button"
+      onClick={() => clearImage(kind)}
+      aria-label={`Hapus ${label}`}
+      className="p-1.5 rounded-lg text-slate-500 hover:text-rose-600 hover:bg-rose-50 cursor-pointer transition-colors"
+    >
+      <Trash2 className="w-3.5 h-3.5" aria-hidden="true" />
+    </button>
+  );
 
   return (
     <div className="space-y-6">
@@ -52,21 +57,24 @@ export const Screen13MembuatPrototipe: React.FC = () => {
               </p>
             </div>
 
-            {state.processPhotoUrl && (
-              <img
-                src={state.processPhotoUrl}
-                alt="Foto proses perakitan prototipe"
-                className="w-full h-36 object-cover rounded-lg border border-slate-200"
-              />
-            )}
+            <StoredImage
+              kind="process_photo"
+              alt="Foto proses perakitan prototipe"
+              className="w-full h-36 object-cover rounded-lg border border-slate-200"
+            />
+            <div className="flex items-center justify-between gap-2 min-h-[1rem]">
+              <UploadStatusLine kind="process_photo" hasRef={Boolean(process.ref)} hasLocal={Boolean(process.dataUrl)} />
+              {(process.ref || process.dataUrl) && removeButton('process_photo', 'foto proses')}
+            </div>
 
             <label className="btn btn-secondary cursor-pointer px-4 py-2.5 text-xs focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-brand-600">
               <Upload className="w-4 h-4 text-brand-700" />
-              <span className="truncate">{state.processPhotoName ? state.processPhotoName : 'Unggah Foto Proses'}</span>
+              <span className="truncate">{process.name || 'Unggah Foto Proses'}</span>
               <input
                 type="file"
                 accept="image/*"
-                onChange={(e) => handleImageUpload(e, 'processPhotoUrl', 'processPhotoName')}
+                aria-label="Unggah foto proses"
+                onChange={(e) => handleImageUpload(e, 'process_photo')}
                 className="sr-only"
               />
             </label>
@@ -84,21 +92,24 @@ export const Screen13MembuatPrototipe: React.FC = () => {
               </p>
             </div>
 
-            {state.prototypePhotoUrl && (
-              <img
-                src={state.prototypePhotoUrl}
-                alt="Foto prototipe jadi"
-                className="w-full h-36 object-cover rounded-lg border border-slate-200"
-              />
-            )}
+            <StoredImage
+              kind="prototype_photo"
+              alt="Foto prototipe jadi"
+              className="w-full h-36 object-cover rounded-lg border border-slate-200"
+            />
+            <div className="flex items-center justify-between gap-2 min-h-[1rem]">
+              <UploadStatusLine kind="prototype_photo" hasRef={Boolean(prototype.ref)} hasLocal={Boolean(prototype.dataUrl)} />
+              {(prototype.ref || prototype.dataUrl) && removeButton('prototype_photo', 'foto prototipe')}
+            </div>
 
             <label className="btn btn-secondary cursor-pointer px-4 py-2.5 text-xs focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-brand-600">
               <Upload className="w-4 h-4 text-brand-700" />
-              <span className="truncate">{state.prototypePhotoName ? state.prototypePhotoName : 'Unggah Foto Prototype'}</span>
+              <span className="truncate">{prototype.name || 'Unggah Foto Prototype'}</span>
               <input
                 type="file"
                 accept="image/*"
-                onChange={(e) => handleImageUpload(e, 'prototypePhotoUrl', 'prototypePhotoName')}
+                aria-label="Unggah foto prototipe"
+                onChange={(e) => handleImageUpload(e, 'prototype_photo')}
                 className="sr-only"
               />
             </label>

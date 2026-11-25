@@ -16,6 +16,8 @@ export const GROUP_SCALAR_KEYS = [
   'designAdvantages', 'designPrediction', 'testVideoLink', 'lmsUploadLink', 'designSuccessStatus',
   'failureCauseAnalysis', 'improveWeakness', 'improveWhatToFix', 'improveNewIdeas', 'improvePlannedChanges',
   'improveV2Voltage', 'improveV2LedStatus', 'improveDriveLink', 'presentationSlideLink',
+  // Fase 4: referensi berkas di Storage (isi berkas tidak pernah masuk state)
+  'labReportFile', 'designSketchFile', 'processPhotoFile', 'prototypePhotoFile',
 ] as const satisfies readonly (keyof EModulState)[];
 
 const POINT_PREFIX = 'presentationPoints.';

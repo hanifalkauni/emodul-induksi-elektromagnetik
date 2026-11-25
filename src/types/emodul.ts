@@ -23,6 +23,14 @@ export interface ScreenMeta {
   phase: 'Orientasi' | 'Konsep & Simulasi' | 'Eksperimen Lab' | 'STEM EDP' | 'Evaluasi & Refleksi';
 }
 
+/** Berkas kelompok di Supabase Storage (Fase 4). Disimpan di group_state, isi berkas di bucket privat. */
+export interface FileRef {
+  path: string;
+  name: string;
+  size: number;
+  uploadedAt: string;
+}
+
 export interface StudentIdentity {
   studentName: string;
   studentClass: string;
@@ -115,6 +123,7 @@ export interface EModulState {
   roles: RoleAssignment[];
   labReportFileName: string;
   labReportLink: string;
+  labReportFile: FileRef | null;
 
   // Screen 10: Tantangan STEM
   checkedConstraints: string[];
@@ -132,12 +141,15 @@ export interface EModulState {
   designPrediction: string;
   designSketchDataUrl: string;
   designSketchFileName: string;
+  designSketchFile: FileRef | null;
 
   // Screen 13: Membuat Prototipe
   processPhotoUrl: string;
   processPhotoName: string;
   prototypePhotoUrl: string;
   prototypePhotoName: string;
+  processPhotoFile: FileRef | null;
+  prototypePhotoFile: FileRef | null;
   testVideoLink: string;
   lmsUploadLink: string;
 

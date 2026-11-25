@@ -10,6 +10,9 @@ export interface StudentProfile {
   className: string;
   groupName: string;
   groupId: string | null;
+  /** Untuk path unggah Storage (Fase 4). Bisa kosong pada respons server versi lama. */
+  schoolId?: string;
+  classId?: string | null;
 }
 
 export interface AuthResult {

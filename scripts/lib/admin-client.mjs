@@ -71,6 +71,29 @@ export async function issueSession(email) {
   return data.session;
 }
 
+/** Daftar semua berkas Storage di bawah prefix (rekursif). */
+export async function listStorage(prefix, bucket = 'emodul-uploads') {
+  const out = [];
+  const { data, error } = await admin.storage.from(bucket).list(prefix, { limit: 1000 });
+  if (error) throw error;
+  for (const item of data ?? []) {
+    const path = prefix ? `${prefix}/${item.name}` : item.name;
+    if (item.id === null) out.push(...(await listStorage(path, bucket))); // folder
+    else out.push(path);
+  }
+  return out;
+}
+
+/** Hapus semua berkas Storage di bawah prefix (mis. folder sekolah uji). Mengembalikan jumlah berkas. */
+export async function removeStoragePrefix(prefix, bucket = 'emodul-uploads') {
+  const paths = await listStorage(prefix, bucket);
+  for (let i = 0; i < paths.length; i += 100) {
+    const { error } = await admin.storage.from(bucket).remove(paths.slice(i, i + 100));
+    if (error) throw error;
+  }
+  return paths.length;
+}
+
 export function guardNotProduction() {
   if ((process.env.APP_ENV ?? '').toLowerCase() === 'production') {
     console.error('Ditolak: APP_ENV=production. Skrip ini hanya untuk data uji.');

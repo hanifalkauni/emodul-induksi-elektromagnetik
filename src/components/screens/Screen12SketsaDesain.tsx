@@ -1,9 +1,12 @@
 import React, { useRef, useState } from 'react';
 import { PencilRuler, Upload, Eraser, CheckCircle2 } from 'lucide-react';
 import { useModul } from '../../context/ModulContext';
+import { imageSource } from '../../lib/media';
+import { StoredImage, UploadStatusLine } from '../media/StoredImage';
 
 export const Screen12SketsaDesain: React.FC = () => {
-  const { state, updateState } = useModul();
+  const { state, updateState, setImage, clearImage } = useModul();
+  const sketch = imageSource(state, 'design_sketch');
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [drawing, setDrawing] = useState(false);
 
@@ -40,10 +43,10 @@ export const Screen12SketsaDesain: React.FC = () => {
     if (!drawing) return;
     setDrawing(false);
     const canvas = canvasRef.current;
-    if (canvas) {
-      updateState('designSketchDataUrl', canvas.toDataURL('image/png'));
-      updateState('designSketchFileName', 'sketsa-kanvas-digital.png');
-    }
+    // Dikompres ke JPEG berlatar putih; di mode kelompok diunggah beberapa saat setelah goresan terakhir
+    canvas?.toBlob((blob) => {
+      if (blob) void setImage('design_sketch', blob, 'sketsa-kanvas-digital.jpg');
+    }, 'image/png');
   };
 
   const clearCanvas = () => {
@@ -52,21 +55,14 @@ export const Screen12SketsaDesain: React.FC = () => {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    updateState('designSketchDataUrl', '');
-    updateState('designSketchFileName', '');
+    clearImage('design_sketch');
   };
 
   const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
+    e.target.value = '';
     if (!file) return;
-    const reader = new FileReader();
-    reader.onload = () => {
-      if (typeof reader.result === 'string') {
-        updateState('designSketchDataUrl', reader.result);
-        updateState('designSketchFileName', file.name);
-      }
-    };
-    reader.readAsDataURL(file);
+    void setImage('design_sketch', file, file.name);
   };
 
   return (
@@ -176,17 +172,18 @@ export const Screen12SketsaDesain: React.FC = () => {
               <label className="btn btn-secondary cursor-pointer w-full px-5 py-3 text-xs focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-brand-600">
                 <Upload className="w-4 h-4 text-brand-700" />
                 <span>Unggah Foto Desain (JPG / PNG)</span>
-                <input type="file" accept="image/*" onChange={handlePhotoUpload} className="sr-only" />
+                <input type="file" accept="image/*" aria-label="Unggah foto desain" onChange={handlePhotoUpload} className="sr-only" />
               </label>
 
-              {state.designSketchDataUrl && (
+              <UploadStatusLine kind="design_sketch" hasRef={Boolean(sketch.ref)} hasLocal={Boolean(sketch.dataUrl)} />
+              {(sketch.dataUrl || sketch.ref) && (
                 <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
                   <div className="flex items-center gap-1.5 text-xs text-emerald-800 font-mono font-bold">
                     <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                    <span>Terunggah: {state.designSketchFileName || 'sketsa-desain'}</span>
+                    <span>Terunggah: {sketch.name || 'sketsa-desain'}</span>
                   </div>
-                  <img
-                    src={state.designSketchDataUrl}
+                  <StoredImage
+                    kind="design_sketch"
                     alt="Pratinjau Sketsa Desain Generator"
                     className="w-full max-h-36 object-contain rounded-lg bg-[#fff] border border-slate-200"
                   />
