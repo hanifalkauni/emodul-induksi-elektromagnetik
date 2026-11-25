@@ -20,7 +20,8 @@
     "check:deploy": "node --env-file=.env.local scripts/check-deploy.mjs",
     "test:staff": "node --env-file=.env.local scripts/test-staff.mjs",
     "test:e2e-staff": "node --env-file=.env.local scripts/e2e-staff.mjs",
-    "admin:make": "node --env-file=.env.local scripts/make-admin.mjs"
+    "admin:make": "node --env-file=.env.local scripts/make-admin.mjs",
+    "check:signup-hook": "node --env-file=.env.local scripts/check-signup-hook.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.119.2",

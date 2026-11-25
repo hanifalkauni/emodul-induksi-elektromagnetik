@@ -1,6 +1,6 @@
 # SPEC: Database & Sinkronisasi E-Modul (Supabase)
 
-Status: **v14. Fase 0, 1, dan 2 selesai (2026-11-18).** Fase 2: panel admin, halaman guru, kode aktivasi; uji staf 58/58, uji browser staf 18/18. Tersisa keputusan pendaftaran akun Google (lihat Fase 2).
+Status: **v14. Fase 0, 1, dan 2 selesai (2026-11-18).** Fase 2: panel admin, halaman guru, kode aktivasi; uji staf 58/58, uji browser staf 18/18. Pendaftaran Google guru diterapkan dengan hook Before User Created (D29).
 Cakupan: menyimpan data e-modul "Induksi Elektromagnetik" (17 screen) ke Supabase agar guru dapat memantau siswa dan kelompok, dan data tidak hilang saat browser dibersihkan.
 
 ## Log keputusan
@@ -32,6 +32,7 @@ Cakupan: menyimpan data e-modul "Induksi Elektromagnetik" (17 screen) ke Supabas
 | D26 | **Sementara (Fase 1-2): semua isian non-identitas, termasuk isian kelompok Screen 9-16, disimpan di `student_state.data` per siswa**, agar tidak hilang saat keluar atau ganti perangkat. Gambar base64 tetap hanya di perangkat sampai Fase 4. Di Fase 3 isian kelompok dipindah ke `group_state`. | Implementasi Fase 1 |
 | D27 | **Satu Vercel Function** (`api/index.js`) untuk semua endpoint, dengan router internal. `vercel.json` menulis ulang `/api/<rute>` ke `/api?route=<rute>`. Sesuai saran Vercel dan batas jumlah fungsi di Hobby. | Implementasi Fase 1 |
 | D28 | Batas laju memakai tabel `rate_limits` di database (fungsi serverless tidak berbagi memori). Kunci di-hash HMAC dengan `PEPPER`, IP tidak disimpan mentah. Batas bisa dinaikkan lewat env `RL_*`. | Implementasi Fase 1 |
+| D29 | Pendaftaran Auth dinyalakan untuk login Google guru, dibatasi hook **Before User Created** (hanya Google, user internal siswa, akun uji). | Keputusan, diterapkan |
 | D24 | **Satu project Supabase (`emodul`) dipakai untuk dev dan production** pada tahap pilot, supaya setup sederhana. Konsekuensi dan aturannya ada di 10.1. **Wajib dipisah menjadi `emodul-prod` sebelum siswa sungguhan memakai.** | Keputusan |
 | D23 | Kode aktivasi **bisa dipakai berkali-kali sampai kedaluwarsa** (satu kode untuk banyak guru satu sekolah). Pengaman: batas jumlah pemakaian `max_uses` yang dapat diatur (default 30), log setiap penebusan, dan admin dapat mencabut kode serta menonaktifkan guru. | Keputusan |
 | D19 | Login dipisah per **rute**: `/` (siswa), `/guru`, `/admin`. Otorisasi tetap diperiksa server dan RLS, bukan oleh rute (3.8). | Keputusan |
@@ -539,7 +540,7 @@ Bug yang ditemukan uji browser dan sudah diperbaiki: setelah PIN baru berhasil d
 - Bundel JavaScript sekarang di atas 500 KB karena `@supabase/supabase-js`. Belum masalah untuk pilot; bisa dipecah (lazy-load) nanti.
 - Foto dan sketsa belum ke server (Fase 4). Saat keluar, siswa diperingatkan bahwa foto/sketsa ikut terhapus dari perangkat.
 - Saat siswa masuk, aplikasi melompat ke layar terakhir yang tersimpan di akun.
-### Fase 2: Guru dan admin (SELESAI 2026-11-18, menunggu 1 keputusan pengaturan Auth)
+### Fase 2: Guru dan admin (SELESAI 2026-11-18)
 
 **Tujuan:** guru terverifikasi lewat kode dari admin dan dapat memulihkan akun siswa.
 
@@ -566,12 +567,11 @@ Tugas:
 - **Gabung sekolah ganda belum dibuat.** Hash PIN terikat `school_id`, jadi memindah siswa ke sekolah lain berarti semua PIN siswa itu harus direset. Ditunda sampai benar-benar dibutuhkan; untuk sekarang admin cukup tidak menerbitkan kode baru ke sekolah duplikat.
 - **Peringatan lonjakan pendaftaran** (lebih dari 30 per jam) dipindah ke Fase 5 bersama dashboard progres.
 
-**Belum selesai: pendaftaran akun Google guru baru.**
-Di project, "Allow new users to sign up" dimatikan (D24, aman untuk siswa karena akun siswa dibuat server). Pengaturan ini kemungkinan besar juga menolak guru yang login Google untuk pertama kali. Halaman `/guru` sudah menampilkan pesan yang jelas bila itu terjadi. Pilihan:
-1. **Disarankan:** nyalakan lagi pendaftaran, lalu aktifkan hook **Before User Created** (Authentication > Hooks, tipe Postgres, fungsi `public.hook_before_user_created`, sudah ada di migrasi 0008). Hook hanya mengizinkan akun Google, user internal siswa (`@siswa.emodul.invalid`), dan akun uji (`@emodul.test`).
-2. Nyalakan pendaftaran tanpa hook. Akun tanpa kode aktivasi tetap tidak melihat data apa pun (terbukti di uji RLS), tetapi siapa pun bisa membuat akun email kosong.
+**Pendaftaran akun Google guru (D29, diterapkan 2026-11-18):** "Allow new users to sign up" dinyalakan lagi, dan hook **Before User Created** aktif memakai fungsi `public.hook_before_user_created` (migrasi 0008). Hook hanya mengizinkan akun Google, user internal siswa (`@siswa.emodul.invalid`), dan akun uji (`@emodul.test`).
 
-Setelah salah satu dipilih, uji dengan akun Google guru sungguhan: login di `/guru`, tebus kode dari panel admin.
+Diperiksa dengan `npm run check:signup-hook`: pendaftaran email publik ditolak (403 dengan pesan kita). Pembuatan user lewat admin API (server dan dashboard) tidak terkena hook, jadi pendaftaran siswa dan pembuatan admin manual tetap berjalan. Regresi auth 38/38, staf 58/58, dan uji penuh deploy lulus setelah perubahan.
+
+Sisa uji manual: login sungguhan dengan akun Google guru di `/guru`, lalu tebus kode dari panel admin.
 
 ### Fase 3: Data kelompok dan kolaborasi
 
