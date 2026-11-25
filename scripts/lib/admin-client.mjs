@@ -32,6 +32,14 @@ export function userClient(accessToken) {
   });
 }
 
+/**
+ * Klien atas nama pengguna yang juga dipakai untuk Realtime. Opsi `accessToken` dipakai karena
+ * supabase-js memanggil ulang realtime.setAuth() saat subscribe; tanpa sesi, token yang terpakai
+ * adalah anon key sehingga RLS menolak event. Catatan: `client.auth` tidak tersedia di klien ini.
+ */
+export function realtimeUserClient(accessToken) {
+  return createClient(SUPABASE_URL, PUBLISHABLE_KEY, { ...noPersist, accessToken: async () => accessToken });
+}
 /** Email sintetis untuk user Auth internal siswa (spec 3.4). */
 export function syntheticStudentEmail() {
   return `${randomUUID()}@siswa.emodul.invalid`;

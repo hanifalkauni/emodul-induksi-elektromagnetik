@@ -34,6 +34,7 @@ async function studentPayload(studentId) {
     schoolCode: school?.school_code ?? '',
     className: klass?.name ?? '',
     groupName: group?.name ?? '',
+    groupId: s.group_id ?? null,
   };
 }
 

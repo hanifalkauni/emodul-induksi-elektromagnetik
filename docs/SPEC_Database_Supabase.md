@@ -1,6 +1,6 @@
 # SPEC: Database & Sinkronisasi E-Modul (Supabase)
 
-Status: **v14. Fase 0, 1, dan 2 selesai (2026-11-18).** Fase 2: panel admin, halaman guru, kode aktivasi; uji staf 58/58, uji browser staf 18/18. Pendaftaran Google guru diterapkan dengan hook Before User Created (D29).
+Status: **v15. Fase 0, 1, 2, dan 3 selesai (2026-11-18).** Fase 3: isian Screen 9-16 dibagikan per kelompok dengan Realtime dan polling cadangan 10 detik; uji gabung 24/24, uji database 15/15, uji dua browser 17/17.
 Cakupan: menyimpan data e-modul "Induksi Elektromagnetik" (17 screen) ke Supabase agar guru dapat memantau siswa dan kelompok, dan data tidak hilang saat browser dibersihkan.
 
 ## Log keputusan
@@ -29,7 +29,7 @@ Cakupan: menyimpan data e-modul "Induksi Elektromagnetik" (17 screen) ke Supabas
 | D21 | **Tanpa MFA** untuk admin pada tahap ini (dapat ditambah nanti). | Keputusan |
 | D22 | **Ikatan email pada kode aktivasi bersifat opsional** agar admin tidak perlu mengumpulkan email guru. | Keputusan |
 | D25 | Rahasia PIN disimpan di tabel terpisah **`student_secrets`** (hanya `service_role`), bukan kolom di `students`. Lebih sederhana dan lebih aman daripada mencabut hak per kolom. | Implementasi Fase 0 |
-| D26 | **Sementara (Fase 1-2): semua isian non-identitas, termasuk isian kelompok Screen 9-16, disimpan di `student_state.data` per siswa**, agar tidak hilang saat keluar atau ganti perangkat. Gambar base64 tetap hanya di perangkat sampai Fase 4. Di Fase 3 isian kelompok dipindah ke `group_state`. | Implementasi Fase 1 |
+| D26 | **Sementara (Fase 1-2): semua isian non-identitas, termasuk isian kelompok Screen 9-16, disimpan di `student_state.data` per siswa**, agar tidak hilang saat keluar atau ganti perangkat. Gambar base64 tetap hanya di perangkat sampai Fase 4. Di Fase 3 isian kelompok dipindah ke tabel kelompok. **Pelaksanaan Fase 3:** isian kelompok tidak lagi dikirim ke `student_state`. Saat pertama kali tersambung ke kelompok di suatu perangkat, isian lokal yang belum ada di server (kolom server kosong, peran kosong, baris uji yang sudah diisi, ide selain contoh bawaan) dikirim ke kelompok; isian yang sudah diisi teman di server dipakai. Data lama di `student_state.data` dibiarkan dan tidak dibaca lagi untuk kolom kelompok. | Implementasi Fase 1, 3 |
 | D27 | **Satu Vercel Function** (`api/index.js`) untuk semua endpoint, dengan router internal. `vercel.json` menulis ulang `/api/<rute>` ke `/api?route=<rute>`. Sesuai saran Vercel dan batas jumlah fungsi di Hobby. | Implementasi Fase 1 |
 | D28 | Batas laju memakai tabel `rate_limits` di database (fungsi serverless tidak berbagi memori). Kunci di-hash HMAC dengan `PEPPER`, IP tidak disimpan mentah. Batas bisa dinaikkan lewat env `RL_*`. | Implementasi Fase 1 |
 | D29 | Pendaftaran Auth dinyalakan untuk login Google guru, dibatasi hook **Before User Created** (hanya Google, user internal siswa, akun uji). | Keputusan, diterapkan |
@@ -345,7 +345,7 @@ Aplikasi tetap **local-first**:
 2. Setelah login, perubahan disinkron dengan **debounce 1,5 detik**: bagian individu -> upsert `student_state`; bagian kelompok -> `patch_group_state`; ide/vote/baris uji -> operasi baris.
 3. Saat membuka aplikasi / setelah login: ambil data server, lalu gabungkan dengan data lokal sesuai aturan 6.1.
 4. Gagal jaringan atau project di-pause: tampilkan "Belum tersinkron", antrekan perubahan, ulang dengan backoff. Login butuh server; sesi yang sudah ada tetap bisa dipakai offline.
-5. **Realtime** hanya untuk `ideas`, `idea_votes`, `group_state`. Batas koneksi bersamaan di Free terbatas (cek dashboard); fallback polling 10 detik.
+5. **Realtime** untuk `ideas`, `idea_votes`, `group_state`, `group_roles`, `test_trials` (dua terakhir ditambah di migrasi 0009). Batas koneksi bersamaan di Free terbatas (cek dashboard); fallback polling 10 detik.
 6. Foto: kompres di browser (sisi maks. 1280 px, kualitas ~0,8, target <= 300 KB) lalu unggah ke Storage.
 
 ### 6.1 Aturan penggabungan lokal vs server (D11)
@@ -360,7 +360,8 @@ Penyempurnaan agar aturan ini aman:
    - `student_state` (data pribadi): satu dokumen, pemenang ditentukan untuk seluruh dokumen.
    - `group_state` (data bersama): dibandingkan **per kunci** memakai kolom `data_meta` (peta kunci -> waktu ubah di server) dan catatan waktu ubah lokal per kunci (`localMeta`). Ini mencegah data lokal yang lebih baru di satu kolom menimpa isian teman yang lebih baru di kolom lain.
    - `ideas`, `test_trials`: baris terpisah, tidak digabung (tambah/ubah/hapus baris).
-4. **Konflik nyata** (kedua sisi berubah sejak sinkron terakhir): tetap berlaku "yang lebih baru menang", dan salinan versi yang kalah disimpan di localStorage (`backup_before_merge`) selama 7 hari agar bisa dipulihkan bila siswa merasa jawabannya hilang.
+   - **Pelaksanaan Fase 3** (`src/lib/groupSync.ts`): teks kelompok dibandingkan per kunci, `presentationPoints` dipecah menjadi kunci `presentationPoints.<poin>`; peran per baris `role`; baris uji dan ide per `id` (UUID buatan klien, sehingga kirim ulang aman dan duplikat ditolak dengan kode 23505). Perubahan lokal yang tertunda hanya kalah bila **teman** mengubah item yang sama (nilai server berbeda dari snapshot terakhir perangkat ini) **dan** waktu server lebih baru dari waktu ubah lokal. Gema kiriman sendiri tidak pernah menimpa ketikan terbaru. Snapshot terakhir disimpan per siswa + kelompok (`emodul_group_sync_v1`); bila perangkat menyimpan snapshot kelompok lain (siswa dipindah, atau siswa lain di perangkat yang sama), isian kelompok lokal dibuang dulu. Ide hanya bisa dihapus penulisnya; vote berupa toggle satu per siswa. Tombol reset jawaban tidak menghapus isian kelompok.
+4. **Konflik nyata** (kedua sisi berubah sejak sinkron terakhir): tetap berlaku "yang lebih baru menang", dan salinan versi yang kalah disimpan di localStorage (`backup_before_merge`) selama 7 hari agar bisa dipulihkan bila siswa merasa jawabannya hilang. Untuk data kelompok, item lokal yang kalah disimpan terpisah di `emodul_group_backup_v1` (per siswa, maksimal 20 entri, kedaluwarsa 7 hari).
 5. Setelah menggabungkan, hasilnya ditulis ke lokal dan server, dan indikator sinkron menampilkan "Tersinkron".
 
 Perubahan kode yang diperkirakan:
@@ -473,6 +474,7 @@ Tugas:
 | `supabase/migrations/20261118000004_rpc_triggers_realtime.sql` | Trigger, `patch_group_state`, `ping`, Realtime |
 | `supabase/migrations/20261118000005_access_control.sql` | Fungsi bantu RLS, GRANT, policy, `v_group_members` |
 | `supabase/migrations/20261118000006_storage.sql` | Bucket dan policy Storage |
+| `supabase/migrations/20261118000009_group_collab.sql` | Fase 3: hak `insert(id)` untuk `ideas` dan `test_trials`, trigger 5 peran + 1 baris uji untuk kelompok baru (dan isi untuk kelompok lama), Realtime `group_roles` dan `test_trials` |
 | `scripts/db.mjs` | Pembungkus CLI (`npm run db:dry`, `db:push`, `db:list`) |
 | `scripts/test-rls.mjs` | Uji sesi + RLS; membuat lalu menghapus data uji (`npm run test:rls`) |
 | `scripts/seed-test.mjs`, `scripts/purge-test-data.mjs` | Seed dan pembersih data uji (`npm run db:seed`, `db:purge-test`) |
@@ -573,17 +575,32 @@ Diperiksa dengan `npm run check:signup-hook`: pendaftaran email publik ditolak (
 
 Sisa uji manual: login sungguhan dengan akun Google guru di `/guru`, lalu tebus kode dari panel admin.
 
-### Fase 3: Data kelompok dan kolaborasi
+### Fase 3: Data kelompok dan kolaborasi (SELESAI 2026-11-18)
 
 **Tujuan:** Screen 9-16 menjadi kerja bersama anggota kelompok.
 
 Tugas:
-- [ ] Screen 9-16 membaca/menulis `group_state` lewat `patch_group_state`; klien membandingkan `data_meta` dan mengirim hanya kunci yang menang (6.1).
-- [ ] `group_roles` untuk peran kelompok (Screen 9).
-- [ ] `ideas` dan `idea_votes` untuk papan ide (Screen 11); satu siswa satu vote per ide.
-- [ ] `test_trials` untuk tabel uji (Screen 14), urutan dengan `sort_order`.
-- [ ] Realtime untuk `ideas`, `idea_votes`, `group_state`, dengan fallback polling 10 detik bila koneksi penuh.
-- [ ] Penanganan konflik: salinan versi yang kalah disimpan 7 hari.
+- [x] Screen 9-16 membaca/menulis `group_state` lewat `patch_group_state`; klien membandingkan `data_meta` dan mengirim hanya kunci yang menang (6.1).
+- [x] `group_roles` untuk peran kelompok (Screen 9).
+- [x] `ideas` dan `idea_votes` untuk papan ide (Screen 11); satu siswa satu vote per ide (toggle), hapus hanya ide sendiri.
+- [x] `test_trials` untuk tabel uji (Screen 14), urutan dengan `sort_order`.
+- [x] Realtime untuk `ideas`, `idea_votes`, `group_state`, `group_roles`, `test_trials`, dengan fallback polling 10 detik. Papan ide menampilkan "tersambung langsung" atau "diperbarui berkala".
+- [x] Penanganan konflik: salinan versi yang kalah disimpan 7 hari (`emodul_group_backup_v1`).
+- [x] Layar kelompok menampilkan lencana "Dibagikan dengan ..." dan sinkron kelompok ikut ditampilkan di indikator sinkron.
+
+**Hasil uji:**
+
+| Uji | Perintah | Hasil |
+|---|---|---|
+| Aturan gabung (tanpa jaringan): muat pertama, kolom berbeda, konflik kolom sama, gema kiriman sendiri, peran, baris uji, ide, vote, cadangan yang kalah | `npm run test:group-merge` | 24/24 |
+| Database: baris bawaan kelompok, sisipan ber-id klien, duplikat, RLS lintas kelompok, Realtime hanya ke anggota kelompok, patch bersamaan, batas ukuran | `npm run test:group-db` | 15/15 |
+| Dua browser Edge: ide, vote toggle, hapus hanya milik sendiri, kolom berbeda bersamaan, peran, baris uji, offline lalu online, siswa dipindah kelompok | `npm run test:e2e-group` | 17/17 |
+| Regresi | `test:rls`, `test:auth`, `test:staff`, `test:e2e`, `test:e2e-staff` | 61/61, 38/38, 58/58, 22/22, 18/18 |
+
+**Catatan dari pelaksanaan:**
+- **Token Realtime di skrip uji.** Klien `supabase-js` tanpa sesi memanggil ulang `realtime.setAuth()` saat subscribe dan memakai anon key, sehingga RLS menolak semua event. Skrip uji memakai opsi `accessToken` (`realtimeUserClient`). Di browser tidak ada masalah karena sesi siswa dipasang lewat `verifyOtp`.
+- **Siswa dipindah kelompok** melihat kelompok barunya setelah memuat ulang halaman (profil dibaca ulang saat aplikasi dibuka). Perpindahan langsung tanpa muat ulang belum ada.
+- **Edit kolom yang sama bersamaan** mengikuti "yang lebih baru menang" per kolom; versi yang kalah masuk cadangan lokal. Belum ada layar untuk memulihkan cadangan; bisa ditambah bila dibutuhkan.
 
 **Kriteria selesai:**
 - Dua siswa di satu kelompok melihat ide dan data uji satu sama lain hampir langsung.

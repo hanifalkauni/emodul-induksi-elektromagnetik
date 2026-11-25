@@ -39,6 +39,10 @@ export interface IdeaNote {
   color: 'cyan' | 'amber' | 'emerald' | 'indigo';
   votes: number;
   createdAt: string;
+  /** Id siswa pembuat (mode online). */
+  authorId?: string | null;
+  /** Siswa yang sedang masuk sudah memberi vote (mode online). */
+  votedByMe?: boolean;
 }
 
 export interface TestingRow {

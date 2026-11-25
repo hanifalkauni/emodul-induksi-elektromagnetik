@@ -9,6 +9,7 @@ export interface StudentProfile {
   schoolCode: string;
   className: string;
   groupName: string;
+  groupId: string | null;
 }
 
 export interface AuthResult {

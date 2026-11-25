@@ -1,6 +1,8 @@
 import React, { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { studentClient } from '../lib/supabase';
 import { useStudentSession } from './StudentSessionContext';
+import { useGroupSync, type GroupStatus } from './useGroupSync';
+import { clearGroupStore, keepGroupFields } from '../lib/groupSync';
 import {
   LOCAL_IMAGE_KEYS,
   applyServerState,
@@ -197,9 +199,21 @@ interface ModulContextValue {
   signOutAndClear: () => Promise<void>;
   /** true bila ada foto/sketsa yang hanya tersimpan di perangkat ini (belum ke server sampai Fase 4). */
   hasLocalOnlyImages: boolean;
+  /** Isian kelompok tersinkron dengan anggota lain (mode online dengan kelompok). */
+  groupShared: boolean;
+  /** Pembaruan kelompok tersambung langsung (Realtime); false = diperbarui berkala. */
+  groupLive: boolean;
 }
 
 export type SyncStatus = 'local' | 'syncing' | 'saving' | 'saved' | 'offline' | 'error';
+
+/** Status gabungan siswa + kelompok: yang paling perlu diperhatikan ditampilkan. */
+function combineStatus(student: SyncStatus, group: GroupStatus): SyncStatus {
+  if (student === 'local') return 'local';
+  const order: SyncStatus[] = ['error', 'offline', 'syncing', 'saving', 'saved'];
+  const all = group === 'off' ? [student] : [student, group as SyncStatus];
+  return order.find((s) => all.includes(s)) ?? student;
+}
 
 const PUSH_DEBOUNCE_MS = 1500;
 const MAX_RETRY_MS = 60_000;
@@ -242,6 +256,11 @@ export const ModulProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const userId = session.userId;
   const profile = session.profile;
   const [syncStatus, setSyncStatus] = useState<SyncStatus>('local');
+  const [studentReadyFor, setStudentReadyFor] = useState<string | null>(null);
+  const groupId = profile?.groupId ?? null;
+  const excludeGroupRef = useRef(false);
+  excludeGroupRef.current = Boolean(groupId);
+  const lastStudentSig = useRef('');
 
   const stateRef = useRef(state);
   stateRef.current = state;
@@ -275,7 +294,7 @@ export const ModulProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       current_screen: s.currentScreen,
       visited_screens: cleanVisited(s.visitedScreens),
       completion_percent: Math.round((cleanVisited(s.visitedScreens).length / SCREENS.length) * 100),
-      data: toServerData(s),
+      data: toServerData(s, excludeGroupRef.current),
     };
     try {
       let { data, error } = await client
@@ -319,6 +338,7 @@ export const ModulProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     const client = studentClient;
     if (!client || !userId) {
       readyForUser.current = null;
+      setStudentReadyFor(null);
       setSyncStatus('local');
       return;
     }
@@ -372,6 +392,7 @@ export const ModulProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         lastServerUpdatedAt: server?.updated_at ?? null,
       });
       readyForUser.current = userId;
+      setStudentReadyFor(userId);
       if (decision.kind === 'push-local') void pushNow();
       else setSyncStatus('saved');
     })();
@@ -398,12 +419,17 @@ export const ModulProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   // Tandai perubahan lokal lalu jadwalkan pengiriman
   useEffect(() => {
+    // Tanda tangan data pribadi: perubahan yang hanya menyangkut isian kelompok tidak dikirim ke student_state
+    const sig = JSON.stringify([state.currentScreen, state.visitedScreens, toServerData(state, excludeGroupRef.current)]);
     if (applyingRemote.current) {
       applyingRemote.current = false;
+      lastStudentSig.current = sig;
       return;
     }
     const uid = readyForUser.current;
     if (!uid || !userId || uid !== userId) return;
+    if (sig === lastStudentSig.current) return;
+    lastStudentSig.current = sig;
     const meta = readMeta();
     writeMeta({ ...meta, ownerId: uid, dirty: true, localUpdatedAt: new Date().toISOString() });
     setSyncStatus('saving');
@@ -430,6 +456,8 @@ export const ModulProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       // abaikan
     }
     clearMeta();
+    clearGroupStore();
+    setStudentReadyFor(null);
     applyingRemote.current = true;
     setState(INITIAL_STATE);
     setSyncStatus('local');
@@ -437,6 +465,20 @@ export const ModulProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   }, [session]);
 
   const hasLocalOnlyImages = LOCAL_IMAGE_KEYS.some((k) => Boolean(state[k]));
+
+  // ---------------------------------------------------------------------------
+  // Fase 3: isian kelompok bersama (setelah data pribadi selesai digabung)
+  // ---------------------------------------------------------------------------
+  const groupSync = useGroupSync({
+    enabled: Boolean(userId && studentReadyFor === userId && groupId),
+    userId,
+    groupId,
+    state,
+    setState,
+    initialState: INITIAL_STATE,
+  });
+  const groupShared = groupSync.status !== 'off';
+  const combinedStatus = combineStatus(syncStatus, groupSync.status);
 
   const setScreen = (screenNumber: number) => {
     const clamped = Math.max(1, Math.min(17, screenNumber));
@@ -473,9 +515,11 @@ export const ModulProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const addIdea = (idea: Omit<IdeaNote, 'id' | 'votes' | 'createdAt'>) => {
     const newIdea: IdeaNote = {
       ...idea,
-      id: `idea-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
+      id: crypto.randomUUID(),
       votes: 0,
       createdAt: new Date().toISOString(),
+      authorId: userId,
+      votedByMe: false,
     };
     setState((prev) => ({
       ...prev,
@@ -485,6 +529,10 @@ export const ModulProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   };
 
   const voteIdea = (id: string) => {
+    if (groupShared) {
+      void groupSync.toggleVote(id);
+      return;
+    }
     setState((prev) => ({
       ...prev,
       ideas: prev.ideas.map((item) =>
@@ -582,7 +630,11 @@ export const ModulProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const resetAllData = () => {
     if (profile) {
       // Mode online: kosongkan jawaban tetapi pertahankan identitas akun (perubahan ikut tersinkron)
-      setState((prev) => ({ ...INITIAL_STATE, identity: prev.identity, lastSavedAt: new Date().toISOString() }));
+      // Isian kelompok milik bersama: tidak ikut dikosongkan agar pekerjaan teman tidak hilang
+      setState((prev) => keepGroupFields(
+        { ...INITIAL_STATE, identity: prev.identity, lastSavedAt: new Date().toISOString() },
+        prev,
+      ));
       return;
     }
     localStorage.removeItem(STORAGE_KEY);
@@ -607,9 +659,11 @@ export const ModulProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         loadDemoData,
         resetAllData,
         completionPercent,
-        syncStatus,
+        syncStatus: combinedStatus,
         signOutAndClear,
         hasLocalOnlyImages,
+        groupShared,
+        groupLive: groupSync.live,
       }}
     >
       {children}

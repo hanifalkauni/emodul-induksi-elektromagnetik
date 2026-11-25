@@ -70,6 +70,7 @@ async function fetchProfile(client: SupabaseClient, uid: string): Promise<Studen
     schoolCode: school.data?.school_code ?? '',
     className: (klass.data as { name?: string } | null)?.name ?? '',
     groupName: (group.data as { name?: string } | null)?.name ?? '',
+    groupId: s.group_id ?? null,
   };
 }
 

@@ -14,7 +14,7 @@ export const Screen14Testing: React.FC = () => {
   const addRow = () => {
     const nextNum = state.testingRows.length + 1;
     const newRow: TestingRow = {
-      id: `trial-${Date.now()}`,
+      id: crypto.randomUUID(),
       trialLabel: `Uji Coba ${nextNum}`,
       voltage: '',
       turns: '',

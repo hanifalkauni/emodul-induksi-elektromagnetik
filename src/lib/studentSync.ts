@@ -4,6 +4,7 @@
 // lihat keputusan D26), KECUALI gambar base64 yang tetap hanya di perangkat sampai Fase 4.
 
 import type { EModulState } from '../types/emodul';
+import { GROUP_STATE_KEYS } from './groupSync';
 
 /** Kolom yang tidak ikut disinkron: identitas berasal dari akun, gambar base64 terlalu besar. */
 const EXCLUDED_KEYS = new Set<keyof EModulState>([
@@ -18,10 +19,16 @@ const EXCLUDED_KEYS = new Set<keyof EModulState>([
 
 export const LOCAL_IMAGE_KEYS: (keyof EModulState)[] = ['designSketchDataUrl', 'processPhotoUrl', 'prototypePhotoUrl'];
 
-export function toServerData(state: EModulState): Record<string, unknown> {
+/**
+ * Data pribadi siswa untuk student_state. Bila siswa punya kelompok (Fase 3), isian kelompok TIDAK
+ * ikut di sini karena disimpan di tabel kelompok.
+ */
+export function toServerData(state: EModulState, excludeGroup = false): Record<string, unknown> {
   const out: Record<string, unknown> = {};
   for (const [key, value] of Object.entries(state)) {
-    if (!EXCLUDED_KEYS.has(key as keyof EModulState)) out[key] = value;
+    const k = key as keyof EModulState;
+    if (EXCLUDED_KEYS.has(k) || (excludeGroup && GROUP_STATE_KEYS.has(k))) continue;
+    out[key] = value;
   }
   return out;
 }

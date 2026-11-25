@@ -41,7 +41,7 @@ const PILLAR_NAV: { id: NavPillar; label: string; icon: React.ComponentType<{ cl
 ];
 
 export const AppShell: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { state, setScreen, nextScreen, prevScreen, loadDemoData, resetAllData, completionPercent, syncStatus, signOutAndClear, hasLocalOnlyImages } = useModul();
+  const { state, setScreen, nextScreen, prevScreen, loadDemoData, resetAllData, completionPercent, syncStatus, signOutAndClear, hasLocalOnlyImages, groupShared } = useModul();
   const session = useStudentSession();
   const online = session.status === 'signedIn';
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -161,7 +161,7 @@ export const AppShell: React.FC<{ children: React.ReactNode }> = ({ children }) 
               type="button"
               onClick={() => {
                 if (window.confirm(online
-                  ? 'Reset seluruh jawaban di akun ini? Jawaban di server juga akan terhapus.'
+                  ? 'Reset jawaban pribadi di akun ini? Jawaban di server juga akan terhapus. Isian kelompok (Screen 9–16) tidak ikut terhapus.'
                   : 'Reset seluruh jawaban dan kembali ke Screen 1?')) {
                   resetAllData();
                 }
@@ -317,6 +317,11 @@ export const AppShell: React.FC<{ children: React.ReactNode }> = ({ children }) 
               <span className="text-slate-700 font-semibold">{activeScreenMeta.phase}</span>
               <span className="text-slate-400 hidden sm:inline">•</span>
               <span className="text-slate-900 font-semibold hidden sm:inline">{activeScreenMeta.title}</span>
+              {groupShared && state.currentScreen >= 9 && state.currentScreen <= 16 && (
+                <span className="hidden md:inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-brand-50 text-brand-700 text-[11px] font-semibold">
+                  <Users className="w-3 h-3" aria-hidden="true" /> Dibagikan dengan {state.identity.groupName || 'kelompok'}
+                </span>
+              )}
             </div>
             <SyncBadge status={syncStatus} />
           </div>

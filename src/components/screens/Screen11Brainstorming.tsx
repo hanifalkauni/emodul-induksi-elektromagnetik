@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Lightbulb, Plus, ThumbsUp, Trash2, CheckCircle2, Cloud } from 'lucide-react';
+import { Lightbulb, Plus, ThumbsUp, Trash2, CheckCircle2, Cloud, Radio } from 'lucide-react';
+import { useStudentSession } from '../../context/StudentSessionContext';
 import { useModul } from '../../context/ModulContext';
 import { IdeaNote } from '../../types/emodul';
 
@@ -11,7 +12,10 @@ const NOTE_COLORS: Record<IdeaNote['color'], string> = {
 };
 
 export const Screen11Brainstorming: React.FC = () => {
-  const { state, addIdea, voteIdea, removeIdea, updateState } = useModul();
+  const { state, addIdea, voteIdea, removeIdea, updateState, groupShared, groupLive } = useModul();
+  const { userId } = useStudentSession();
+  /** Di mode kelompok, siswa hanya boleh menghapus idenya sendiri (RLS juga menegakkan ini). */
+  const canDelete = (item: IdeaNote) => !groupShared || !item.authorId || item.authorId === userId;
   const [authorName, setAuthorName] = useState(state.identity.studentName || '');
   const [title, setTitle] = useState('');
   const [driveMechanism, setDriveMechanism] = useState<IdeaNote['driveMechanism']>('Engkol Manual');
@@ -162,6 +166,14 @@ export const Screen11Brainstorming: React.FC = () => {
               <span>KUMPULAN IDE KELOMPOK ({state.ideas.length} IDE)</span>
               <span>Klik jempol untuk memberi vote ide terbaik</span>
             </div>
+            {groupShared && (
+              <p role="status" className="flex items-center gap-1.5 text-[11px] font-semibold text-slate-600">
+                <Radio className={`w-3.5 h-3.5 ${groupLive ? 'text-emerald-600' : 'text-slate-400'}`} aria-hidden="true" />
+                {groupLive
+                  ? 'Papan tersambung langsung: ide dan vote teman sekelompok muncul otomatis.'
+                  : 'Papan diperbarui berkala (tiap 10 detik).'}
+              </p>
+            )}
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-[420px] overflow-y-auto pr-1">
               {state.ideas.map((item) => (
@@ -184,20 +196,24 @@ export const Screen11Brainstorming: React.FC = () => {
                     <button
                       type="button"
                       onClick={() => voteIdea(item.id)}
-                      className="btn btn-secondary px-3 py-1 min-h-0 h-8 text-xs"
+                      aria-pressed={groupShared ? Boolean(item.votedByMe) : undefined}
+                      aria-label={groupShared ? (item.votedByMe ? `Tarik vote untuk ${item.title}` : `Vote ${item.title}`) : `Vote ${item.title}`}
+                      className={`btn px-3 py-1 min-h-0 h-8 text-xs ${groupShared && item.votedByMe ? 'btn-primary' : 'btn-secondary'}`}
                     >
-                      <ThumbsUp className="w-3.5 h-3.5 text-brand-700" />
+                      <ThumbsUp className={`w-3.5 h-3.5 ${groupShared && item.votedByMe ? '' : 'text-brand-700'}`} aria-hidden="true" />
                       <span className="font-mono">{item.votes}</span>
                     </button>
 
+                    {canDelete(item) && (
                     <button
                       type="button"
                       onClick={() => removeIdea(item.id)}
-                      aria-label="Hapus ide"
+                      aria-label={`Hapus ide ${item.title}`}
                       className="p-1.5 rounded-lg text-slate-500 hover:text-rose-600 hover:bg-rose-50 cursor-pointer transition-colors"
                     >
                       <Trash2 className="w-3.5 h-3.5" />
                     </button>
+                    )}
                   </div>
                 </div>
               ))}
