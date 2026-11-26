@@ -29,7 +29,12 @@
     "test:e2e-files": "node --env-file=.env.local scripts/e2e-files.mjs",
     "test:dashboard": "node scripts/test-dashboard.mjs",
     "test:dashboard-db": "node --env-file=.env.local scripts/test-dashboard-db.mjs",
-    "test:e2e-dashboard": "node --env-file=.env.local scripts/e2e-dashboard.mjs"
+    "test:e2e-dashboard": "node --env-file=.env.local scripts/e2e-dashboard.mjs",
+    "test:ops": "node --env-file=.env.local scripts/test-ops.mjs",
+    "test:storage-backup": "node --env-file=.env.local scripts/test-storage-backup.mjs",
+    "test:delete-school": "node --env-file=.env.local scripts/test-delete-school.mjs",
+    "test:load": "node --env-file=.env.local scripts/load-test.mjs",
+    "check:history": "node --env-file=.env.local scripts/scan-history.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.119.2",

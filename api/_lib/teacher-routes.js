@@ -3,7 +3,7 @@
 
 import { HttpError, json, readJson, clientIp, str } from './http.js';
 import { admin } from './supabase.js';
-import { normalizeNis, isValidNis, hashPin, genTempPin, genCode, normalizeInviteCode, isValidInviteCode, inviteHash, hmacKey } from './pin.js';
+import { normalizeNis, isValidNis, hashPin, genTempPin, genCode, normalizeInviteCode, isValidInviteCode, inviteHash, previousInviteHash, hmacKey } from './pin.js';
 import { rateLimit, logEvent } from './guards.js';
 import { currentStaffUser, requireStaff, loadStudentForStaff, loadClassForStaff } from './staff.js';
 
@@ -62,11 +62,11 @@ async function activate(request) {
   const code = normalizeInviteCode(body.code);
   if (!isValidInviteCode(code)) throw new HttpError(400, 'invalid_code', 'Kode aktivasi berisi 10 huruf/angka, contoh ABCDE-23456.');
 
-  const { data, error } = await admin().rpc('redeem_teacher_invite', {
-    p_code_hash: inviteHash(code),
-    p_user: user.id,
-    p_email: user.email ?? '',
-  });
+  const redeem = (hash) => admin().rpc('redeem_teacher_invite', { p_code_hash: hash, p_user: user.id, p_email: user.email ?? '' });
+  let { data, error } = await redeem(inviteHash(code));
+  // Rotasi PEPPER: kode yang diterbitkan sebelum rotasi di-hash dengan pepper lama
+  const prev = previousInviteHash(code);
+  if (error?.message === 'invite_not_found' && prev) ({ data, error } = await redeem(prev));
   if (error) {
     const known = REDEEM_ERRORS[error.message];
     if (known) throw new HttpError(known[0], error.message, known[1]);

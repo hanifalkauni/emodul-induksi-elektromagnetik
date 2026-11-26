@@ -2,7 +2,7 @@
 // pin_hash = scrypt(HMAC-SHA256(PEPPER, school_id:nis:pin), salt). PEPPER tidak pernah disimpan di database.
 
 import { createHmac, randomBytes, randomInt, scrypt as scryptCb, timingSafeEqual } from 'node:crypto';
-import { env } from './env.js';
+import { env, optionalEnv } from './env.js';
 
 const SCRYPT = { N: 16384, r: 8, p: 1, keylen: 32, maxmem: 64 * 1024 * 1024 };
 
@@ -44,8 +44,17 @@ export function pinPolicyError(pin, nis = '') {
   return null;
 }
 
-function peppered(schoolId, nis, pin) {
-  return createHmac('sha256', env('PEPPER')).update(`${schoolId}:${nis}:${pin}`).digest();
+/**
+ * Rotasi PEPPER (runbook): PEPPER = nilai baru, PEPPER_PREVIOUS = nilai lama. PIN yang di-hash dengan pepper
+ * lama tetap diterima dan langsung di-hash ulang dengan pepper baru saat siswa berhasil masuk.
+ */
+function peppers() {
+  const current = env('PEPPER');
+  const previous = optionalEnv('PEPPER_PREVIOUS');
+  return previous && previous !== current ? [current, previous] : [current];
+}
+function peppered(schoolId, nis, pin, pepper = env('PEPPER')) {
+  return createHmac('sha256', pepper).update(`${schoolId}:${nis}:${pin}`).digest();
 }
 
 export async function hashPin(schoolId, nis, pin) {
@@ -57,15 +66,26 @@ export async function hashPin(schoolId, nis, pin) {
   };
 }
 
-export async function verifyPin(schoolId, nis, pin, stored) {
+/**
+ * Cocokkan PIN. Mengembalikan { ok, stale }: stale = cocok dengan PEPPER_PREVIOUS (perlu di-hash ulang).
+ * Pepper lama hanya dicoba bila pepper baru gagal, jadi biaya scrypt tambahan hanya terjadi selama rotasi.
+ */
+export async function checkPin(schoolId, nis, pin, stored) {
   const parts = String(stored?.pin_hash ?? '').split('$');
-  if (parts.length !== 5 || parts[0] !== 'scrypt') return false;
+  if (parts.length !== 5 || parts[0] !== 'scrypt') return { ok: false, stale: false };
   const [, N, r, p, hex] = parts;
   const expected = Buffer.from(hex, 'hex');
-  const key = await scrypt(peppered(schoolId, nis, pin), Buffer.from(stored.pin_salt, 'hex'), expected.length, {
-    N: Number(N), r: Number(r), p: Number(p), maxmem: SCRYPT.maxmem,
-  });
-  return key.length === expected.length && timingSafeEqual(key, expected);
+  const list = peppers();
+  for (let i = 0; i < list.length; i++) {
+    const key = await scrypt(peppered(schoolId, nis, pin, list[i]), Buffer.from(stored.pin_salt, 'hex'), expected.length, {
+      N: Number(N), r: Number(r), p: Number(p), maxmem: SCRYPT.maxmem,
+    });
+    if (key.length === expected.length && timingSafeEqual(key, expected)) return { ok: true, stale: i > 0 };
+  }
+  return { ok: false, stale: false };
+}
+export async function verifyPin(schoolId, nis, pin, stored) {
+  return (await checkPin(schoolId, nis, pin, stored)).ok;
 }
 
 /** Hitung hash palsu agar waktu respons sama saat NIS tidak ditemukan (spec 3.3 langkah 4). */
@@ -105,8 +125,13 @@ export function formatInviteCode(code) {
 }
 
 /** Hanya hash kode yang disimpan di database. */
-export function inviteHash(code) {
-  return createHmac('sha256', env('PEPPER')).update(`invite:${code}`).digest('hex');
+export function inviteHash(code, pepper = env('PEPPER')) {
+  return createHmac('sha256', pepper).update(`invite:${code}`).digest('hex');
+}
+/** Hash kode dengan pepper lama (rotasi), atau null bila tidak sedang rotasi. */
+export function previousInviteHash(code) {
+  const list = peppers();
+  return list.length > 1 ? inviteHash(code, list[1]) : null;
 }
 
 /** Hash HMAC untuk IP/kunci laju, agar IP tidak tersimpan mentah. */

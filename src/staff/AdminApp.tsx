@@ -1,11 +1,12 @@
 // Halaman /admin: login email + password, kode aktivasi guru, sekolah, guru, bantuan siswa (spec 3.5, 7.1).
 
 import React, { useCallback, useEffect, useState } from 'react';
-import { KeyRound, Loader2, Plus, RefreshCw, School, ShieldCheck, Users, LifeBuoy, Pencil } from 'lucide-react';
+import { KeyRound, Loader2, Plus, RefreshCw, School, ShieldCheck, Users, LifeBuoy, Pencil, Activity } from 'lucide-react';
 import { staffApi, staffClient, staffConfigured } from './staffClient';
 import { useStaffAuth } from './useStaffAuth';
 import { CopyButton, Modal, Notice, StaffShell, formatDateTime } from './StaffShell';
 import { StudentManager } from './StudentManager';
+import { OpsTab } from './OpsTab';
 
 const DAY_OPTIONS = [3, 7, 14, 30, 60, 90];
 const USE_OPTIONS: { value: string; label: string }[] = [
@@ -363,12 +364,13 @@ const TeachersTab: React.FC = () => {
 };
 
 // ---------------------------------------------------------------------------
-type Tab = 'invites' | 'schools' | 'teachers' | 'students';
+type Tab = 'invites' | 'schools' | 'teachers' | 'students' | 'ops';
 const TABS: { id: Tab; label: string; icon: React.ComponentType<{ className?: string }> }[] = [
   { id: 'invites', label: 'Kode Aktivasi', icon: KeyRound },
   { id: 'schools', label: 'Sekolah', icon: School },
   { id: 'teachers', label: 'Guru', icon: Users },
   { id: 'students', label: 'Bantuan Siswa', icon: LifeBuoy },
+  { id: 'ops', label: 'Status Layanan', icon: Activity },
 ];
 
 const AdminPanel: React.FC = () => {
@@ -393,6 +395,7 @@ const AdminPanel: React.FC = () => {
       {tab === 'invites' && <InvitesTab schools={schools} onChanged={() => void loadSchools()} />}
       {tab === 'schools' && <SchoolsTab schools={schools} reload={loadSchools} />}
       {tab === 'teachers' && <TeachersTab />}
+      {tab === 'ops' && <OpsTab />}
       {tab === 'students' && (
         <section className="card p-5 space-y-4">
           <Input id="admin-search" label="Cari siswa di semua sekolah berdasarkan NIS" value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Minimal 3 karakter" className="font-mono" />

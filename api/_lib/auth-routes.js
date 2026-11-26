@@ -2,7 +2,7 @@
 
 import { HttpError, json, readJson, clientIp, bearerToken, str } from './http.js';
 import { admin, syntheticStudentEmail, issueSession, userFromToken } from './supabase.js';
-import { normalizeNis, isValidNis, normalizeCode, isValidCode, pinPolicyError, hashPin, verifyPin, dummyVerify, hmacKey } from './pin.js';
+import { normalizeNis, isValidNis, normalizeCode, isValidCode, pinPolicyError, hashPin, verifyPin, checkPin, dummyVerify, hmacKey } from './pin.js';
 import { verifyCaptcha, rateLimit, logEvent } from './guards.js';
 
 const MAX_CANDIDATES = 5; // spec 3.3 langkah 3
@@ -203,9 +203,12 @@ async function login(request) {
   }
 
   const matches = [];
+  const stale = new Set();
   for (const c of unlocked) {
     const secret = Array.isArray(c.student_secrets) ? c.student_secrets[0] : c.student_secrets;
-    if (secret && (await verifyPin(c.school_id, c.nis, pin, secret))) matches.push(c);
+    const res = secret ? await checkPin(c.school_id, c.nis, pin, secret) : { ok: false };
+    if (res.ok) matches.push(c);
+    if (res.stale) stale.add(c.id);
   }
 
   if (matches.length > 1) {
@@ -233,6 +236,12 @@ async function login(request) {
 
   const student = matches[0];
   await db.rpc('record_login_success', { p_student: student.id });
+  if (stale.has(student.id)) {
+    // Rotasi PEPPER: hash ulang dengan pepper baru (kegagalan di sini tidak menggagalkan login)
+    const hashed = await hashPin(student.school_id, student.nis, pin);
+    const { error: reErr } = await db.from('student_secrets').update({ ...hashed, updated_at: new Date().toISOString() }).eq('student_id', student.id);
+    if (reErr) console.warn('Hash ulang PIN gagal:', reErr.message);
+  }
   await logEvent({ school_id: student.school_id, student_id: student.id, nis, event: 'login_ok', ip_hash: hmacKey(ip) });
 
   const { data: authUser, error: uErr } = await db.auth.admin.getUserById(student.id);

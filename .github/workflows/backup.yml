@@ -1,0 +1,86 @@
+# Backup mingguan database Supabase + berkas Storage (Fase 6, spec bagian 8).
+#
+# Repo ini PUBLIK: artifact bisa diunduh orang lain, jadi backup WAJIB dienkripsi (AES-256, gpg simetris).
+# Secret yang dibutuhkan (Settings > Secrets and variables > Actions):
+#   SUPABASE_DB_URL      Session pooler URL lengkap dengan password database
+#                        postgresql://postgres.<ref>:<password>@aws-1-ap-southeast-1.pooler.supabase.com:5432/postgres
+#   BACKUP_PASSPHRASE    Kata sandi enkripsi backup (simpan juga di password manager; tanpa ini backup tidak bisa dibuka)
+#   SUPABASE_URL         (opsional, untuk backup Storage) https://<ref>.supabase.co
+#   SUPABASE_SECRET_KEY  (opsional, untuk backup Storage) sb_secret_...
+# Cara membuka dan restore: docs/RUNBOOK.md bagian "Restore dari backup".
+name: Backup mingguan
+
+on:
+  schedule:
+    - cron: '30 19 * * 6' # Minggu 02:30 WIB
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: backup
+  cancel-in-progress: false
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+      BACKUP_PASSPHRASE: ${{ secrets.BACKUP_PASSPHRASE }}
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
+    steps:
+      - name: Periksa secret
+        run: |
+          test -n "$SUPABASE_DB_URL" || { echo "::error::Secret SUPABASE_DB_URL belum diisi"; exit 1; }
+          test -n "$BACKUP_PASSPHRASE" || { echo "::error::Secret BACKUP_PASSPHRASE belum diisi"; exit 1; }
+
+      - uses: actions/checkout@v4
+
+      - uses: supabase/setup-cli@v1
+        with:
+          version: latest
+
+      - name: Dump database (roles, schema, data, riwayat migrasi)
+        run: |
+          set -euo pipefail
+          mkdir -p out/db
+          supabase db dump --remote="$SUPABASE_DB_URL" -f out/db/roles.sql --role-only
+          supabase db dump --remote="$SUPABASE_DB_URL" -f out/db/schema.sql
+          supabase db dump --remote="$SUPABASE_DB_URL" -f out/db/data.sql --use-copy --data-only -x "storage.buckets_vectors" -x "storage.vector_indexes"
+          supabase db dump --remote="$SUPABASE_DB_URL" -f out/db/history_schema.sql --schema supabase_migrations
+          supabase db dump --remote="$SUPABASE_DB_URL" -f out/db/history_data.sql --use-copy --data-only --schema supabase_migrations
+          ls -la out/db
+
+      - uses: actions/setup-node@v4
+        if: env.SUPABASE_SECRET_KEY != ''
+        with:
+          node-version: 22
+
+      - name: Backup berkas Storage
+        if: env.SUPABASE_SECRET_KEY != ''
+        env:
+          VITE_SUPABASE_PUBLISHABLE_KEY: unused-in-backup
+        run: |
+          npm ci --ignore-scripts --no-audit --no-fund
+          node scripts/backup-storage.mjs out/storage
+
+      - name: Enkripsi (AES-256)
+        run: |
+          set -euo pipefail
+          STAMP=$(date -u +%Y-%m-%d)
+          echo "STAMP=$STAMP" >> "$GITHUB_ENV"
+          tar -czf backup.tar.gz -C out .
+          printf '%s' "$BACKUP_PASSPHRASE" | gpg --batch --yes --pinentry-mode loopback --passphrase-fd 0 \
+            --symmetric --cipher-algo AES256 -o "emodul-backup-$STAMP.tar.gz.gpg" backup.tar.gz
+          rm -rf out backup.tar.gz
+          ls -la "emodul-backup-$STAMP.tar.gz.gpg"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: emodul-backup-${{ env.STAMP }}
+          path: emodul-backup-${{ env.STAMP }}.tar.gz.gpg
+          retention-days: 30
+          if-no-files-found: error

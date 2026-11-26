@@ -1,6 +1,6 @@
 # SPEC: Database & Sinkronisasi E-Modul (Supabase)
 
-Status: **v17. Fase 0 sampai 5 selesai (2026-11-18).** Fase 5: dashboard guru per kelas (progres, jawaban, ringkasan kelompok, CSV, kartu login, peringatan lonjakan pendaftaran); uji unit 25/25, uji database 18/18, uji browser 14/14.
+Status: **v18. Fase 0 sampai 6 dibangun (2026-11-18).** Fase 6: cron ping harian + pemeliharaan mingguan, Status Layanan di panel admin, rotasi PEPPER tanpa reset PIN, backup mingguan terenkripsi (GitHub Actions), skrip backup/restore Storage dan hapus sekolah, runbook `docs/RUNBOOK.md`. Sisa: pemantauan beberapa minggu dan restore database ke project uji (butuh tindakan admin).
 Cakupan: menyimpan data e-modul "Induksi Elektromagnetik" (17 screen) ke Supabase agar guru dapat memantau siswa dan kelompok, dan data tidak hilang saat browser dibersihkan.
 
 ## Log keputusan
@@ -474,6 +474,7 @@ Tugas:
 | `supabase/migrations/20261118000004_rpc_triggers_realtime.sql` | Trigger, `patch_group_state`, `ping`, Realtime |
 | `supabase/migrations/20261118000005_access_control.sql` | Fungsi bantu RLS, GRANT, policy, `v_group_members` |
 | `supabase/migrations/20261118000006_storage.sql` | Bucket dan policy Storage |
+| `supabase/migrations/20261118000012_ops.sql` | Fase 6: tabel `ops_runs` (riwayat cron), RPC `ops_usage` dan `ops_untracked_objects` (khusus service_role) |
 | `supabase/migrations/20261118000011_dashboard.sql` | Fase 5: view `v_class_progress` dan `v_group_summary` (`security_invoker = on`), indeks `ideas (group_id, author_id)` dan `students (class_id, created_at)` |
 | `supabase/migrations/20261118000010_files.sql` | Fase 4: policy `files_insert` mewajibkan path di folder sekolah/kelas/kelompok yang sama dan nama berkas diawali jenisnya; policy unggah Storage juga memeriksa segmen kelas |
 | `supabase/migrations/20261118000009_group_collab.sql` | Fase 3: hak `insert(id)` untuk `ideas` dan `test_trials`, trigger 5 peran + 1 baris uji untuk kelompok baru (dan isi untuk kelompok lama), Realtime `group_roles` dan `test_trials` |
@@ -675,23 +676,43 @@ Tugas:
 - Peringatan lonjakan dihitung di browser guru dari `students.created_at`, sehingga hanya terlihat saat guru membuka kelas itu. Notifikasi aktif (email) belum ada.
 - Kueri dashboard dibatasi 1.000 siswa per kelas.
 
-### Fase 6: Operasional dan siap dipakai
+### Fase 6: Operasional dan siap dipakai (DIBANGUN 2026-11-18, tinggal pemantauan)
 
 **Tujuan:** layanan tetap hidup, bisa dipulihkan, dan terdokumentasi.
 
 Tugas:
-- [ ] Vercel Cron harian `GET /api/ping` (dilindungi `CRON_SECRET`) yang memanggil RPC `ping()`.
-- [ ] Cron mingguan `/api/maintenance`: hapus `auth_events` lebih dari 90 hari.
-- [ ] Backup terjadwal: `pg_dump` mingguan (kemungkinan lewat GitHub Actions karena durasi), disimpan di tempat aman; tombol ekspor CSV untuk guru sudah dari Fase 5.
-- [ ] Cek ulang batas Hobby dan status "Cron Jobs/Schedules" Vercel; bila deploy menolak, pindah ke GitHub Actions.
-- [ ] Runbook: rotasi atau kehilangan `PEPPER`, restore dari backup, langkah saat project di-pause, menambah admin, mencabut guru, menghapus data siswa/sekolah (UU PDP).
-- [ ] Uji akhir: beban kecil (puluhan siswa serentak), uji RLS ulang, tinjauan keamanan (tidak ada kunci di repo, log tanpa PIN).
-- [ ] Pantau beberapa minggu bahwa project tidak pernah ter-pause.
+- [x] Vercel Cron harian `GET /api/ping` (02:17 UTC) dilindungi `CRON_SECRET` (dibandingkan dengan waktu konstan), memanggil RPC `ping()` dan mencatat hasil di `ops_runs`.
+- [x] Cron mingguan `GET /api/maintenance` (Minggu 03:43 UTC): hapus `auth_events` > 90 hari (`AUDIT_RETENTION_DAYS`), `rate_limits` kedaluwarsa, `ops_runs` > 180 hari, berkas yatim (baris `files` > 1 hari yang tidak dirujuk `group_state`, dan objek Storage > 1 hari tanpa baris `files`). Masa tenggang 1 hari melindungi unggahan yang sedang berjalan.
+- [x] Backup terjadwal: GitHub Actions `.github/workflows/backup.yml` setiap Minggu 02:30 WIB menjalankan `supabase db dump` (roles, schema, data, riwayat migrasi) dan backup berkas Storage, lalu mengenkripsi AES-256 dengan `BACKUP_PASSPHRASE` sebelum diunggah sebagai artifact 30 hari. **Enkripsi wajib karena repo publik.**
+- [x] Cek ulang batas Hobby (Juli 2026): Cron Jobs tetap tersedia di semua paket, Hobby maksimal sekali sehari per job dengan ketepatan ±59 menit, 100 job per project. Vercel menandai Cron Jobs sebagai fitur lama yang akan dipindah ke "Schedules"; konfigurasi `crons` di `vercel.json` masih berlaku.
+- [x] Runbook `docs/RUNBOOK.md`: pemantauan, project di-pause, admin, rotasi `CRON_SECRET`, rotasi dan kehilangan `PEPPER`, backup dan restore, mencabut guru, penghapusan data (UU PDP), daftar wajib sebelum siswa sungguhan, batas Free.
+- [x] Rotasi `PEPPER` tanpa reset PIN: `PEPPER_PREVIOUS` dicoba bila `PEPPER` gagal, lalu PIN di-hash ulang saat siswa masuk; kode aktivasi lama tetap bisa ditebus selama transisi.
+- [x] Panel admin **Status Layanan**: ping dan pemeliharaan terakhir (peringatan bila ping > 36 jam), pemakaian database dan Storage terhadap batas Free, riwayat cron.
+- [x] Penghapusan data satu sekolah: `scripts/delete-school.mjs` (rencana dulu, hapus hanya dengan `--confirm <KODE_SEKOLAH>`), termasuk berkas Storage, akun Auth, dan log audit sekolah itu.
+- [x] Uji akhir: beban 50 siswa bersamaan, uji RLS ulang, tinjauan keamanan (riwayat git bersih dari rahasia, log tanpa PIN, `npm audit` 0 kerentanan, header keamanan).
+- [ ] Pantau beberapa minggu bahwa project tidak pernah ter-pause (Status Layanan, bagian 1 runbook).
+- [ ] Isi secret GitHub (`SUPABASE_DB_URL`, `BACKUP_PASSPHRASE`, opsional `SUPABASE_URL` + `SUPABASE_SECRET_KEY`) lalu jalankan backup sekali secara manual.
+- [ ] Restore database dari backup ke project uji (runbook bagian 8). Restore berkas Storage sudah diuji.
 
 **Kriteria selesai:**
-- Project tetap aktif beberapa minggu tanpa trafik pengguna.
-- Backup berhasil di-restore sekali pada project uji.
-- Runbook dicoba minimal satu skenario (rotasi `PEPPER`).
+- Project tetap aktif beberapa minggu tanpa trafik pengguna. *(menunggu waktu)*
+- Backup berhasil di-restore sekali pada project uji. *(Storage: lulus; database: menunggu secret GitHub dan project uji)*
+- Runbook dicoba minimal satu skenario (rotasi `PEPPER`). *(lulus sebagai simulasi di `npm run test:ops`)*
+
+**Hasil uji:**
+
+| Uji | Perintah | Hasil |
+|---|---|---|
+| Cron dan operasional: otorisasi `CRON_SECRET`, ping tercatat, pemeliharaan (audit lama, batas laju, berkas yatim, masa tenggang), Status Layanan hanya admin, tabel/RPC ops tertutup untuk klien, simulasi rotasi `PEPPER` (PIN dan kode aktivasi) | `npm run test:ops` | 26/26 |
+| Backup dan restore Storage (sha256 identik, restore tidak menimpa) | `npm run test:storage-backup` | 5/5 |
+| Hapus sekolah (tanpa konfirmasi tidak menghapus, sekolah lain utuh, audit ikut terhapus) | `npm run test:delete-school` | 8/8 |
+| Beban: 50 siswa daftar, masuk, simpan, isi kelompok bersamaan | `npm run test:load -- 50` | semua berhasil; daftar p95 8,4 s dan masuk p95 3,8 s (scrypt 50 siswa di satu laptop), simpan p95 0,6 s, kelompok p95 0,3 s, 0 kiriman hilang |
+| Riwayat git bebas rahasia | `npm run check:history` | 0 temuan |
+| Regresi (semua uji Fase 0-5 + panel Status Layanan) | lihat `package.json` | semua lulus |
+
+**Catatan dari pelaksanaan:**
+- `test:group-db` sesekali gagal pada uji Realtime karena status `SUBSCRIBED` tiba sebelum filter aktif di server; diberi jeda 1,5 detik. Aplikasi tidak terdampak karena mengambil ulang data saat tersambung dan polling 10 detik.
+- Content-Security-Policy belum dipasang (perlu mendaftar domain Turnstile, Supabase, Realtime dan diuji); header `nosniff`, `X-Frame-Options: DENY`, `Referrer-Policy`, `Permissions-Policy` sudah.
 
 **Risiko:** kebijakan pause Supabase atau batas cron Vercel berubah.
 

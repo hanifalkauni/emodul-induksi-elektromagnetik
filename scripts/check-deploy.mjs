@@ -78,6 +78,21 @@ if (login.body.error === 'server_misconfigured') {
   record('Respons login tidak terduga', false, `HTTP ${login.status} ${JSON.stringify(login.body).slice(0, 120)}`);
 }
 
+// 2b) Cron (Fase 6): tanpa secret ditolak; dengan CRON_SECRET dari .env.local berhasil bila nilainya sama dengan Vercel
+const pingNoAuth = await fetch(base + '/api/ping');
+record('Endpoint cron /api/ping menolak tanpa CRON_SECRET', pingNoAuth.status === 401, `HTTP ${pingNoAuth.status}`);
+if (process.env.CRON_SECRET) {
+  const pingAuth = await fetch(base + '/api/ping', { headers: { authorization: `Bearer ${process.env.CRON_SECRET}` } });
+  if (pingAuth.status === 200) record('CRON_SECRET di Vercel sama dengan .env.local; ping sampai ke database', true);
+  else if (pingAuth.status === 401) record('CRON_SECRET di Vercel berbeda dengan .env.local', null, 'cron Vercel tetap jalan bila nilainya diisi; cek tab Cron Jobs');
+  else record('Ping dengan CRON_SECRET', false, `HTTP ${pingAuth.status}`);
+}
+const headersRes = await fetch(base + '/');
+const hdr = (n) => headersRes.headers.get(n) ?? '';
+record('Header keamanan terpasang (nosniff, frame, referrer)',
+  hdr('x-content-type-options') === 'nosniff' && /DENY/i.test(hdr('x-frame-options')) && Boolean(hdr('referrer-policy')),
+  `${hdr('x-content-type-options')} / ${hdr('x-frame-options')} / ${hdr('referrer-policy')}`);
+
 // 3) Uji penuh (opsional)
 if (full) {
   if (!testCaptcha) {

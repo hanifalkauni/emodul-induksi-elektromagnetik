@@ -76,6 +76,13 @@ async function main() {
       await ap.getByRole('button', { name: 'Masuk', exact: true }).click();
       await ap.getByRole('heading', { name: 'Terbitkan kode aktivasi guru' }).waitFor({ timeout: 20000 });
     });
+    await check('Admin melihat Status Layanan (cron dan kuota)', async () => {
+      await ap.getByRole('button', { name: 'Status Layanan' }).click();
+      await ap.getByRole('heading', { name: 'Ping harian (anti-pause)' }).waitFor({ timeout: 15000 });
+      await ap.getByRole('progressbar', { name: 'Database' }).waitFor({ timeout: 5000 });
+      await ap.getByRole('button', { name: 'Kode Aktivasi' }).click();
+      await ap.getByRole('heading', { name: 'Terbitkan kode aktivasi guru' }).waitFor({ timeout: 10000 });
+    });
 
     let code = '';
     const schoolName = `SMA E2E Fase2 ${RUN}`;

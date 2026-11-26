@@ -50,6 +50,8 @@ async function run() {
   const chC = sub('C', C);
   for (let i = 0; i < 40 && !(status.B === 'SUBSCRIBED' && status.C === 'SUBSCRIBED'); i++) await sleep(250);
   ok('Realtime tersambung untuk siswa', status.B === 'SUBSCRIBED' && status.C === 'SUBSCRIBED', JSON.stringify(status));
+  // SUBSCRIBED bisa tiba sedikit sebelum filter postgres_changes aktif di server; beri jeda agar uji tidak sesekali gagal
+  await sleep(1500);
 
   const ideaId = crypto.randomUUID();
   let r = await A.client.from('ideas').insert({ id: ideaId, group_id: g1.id, author_id: A.id, author_name: 'A', title: 'Ide A', description: 'd' });

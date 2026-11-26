@@ -6,12 +6,14 @@
 import { authRoutes } from './_lib/auth-routes.js';
 import { teacherRoutes } from './_lib/teacher-routes.js';
 import { adminRoutes } from './_lib/admin-routes.js';
+import { opsRoutes } from './_lib/ops-routes.js';
 import { HttpError, errorResponse } from './_lib/http.js';
 
 const ROUTES = {
   ...authRoutes,
   ...teacherRoutes,
   ...adminRoutes,
+  ...opsRoutes,
 };
 
 function routeOf(request) {
