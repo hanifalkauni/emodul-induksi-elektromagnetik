@@ -6,6 +6,7 @@ import { staffApi, staffClient, staffConfigured } from './staffClient';
 import { useStaffAuth } from './useStaffAuth';
 import { CopyButton, Notice, StaffShell } from './StaffShell';
 import { StudentManager } from './StudentManager';
+import { ClassDashboard } from './ClassDashboard';
 
 const GoogleIcon = () => (
   <svg viewBox="0 0 24 24" className="w-5 h-5" aria-hidden="true">
@@ -206,7 +207,7 @@ const TeacherDashboard: React.FC<{ schoolId: string; schoolName: string; schoolC
                 </div>
               </div>
               <p className="text-xs text-slate-600">Siswa mendaftar di halaman utama: pilih <strong>Daftar Baru</strong>, isi kode kelas di atas, NIS, nama, kelompok, dan PIN.</p>
-              <StudentManager key={current.id} classId={current.id} />
+              <ClassDashboard key={current.id} klass={current} schoolName={schoolName} schoolCode={schoolCode} />
             </>
           ) : (
             <Notice>Buat kelas untuk mendapatkan kode kelas yang dibagikan ke siswa.</Notice>

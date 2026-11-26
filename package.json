@@ -26,7 +26,10 @@
     "test:group-db": "node --env-file=.env.local scripts/test-group-db.mjs",
     "test:e2e-group": "node --env-file=.env.local scripts/e2e-group.mjs",
     "test:files-db": "node --env-file=.env.local scripts/test-files-db.mjs",
-    "test:e2e-files": "node --env-file=.env.local scripts/e2e-files.mjs"
+    "test:e2e-files": "node --env-file=.env.local scripts/e2e-files.mjs",
+    "test:dashboard": "node scripts/test-dashboard.mjs",
+    "test:dashboard-db": "node --env-file=.env.local scripts/test-dashboard-db.mjs",
+    "test:e2e-dashboard": "node --env-file=.env.local scripts/e2e-dashboard.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.119.2",

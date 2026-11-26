@@ -1,6 +1,17 @@
 import { EModulState } from '../types/emodul';
 
-export function openPrintableLkpd(state: EModulState) {
+const escapeHtml = (v: string) =>
+  v.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+/** Salinan state dengan semua teks di-escape (rekursif), dipakai untuk menyusun HTML cetak. */
+function escapeDeep<T>(v: T): T {
+  if (typeof v === 'string') return escapeHtml(v) as unknown as T;
+  if (Array.isArray(v)) return v.map(escapeDeep) as unknown as T;
+  if (v && typeof v === 'object') return Object.fromEntries(Object.entries(v).map(([k, x]) => [k, escapeDeep(x)])) as T;
+  return v;
+}
+
+export function openPrintableLkpd(raw: EModulState) {
+  const state = escapeDeep(raw);
   const win = window.open('', '_blank', 'width=900,height=900');
   if (!win) {
     alert('Mohon izinkan pop-up browser untuk mengunduh/mencetak LKPD.');
@@ -89,7 +100,8 @@ export function openPrintableLkpd(state: EModulState) {
   win.document.close();
 }
 
-export function openPrintablePortfolio(state: EModulState) {
+export function openPrintablePortfolio(raw: EModulState) {
+  const state = escapeDeep(raw);
   const win = window.open('', '_blank', 'width=960,height=900');
   if (!win) {
     alert('Mohon izinkan pop-up browser untuk mencetak portofolio belajar.');

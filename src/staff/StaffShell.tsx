@@ -73,7 +73,7 @@ export const Notice: React.FC<{ tone?: 'error' | 'info' | 'success' | 'warning';
   );
 };
 
-export const Modal: React.FC<{ title: string; onClose: () => void; children: React.ReactNode }> = ({ title, onClose, children }) => {
+export const Modal: React.FC<{ title: string; onClose: () => void; children: React.ReactNode; wide?: boolean }> = ({ title, onClose, children, wide }) => {
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => e.key === 'Escape' && onClose();
     window.addEventListener('keydown', onKey);
@@ -81,7 +81,8 @@ export const Modal: React.FC<{ title: string; onClose: () => void; children: Rea
   }, [onClose]);
   return (
     <div className="fixed inset-0 z-[60] bg-black/50 flex items-center justify-center p-4" onClick={onClose}>
-      <div role="dialog" aria-modal="true" aria-label={title} className="card w-full max-w-md p-6 space-y-4" onClick={(e) => e.stopPropagation()}>
+      <div role="dialog" aria-modal="true" aria-label={title}
+        className={`card w-full p-6 space-y-4 ${wide ? 'max-w-3xl max-h-[90vh] overflow-y-auto' : 'max-w-md'}`} onClick={(e) => e.stopPropagation()}>
         <h2 className="text-lg font-display font-bold text-slate-900">{title}</h2>
         {children}
       </div>

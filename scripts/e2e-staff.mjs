@@ -146,7 +146,9 @@ async function main() {
     for (let i = 0; i < 5; i++) await api('auth/login', { nis, pin: '000001', captchaToken: CAPTCHA });
 
     await check('Siswa terkunci tampil di daftar kelas', async () => {
-      await tp.getByRole('button', { name: 'Muat ulang' }).click();
+      // Fase 5: tindakan per siswa ada di tab "Kelola Siswa" pada dashboard kelas
+      await tp.getByRole('tab', { name: 'Kelola Siswa' }).click();
+      await tp.getByRole('button', { name: 'Muat ulang', exact: true }).click();
       await tp.getByText('Siswa E2E Guru').waitFor({ timeout: 15000 });
       await tp.getByText(/Terkunci s\.d\./).waitFor({ timeout: 10000 });
     });

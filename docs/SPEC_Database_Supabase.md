@@ -1,6 +1,6 @@
 # SPEC: Database & Sinkronisasi E-Modul (Supabase)
 
-Status: **v16. Fase 0 sampai 4 selesai (2026-11-18).** Fase 4: foto, sketsa, dan laporan praktikum kelompok disimpan di Storage (dikompres <= 300 KB), state hanya menyimpan referensi; uji Storage 23/23, uji browser 17/17.
+Status: **v17. Fase 0 sampai 5 selesai (2026-11-18).** Fase 5: dashboard guru per kelas (progres, jawaban, ringkasan kelompok, CSV, kartu login, peringatan lonjakan pendaftaran); uji unit 25/25, uji database 18/18, uji browser 14/14.
 Cakupan: menyimpan data e-modul "Induksi Elektromagnetik" (17 screen) ke Supabase agar guru dapat memantau siswa dan kelompok, dan data tidak hilang saat browser dibersihkan.
 
 ## Log keputusan
@@ -474,6 +474,7 @@ Tugas:
 | `supabase/migrations/20261118000004_rpc_triggers_realtime.sql` | Trigger, `patch_group_state`, `ping`, Realtime |
 | `supabase/migrations/20261118000005_access_control.sql` | Fungsi bantu RLS, GRANT, policy, `v_group_members` |
 | `supabase/migrations/20261118000006_storage.sql` | Bucket dan policy Storage |
+| `supabase/migrations/20261118000011_dashboard.sql` | Fase 5: view `v_class_progress` dan `v_group_summary` (`security_invoker = on`), indeks `ideas (group_id, author_id)` dan `students (class_id, created_at)` |
 | `supabase/migrations/20261118000010_files.sql` | Fase 4: policy `files_insert` mewajibkan path di folder sekolah/kelas/kelompok yang sama dan nama berkas diawali jenisnya; policy unggah Storage juga memeriksa segmen kelas |
 | `supabase/migrations/20261118000009_group_collab.sql` | Fase 3: hak `insert(id)` untuk `ideas` dan `test_trials`, trigger 5 peran + 1 baris uji untuk kelompok baru (dan isi untuk kelompok lama), Realtime `group_roles` dan `test_trials` |
 | `scripts/db.mjs` | Pembungkus CLI (`npm run db:dry`, `db:push`, `db:list`) |
@@ -645,25 +646,34 @@ Tugas:
 
 **Risiko:** kuota Storage 1 GB; unggah gagal di jaringan sekolah yang lambat (butuh antrean ulang).
 
-### Fase 5: Dashboard guru lengkap
+### Fase 5: Dashboard guru lengkap (SELESAI 2026-11-18)
 
 **Tujuan:** guru memantau satu kelas dari satu layar.
 
 Tugas:
-- [ ] View SQL `v_class_progress` dan `v_group_summary` dengan `security_invoker = on`.
-- [ ] Daftar siswa: nama, NIS, kelompok, `completion_percent`, layar terakhir, terakhir login, status kunci.
-- [ ] Ringkasan kelompok: jumlah ide per anggota (indikator minimal 2 ide), jumlah baris uji, status desain, ada atau tidaknya foto.
-- [ ] Melihat jawaban siswa dan kelompok (hipotesis, jawaban simulasi, refleksi, data uji).
-- [ ] Ekspor CSV (progres dan jawaban).
-- [ ] Kartu login siswa yang bisa dicetak (Kode Sekolah, kode kelas, petunjuk singkat).
-- [ ] Peringatan lonjakan pendaftaran (lebih dari 30 pendaftaran baru per jam pada satu kelas).
+- [x] View SQL `v_class_progress` dan `v_group_summary` dengan `security_invoker = on` (migrasi 0011). Ada/tidaknya foto dibaca dari referensi di `group_state`, bukan dari tabel `files` yang bisa berisi berkas yatim.
+- [x] Tab **Progres**: nama, NIS, kelompok, bilah progres, layar terakhir, masuk terakhir, status kunci; ringkasan jumlah siswa, rata-rata progres, siswa selesai, siswa terkunci.
+- [x] Tab **Kelompok**: jumlah ide per anggota (hijau bila minimal 2), baris uji terisi, status desain V1, tanda sketsa/foto proses/foto prototipe/laporan; peringatan siswa tanpa kelompok.
+- [x] Melihat jawaban siswa (hipotesis, 5 pertanyaan pemantik, jawaban simulasi, refleksi, skor penilaian diri) dan isian kelompok (peran, gambar dari Storage, laporan, ide dan vote, data uji, desain, perbaikan, poin presentasi).
+- [x] Ekspor CSV progres dan jawaban: pemisah titik koma dan BOM UTF-8 agar langsung terbuka benar di Excel berbahasa Indonesia; sel yang diawali `= + - @` diberi tanda kutip satu (mencegah injeksi rumus).
+- [x] Kartu login yang bisa dicetak: 8 kartu per halaman A4 berisi alamat situs, kode kelas, Kode Sekolah, dan petunjuk daftar/masuk/lupa PIN.
+- [x] Peringatan lonjakan pendaftaran: lebih dari 30 akun baru dalam jendela 60 menit mana pun selama 24 jam terakhir pada satu kelas, dengan saran menghapus pendaftar palsu dan mengganti kode kelas.
+- [x] Tab **Kelola Siswa** memuat tindakan Fase 2 (buka kunci, reset PIN, ubah, pindah, nonaktifkan, hapus).
 
-**Kriteria selesai:**
-- Guru melihat progres seluruh kelas dan mengunduh rekap CSV.
-- Guru hanya melihat data sekolahnya sendiri.
-- Peringatan lonjakan muncul pada uji pendaftaran massal.
+**Hasil uji:**
 
-**Risiko:** kueri lambat bila data besar (pantau dan tambah indeks).
+| Uji | Perintah | Hasil |
+|---|---|---|
+| Fungsi murni: jendela lonjakan, CSV (kutip, baris baru, injeksi rumus, BOM), kolom CSV jawaban, status siswa, tautan aman, escape HTML | `npm run test:dashboard` | 25/25 |
+| Database: isi kedua view, guru sekolah lain tidak melihat apa pun, siswa hanya dirinya/kelompoknya, anon ditolak, guru hanya baca | `npm run test:dashboard-db` | 18/18 |
+| Browser Edge: 31 siswa, peringatan lonjakan, ringkasan, jawaban, kelompok, foto dari Storage, unduh dua CSV, kartu login, tab Kelola Siswa, isian berisi HTML tidak dijalankan | `npm run test:e2e-dashboard` | 14/14 |
+| Regresi | `test:rls`, `test:auth`, `test:staff`, `test:group-merge`, `test:group-db`, `test:files-db`, `test:e2e`, `test:e2e-staff`, `test:e2e-group`, `test:e2e-files` | semua lulus (`e2e-staff` disesuaikan: tindakan siswa kini di tab Kelola Siswa) |
+
+**Catatan dari pelaksanaan:**
+- **Perbaikan keamanan pada jendela cetak LKPD/portofolio.** Jendela cetak satu origin dengan aplikasi dan sebelumnya menulis isian apa adanya sebagai HTML. Sejak Fase 3 isian kelompok (peran, data uji, desain) bisa diketik teman, sehingga teman bisa menyisipkan skrip yang berjalan di sesi siswa lain. Sekarang semua isian di-escape sebelum dicetak.
+- **Tautan dari siswa** (mis. `labReportLink`) di dashboard guru hanya dijadikan link bila `http`/`https`; `javascript:` dibuang.
+- Peringatan lonjakan dihitung di browser guru dari `students.created_at`, sehingga hanya terlihat saat guru membuka kelas itu. Notifikasi aktif (email) belum ada.
+- Kueri dashboard dibatasi 1.000 siswa per kelas.
 
 ### Fase 6: Operasional dan siap dipakai
 
