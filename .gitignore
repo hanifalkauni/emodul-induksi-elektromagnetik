@@ -16,3 +16,6 @@ dist-ssr/
 .idea/
 *.log
 
+
+# Presentasi runbook (dibuat lokal, tidak di-commit)
+docs/RUNBOOK.pptx

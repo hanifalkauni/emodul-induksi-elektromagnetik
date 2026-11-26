@@ -21,6 +21,12 @@
     color-scheme: dark;
   }
 
+  /* Edge menambahkan tombol "lihat password" sendiri; aplikasi sudah punya tombolnya (kolom PIN) */
+  input::-ms-reveal,
+  input::-ms-clear {
+    display: none;
+  }
+
   html {
     font-family: 'Work Sans', system-ui, sans-serif;
     scroll-behavior: smooth;

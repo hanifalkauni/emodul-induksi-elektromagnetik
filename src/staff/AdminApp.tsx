@@ -1,6 +1,6 @@
 // Halaman /admin: login email + password, kode aktivasi guru, sekolah, guru, bantuan siswa (spec 3.5, 7.1).
 
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { KeyRound, Loader2, Plus, RefreshCw, School, ShieldCheck, Users, LifeBuoy, Pencil, Activity } from 'lucide-react';
 import { staffApi, staffClient, staffConfigured } from './staffClient';
 import { useStaffAuth } from './useStaffAuth';
@@ -82,6 +82,8 @@ const InvitesTab: React.FC<{ schools: SchoolRow[]; onChanged: () => void }> = ({
   const [busy, setBusy] = useState(false);
   const [issued, setIssued] = useState<{ code: string; expiresAt: string; schoolName: string } | null>(null);
   const [open, setOpen] = useState<string | null>(null);
+  /** true setelah admin memilih sendiri "Sekolah terdaftar"/"Sekolah baru"; pilihan otomatis berhenti. */
+  const modeChosen = useRef(false);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -95,7 +97,8 @@ const InvitesTab: React.FC<{ schools: SchoolRow[]; onChanged: () => void }> = ({
   useEffect(() => { void load(); }, [load]);
   useEffect(() => {
     if (!schoolId && schools.length) setSchoolId(schools[0].id);
-    if (!schools.length) setMode('new');
+    // Daftar sekolah dimuat belakangan: pilih otomatis sesuai isinya sampai admin memilih sendiri
+    if (!modeChosen.current) setMode(schools.length ? 'existing' : 'new');
   }, [schools, schoolId]);
 
   const submit = async (e: React.FormEvent) => {
@@ -143,7 +146,7 @@ const InvitesTab: React.FC<{ schools: SchoolRow[]; onChanged: () => void }> = ({
         <h2 className="text-base font-display font-bold text-slate-900">Terbitkan kode aktivasi guru</h2>
         <div className="flex gap-1 p-1 rounded-lg bg-slate-100 max-w-sm" role="radiogroup" aria-label="Sekolah tujuan">
           {(['existing', 'new'] as const).map((m) => (
-            <button key={m} type="button" role="radio" aria-checked={mode === m} onClick={() => setMode(m)} disabled={m === 'existing' && !schools.length}
+            <button key={m} type="button" role="radio" aria-checked={mode === m} onClick={() => { modeChosen.current = true; setMode(m); }} disabled={m === 'existing' && !schools.length}
               className={`flex-1 px-3 py-1.5 rounded-md text-xs font-semibold cursor-pointer ${mode === m ? 'bg-white text-brand-700 border border-slate-200' : 'text-slate-600'}`}>
               {m === 'existing' ? 'Sekolah terdaftar' : 'Sekolah baru'}
             </button>
